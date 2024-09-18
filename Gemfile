@@ -18,6 +18,7 @@ gem 'devise'
 gem 'haml-rails'
 gem 'simple_form'
 gem 'rails-i18n'
+gem 'devise-i18n'
 gem 'letter_opener_web'
 
 group :development, :test do

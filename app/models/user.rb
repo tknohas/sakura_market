@@ -3,4 +3,9 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, :confirmable
 
   validates :name, presence: true
+  validate :password_complexity
+
+  private
+
+  include PasswordComplexity
 end

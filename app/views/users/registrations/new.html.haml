@@ -17,6 +17,7 @@
         = f.input :password, required: true,
           input_html: { class: "w-full p-2 border border-gray-500 rounded focus:ring focus:ring-indigo-500", autocomplete: "new-password" },
           wrapper_html: { class: 'block' }, label_html: { class: 'block mb-1' }
+        %p.text-gray-500.text-sm 8字以上20字以下で、半角英数字の小文字、大文字、数字をそれぞれ1つ以上含めてください
 
         = f.input :password_confirmation, required: true,
           input_html: { class: "w-full p-2 border border-gray-500 rounded focus:ring focus:ring-indigo-500", autocomplete: "new-password" },

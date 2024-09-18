@@ -1,4 +1,4 @@
-RSpec.describe "Users", type: :system do
+RSpec.describe 'Users', type: :system do
   let!(:user) { create(:user, name: 'Alice', email: 'alice@example.com', password: 'Abcd1234') }
 
   describe 'ログイン' do

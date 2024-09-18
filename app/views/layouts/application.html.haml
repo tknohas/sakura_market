@@ -1,0 +1,28 @@
+!!! 5
+%html
+  %head
+    %title SakuraMarket
+    %meta{name: "viewport", content: "width=device-width,initial-scale=1"}
+    = csrf_meta_tags
+    = csp_meta_tag
+
+    = stylesheet_link_tag "application", "data-turbo-track": "reload"
+    = javascript_include_tag "application", "data-turbo-track": "reload", type: "module"
+
+  %body
+    - if notice
+      .bg-green-100.border-green-500.text-green-700.px-4.py-3.rounded{role: "alert"}
+        = notice
+    - if alert
+      .bg-red-100.border-red-500.text-red-700.px-4.py-3.rounded{role: "alert"}
+        = alert
+    %nav.flex.items-center.justify-between.flex-wrap.bg-blue-300.p-6.mb-4
+      .flex.items-center.text-white.mr-6
+        %p.text-xl さくらマーケット
+      .flex.items-center
+        - if user_signed_in?
+          = button_to "ログアウト", destroy_user_session_path, method: :delete, data: { turbo_confirm: 'ログアウトしますか？' }, class: "text-black"
+        - else
+          = button_to "新規登録", new_user_registration_path, method: :get, class: "mr-5"
+          = button_to "ログイン", new_user_session_path, method: :get
+    = yield

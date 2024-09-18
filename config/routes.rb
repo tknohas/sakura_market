@@ -7,4 +7,10 @@ Rails.application.routes.draw do
     confirmations: 'users/confirmations',
     passwords: 'users/passwords',
   }
+  devise_for :admins, controllers: {
+    sessions: 'admins/sessions',
+  }
+  namespace :admin do
+    root to: 'home#index'
+  end
 end

@@ -1,0 +1,4 @@
+- if product.image.attached?
+  = image_tag product.image.variant(variant), class: 'product-image object-cover'
+- else
+  = image_tag 'default_image.jpg', size:, class: 'product-image'

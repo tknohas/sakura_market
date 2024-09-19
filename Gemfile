@@ -12,7 +12,6 @@ gem 'sprockets-rails'
 gem 'stimulus-rails'
 gem 'turbo-rails'
 gem 'tzinfo-data', platforms: %i[windows jruby]
-# gem "image_processing", "~> 1.2"
 
 gem 'devise'
 gem 'devise-i18n'
@@ -20,6 +19,7 @@ gem 'haml-rails'
 gem 'letter_opener_web'
 gem 'rails-i18n'
 gem 'simple_form'
+gem "image_processing", "~> 1.2"
 
 group :development, :test do
   gem 'debug', platforms: %i[mri windows]
@@ -36,4 +36,5 @@ group :test do
   gem 'capybara'
   gem 'email_spec'
   gem 'selenium-webdriver'
+  gem 'database_cleaner'
 end

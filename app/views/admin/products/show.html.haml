@@ -1,0 +1,23 @@
+%h1.text-3xl.font-bold.mb-4.text-center 商品詳細(管理画面)
+= back_button
+= link_to_top
+
+.container.flex.justify-center.mt-4
+  .flex.justify-center.mt-4
+    .mr-4
+      - if @product.image.attached?
+        = image_tag @product.image.variant(:large), class: 'product-image object-cover'
+      - else
+        = image_tag 'default_image.jpg', size: '660x438', class: 'product-image'
+    .flex.flex-col.items-start.ms-4
+      %p.text-2xl 商品名: #{@product.name}
+      %p.text-gray-700.text-2xl.mt-2 価格: #{@product.price}円
+      %p.text-gray-600.mt-2.text-2xl 商品説明:
+      %br #{@product.description}
+
+.div{ 'class' => 'w-9/12' }
+  .flex.justify-end.mt-4
+    = link_to '編集', edit_admin_product_path,
+      class: 'bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'
+    = button_to '削除', admin_product_path(@product), method: :delete, data: { turbo_confirm: '本当に削除しますか？' },
+      class: 'bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded ml-2'

@@ -1,0 +1,12 @@
+ja:
+  activerecord:
+    models:
+      product: '商品'
+    attributes:
+      product:
+        price: '価格'
+        name: '商品名'
+        description: '商品説明'
+        is_public: '公開設定'
+        image: '商品画像'
+        sort_position: '表示順'

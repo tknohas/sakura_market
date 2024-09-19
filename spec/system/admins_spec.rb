@@ -1,5 +1,5 @@
-RSpec.describe 'Users', type: :system do
-  let!(:admin) { create(:admin, email: 'admin@example.com', password: 'Abcd1234') }
+RSpec.describe 'Admins', type: :system do
+  let(:admin) { create(:admin) }
 
   describe 'ログイン' do
     before do
@@ -8,7 +8,7 @@ RSpec.describe 'Users', type: :system do
 
     context 'フォームの入力値が正常' do
       it 'ログイン成功' do
-        fill_in 'admin_email', with: 'admin@example.com'
+        fill_in 'admin_email', with: admin.email
         fill_in 'admin_password', with: 'Abcd1234'
 
         within '.form-actions' do
@@ -16,7 +16,7 @@ RSpec.describe 'Users', type: :system do
         end
 
         expect(page).to have_content 'ログインしました'
-        expect(current_path).to eq admin_root_path
+        expect(current_path).to eq admin_products_path
       end
     end
 
@@ -48,8 +48,8 @@ RSpec.describe 'Users', type: :system do
   end
 
   it 'ログイン前はadmin_root_pathに遷移できない' do
-    visit admin_root_path
-    
+    visit admin_products_path
+
     expect(page).to have_css 'h1', text: 'ログイン'
     expect(page).to have_content 'ログインもしくはアカウント登録してください。'
   end

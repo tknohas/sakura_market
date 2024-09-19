@@ -4,7 +4,6 @@
   - @products.each do |product|
     .border-4.flex.justify-center
       .product-item.w-100.mx-auto
-        -# TODO: ユーザー用詳細画面へのリンクへ変更
-        = link_to '#' do
+        = link_to product_path(product) do
           = render 'shared/product_image', product: product, size: '330x219', variant: :small
           %p.product-name.mt-2.font-bold.text-center= product.name

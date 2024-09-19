@@ -53,5 +53,12 @@ RSpec.describe 'Home', type: :system do
       products = all('div a p').map(&:text)
       expect(products).to eq ['玉ねぎ', 'にんじん', 'ピーマン']
     end
+
+    it '商品詳細画面へ遷移する' do
+      visit root_path
+      click_on 'ピーマン'
+
+      expect(page).to have_css 'h1', text: '商品詳細'
+    end
   end
 end

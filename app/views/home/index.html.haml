@@ -1,1 +1,10 @@
-%h1.text-3xl.text-center Hello
+%h1.text-3xl.font-bold.mb-4.text-center 商品一覧
+
+.product-container.mx-8.grid.grid-cols-3.gap-4.mb-4.mt-4
+  - @products.each do |product|
+    .border-4.flex.justify-center
+      .product-item.w-100.mx-auto
+        -# TODO: ユーザー用詳細画面へのリンクへ変更
+        = link_to '#' do
+          = render 'shared/product_image', product: product, size: '330x219', variant: :small
+          %p.product-name.mt-2.font-bold.text-center= product.name

@@ -1,5 +1,7 @@
 Admin.create!(email: 'admin@example.com', password: 'Abcd1234')
 
+User.create!(name: 'Franky', email: 'franky@example.com', password: 'Abcd1234')
+
 names = %w(にんじん ピーマン 玉ねぎ)
 prices = [100, 1_000, 10_000]
 (1..3).each do |n|

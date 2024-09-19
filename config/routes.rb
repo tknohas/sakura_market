@@ -11,6 +11,6 @@ Rails.application.routes.draw do
     sessions: 'admins/sessions',
   }
   namespace :admin do
-    root to: 'home#index'
+    resources :products
   end
 end

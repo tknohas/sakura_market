@@ -18,7 +18,7 @@
         = alert
     %nav.flex.items-center.justify-between.flex-wrap.bg-blue-300.p-6.mb-4
       .flex.items-center.text-white.mr-6
-        %p.text-2xl 管理画面
+        =link_to '管理画面', admin_products_path, class: 'text-2xl'
       .flex.items-center
         - if admin_signed_in?
           = button_to "ログアウト", destroy_admin_session_path, method: :delete, data: { turbo_confirm: 'ログアウトしますか？' }, class: "text-black"

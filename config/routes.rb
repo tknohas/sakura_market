@@ -16,4 +16,5 @@ Rails.application.routes.draw do
   resources :products, only: %i[show]
   resources :cart_items, only: %i[create destroy]
   resource :cart, only: %i[show]
+  resource :address, only: %i[new create edit update]
 end

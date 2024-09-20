@@ -10,3 +10,9 @@ ja:
         is_public: '公開設定'
         image: '商品画像'
         sort_position: '表示順'
+      address:
+        postal_code: '郵便番号'
+        prefecture: '都道府県'
+        city: '市区町村'
+        street: 'それ以降の住所'
+        building: '建物名/会社名・部屋番号'

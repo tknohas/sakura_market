@@ -1,0 +1,28 @@
+%div{"class" => "container flex justify-center"}
+  %div{"class" => "w-2/5 mx-auto"}
+    = simple_form_for address, url: path, html: { class: 'space-y-6' } do |f|
+      = render 'users/shared/error_messages', object: address
+
+      .form-inputs.space-y-4
+        = f.input :postal_code, required: true, autofocus: true,
+          input_html: { class: "w-full p-2 border border-gray-500 rounded focus:ring focus:ring-indigo-500" },
+          wrapper_html: { class: 'block' }, label_html: { class: 'block mb-1' }
+
+        = f.input :prefecture, required: true,
+          input_html: { class: "w-full p-2 border border-gray-500 rounded focus:ring focus:ring-indigo-500" },
+          wrapper_html: { class: 'block' }, label_html: { class: 'block mb-1' }
+
+        = f.input :city, required: true,
+          input_html: { class: "w-full p-2 border border-gray-500 rounded focus:ring focus:ring-indigo-500" },
+          wrapper_html: { class: 'block' }, label_html: { class: 'block mb-1' }
+
+        = f.input :street, required: true,
+          input_html: { class: "w-full p-2 border border-gray-500 rounded focus:ring focus:ring-indigo-500" },
+          wrapper_html: { class: 'block' }, label_html: { class: 'block mb-1' }
+
+        = f.input :building, required: false,
+          input_html: { class: "w-full p-2 border border-gray-500 rounded focus:ring focus:ring-indigo-500" },
+          wrapper_html: { class: 'block' }, label_html: { class: 'block mb-1' }
+
+      .form-actions.flex.justify-center
+        = f.button :submit, button, class: "w-1/2 bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700"

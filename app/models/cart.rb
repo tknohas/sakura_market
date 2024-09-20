@@ -8,10 +8,13 @@ class Cart < ApplicationRecord
   end
 
   def merge_guest_cart(guest_cart)
-    guest_cart.transaction do
-      guest_cart.cart_items.each do |item|
-        cart_items.create(product_id: item.product.id)
+    if guest_cart.present?
+      guest_cart.transaction do
+        guest_cart.cart_items.each do |item|
+          cart_items.create(product_id: item.product.id)
+        end
       end
+      guest_cart.destroy!
     end
   end
 end

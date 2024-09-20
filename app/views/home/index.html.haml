@@ -5,5 +5,5 @@
     .border-4.flex.justify-center
       .product-item.w-100.mx-auto
         = link_to product_path(product) do
-          = render 'shared/product_image', product: product, size: '330x219', variant: :small
+          = render 'shared/product_image', product: product, size: '330x219', variant: :middle
           %p.product-name.mt-2.font-bold.text-center= product.name

@@ -11,3 +11,11 @@
       %p.text-gray-700.text-2xl.mt-2 価格: #{@product.price}円
       %p.text-gray-600.mt-2.text-2xl 商品説明:
       %br #{@product.description}
+    %div.ml-4
+      = simple_form_for CartItem.new do |f|
+        - if @cart.product_in_cart?(@product.id)
+          %button.bg-indigo-600.text-white.py-2.px-4.rounded.disabled:opacity-80.disabled:bg-indigo-400{disabled: true}
+            カートに追加済みです。
+        - else
+          = hidden_field_tag :product_id, @product.id
+          = f.submit 'カートに追加', class: 'bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700'

@@ -4,5 +4,6 @@ FactoryBot.define do
     price { 1000 }
     description { '商品説明' }
     is_public { true }
+    sort_position { 1 }
   end
 end

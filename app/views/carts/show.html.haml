@@ -1,47 +1,50 @@
-%h1.text-3xl.font-bold.mb-4.text-center カート
+.bg-gray-100.min-h-screen.py-4
+  %h1.text-3xl.font-bold.mb-4.text-center カート
 
-- continue_shopping = link_to '買い物を続ける', root_path, class: 'bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l ml-4'
-- if @cart.cart_items.any?
-  .relative.overflow-x-auto
-    %table.w-full.text-sm.text-left.rtl:text-right.text-white-100.dark:text-white-400
-      %thead.text-xs.text-white-700.uppercase.bg-white-50.dark:bg-white-700.dark:text-white-400
-        %tr.bg-white-400.border-b.dark:bg-white-100.dark:border-blue-700
-          %th.px-6.py-3{scope: "col"}
-          %th.px-6.py-3.text-lg{scope: "col"} 商品名
-          %th.px-6.py-3.text-lg{scope: "col"} 価格
-          %th.px-6.py-3{scope: "col"}
-      - @cart.cart_items.each do |item|
-        %tbody
-          %tr.bg-white-400.border-b.dark:bg-white-100.dark:border-blue-700
-            %td.ml-4= render 'shared/product_image', product: item.product, size: '120x80', variant: :small
-            %td.px-6.py-4= item.product.name
-            %td.px-6.py-4 #{item.product.price}円
-            %td.px-6.py-4
-              = delete_button(cart_item_path(item))
-    - if current_user
-      - common_class = 'font-medium text-blue-600 dark:text-blue-500 hover:underline'
-      .container.mx-auto.mt-8
-        - if @cart.user.address.present? && @cart.user.address.persisted?
-          .max-w-md.mx-auto.bg-gray-white.shadow-xl.rounded-lg.overflow-hidden.border-2.border-blue-400
-            .px-6.py-4
-              %h2.text-xl.font-semibold.text-center.mb-4 配送先住所
-              .text-center
-                %p= @cart.user.address.postal_code
-                %p
-                  = @cart.user.address.prefecture
-                  = @cart.user.address.city
-                  = @cart.user.address.street
-                %p
-                  = @cart.user.address.building
-          %div.max-w-md.mx-auto.mt-4
-            = link_to '住所の変更はこちら', edit_address_path, class: common_class
-        - else
-          %p.text-center
-            = link_to 'こちらから住所を登録してください。', new_address_path, class: "#{common_class} text-lg"
-  .text-center.mt-4
-    = continue_shopping
+  - continue_shopping = link_to '買い物を続ける', root_path, class: 'bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l ml-4'
+  - if @cart.cart_items.any?
+    .relative.overflow-x-auto
+      %table.w-full.text-left
+        %thead
+          %tr.border-b.border-black
+            %th.px-6.py-3{scope: "col"}
+            %th.px-6.py-3.text-lg{scope: "col"} 商品名
+            %th.px-6.py-3.text-lg{scope: "col"} 価格
+            %th.px-6.py-3{scope: "col"}
+        - @cart.cart_items.each do |item|
+          %tbody
+            %tr.border-b.border-black
+              %td.ml-4= render 'shared/product_image', product: item.product, size: '120x80', variant: :small
+              %td.px-6.py-4= item.product.name
+              %td.px-6.py-4 #{number_to_currency(item.product.price)}
+              %td.px-6.py-4
+                = delete_button(cart_item_path(item))
+      - if current_user
+        - common_class = 'font-medium text-blue-600 dark:text-blue-500 hover:underline'
+        .container.mx-auto.mt-8
+          - if @cart.user.address.present? && @cart.user.address.persisted?
+            .max-w-md.mx-auto.bg-gray-white.shadow-xl.rounded-lg.overflow-hidden.border-2.border-blue-400
+              .px-6.py-4
+                %h2.text-xl.font-semibold.text-center.mb-4 配送先住所
+                .text-center
+                  %p= @cart.user.address.postal_code
+                  %p
+                    = @cart.user.address.prefecture
+                    = @cart.user.address.city
+                    = @cart.user.address.street
+                  %p
+                    = @cart.user.address.building
+            .max-w-md.mx-auto.mt-4
+              = link_to '住所の変更はこちら', edit_address_path, class: common_class
+            .text-center.my-4
+              = link_to '購入確認', new_purchase_path, class: 'bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700'
+              = continue_shopping
+          - else
+            %p.text-center
+              = link_to 'こちらから住所を登録してください。', new_address_path, class: "#{common_class} text-lg"
+              = continue_shopping
 
-- else
-  %p.text-center カートには何も入っていません。
-  .text-center.mt-4
-    = continue_shopping
+  - else
+    %p.text-center カートには何も入っていません。
+    .text-center.mt-4
+      = continue_shopping

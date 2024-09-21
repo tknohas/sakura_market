@@ -36,7 +36,7 @@ RSpec.describe 'Products', type: :system do
         expect(page).to have_css 'h1', text: 'カート'
         expect(page).to have_css 'img.product-image'
         expect(page).to have_content 'ピーマン'
-        expect(page).to have_content '1000円'
+        expect(page).to have_content '1,000円'
       end
     end
 
@@ -84,7 +84,7 @@ RSpec.describe 'Products', type: :system do
         expect(page).to have_css 'h1', text: 'カート'
         expect(page).to have_css 'img.product-image'
         expect(page).to have_content 'ピーマン'
-        expect(page).to have_content '1000円'
+        expect(page).to have_content '1,000円'
       end
     end
 
@@ -124,7 +124,7 @@ RSpec.describe 'Products', type: :system do
       click_on 'カート'
       expect(page).to have_css 'h1', text: 'カート'
       expect(page).to have_content 'ピーマン'
-      expect(page).to have_content '1000円'
+      expect(page).to have_content '1,000円'
     end
 
     it 'カートの商品をログイン後も引き継ぐことができる(新規登録時)' do
@@ -156,7 +156,7 @@ RSpec.describe 'Products', type: :system do
       click_on 'カート'
       expect(page).to have_css 'h1', text: 'カート'
       expect(page).to have_content 'ピーマン'
-      expect(page).to have_content '1000円'
+      expect(page).to have_content '1,000円'
     end
 
 
@@ -167,7 +167,7 @@ RSpec.describe 'Products', type: :system do
 
       expect(page).to have_css 'h1', text: 'カート'
       expect(page).to have_content 'ピーマン'
-      expect(page).to have_content '1000円'
+      expect(page).to have_content '1,000円'
 
       click_on 'ログアウト'
       expect(page.accept_confirm).to eq 'ログアウトしますか？'
@@ -177,14 +177,14 @@ RSpec.describe 'Products', type: :system do
 
       expect(page).to have_css 'h1', text: 'カート'
       expect(page).to have_content 'ピーマン'
-      expect(page).to have_content '1000円'
+      expect(page).to have_content '1,000円'
 
       user_login(user)
       visit cart_path
       expect{
         expect(page).to have_css 'h1', text: 'カート'
         expect(page).to have_content 'ピーマン'
-        expect(page).to have_content '1000円'
+        expect(page).to have_content '1,000円'
       }.to change(CartItem, :count).by(0)
     end
   end

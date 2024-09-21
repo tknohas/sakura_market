@@ -16,11 +16,12 @@
     - if alert
       .bg-red-100.border-red-500.text-red-700.px-4.py-3.rounded{role: "alert"}
         = alert
-    %nav.flex.items-center.justify-between.flex-wrap.bg-blue-300.p-6.mb-4
+    %nav.flex.items-center.justify-between.flex-wrap.bg-blue-300.p-6
       .flex.items-center.text-white.mr-6
         = link_to 'さくらマーケット', root_path, class: 'text-xl'
       .flex.items-center
         - if user_signed_in?
+          = link_to '購入履歴', purchases_path, class: 'text-black mr-4'
           = link_to 'カート', cart_path, class: 'text-black mr-4'
           = button_to 'ログアウト', destroy_user_session_path, method: :delete, data: { turbo_confirm: 'ログアウトしますか？' }, class: 'text-black'
         - else

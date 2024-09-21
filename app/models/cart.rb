@@ -17,4 +17,8 @@ class Cart < ApplicationRecord
       guest_cart.destroy!
     end
   end
+
+  def cart_items_destroy!
+    cart_items.destroy_all
+  end
 end

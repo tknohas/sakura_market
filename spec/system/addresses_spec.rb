@@ -159,7 +159,7 @@ RSpec.describe 'Products', type: :system do
 
         expect(page).to have_css 'h1', text: 'カート'
         expect(page).to have_content 'ピーマン'
-        expect(page).to have_content '1000円'
+        expect(page).to have_content '1,000円'
 
         expect(page).to_not have_content '100-0005'
         expect(page).to_not have_content '東京都'

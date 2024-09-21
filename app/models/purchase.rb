@@ -23,7 +23,7 @@ class Purchase < ApplicationRecord
   end
 
   def tax_amount(subtotal)
-    self.total_price(subtotal) - self.cash_on_delivery_fee(subtotal) - subtotal
+    total_price(subtotal) - cash_on_delivery_fee(subtotal) - subtotal
   end
 
   def ordered_products_price

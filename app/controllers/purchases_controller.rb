@@ -1,5 +1,6 @@
 class PurchasesController < ApplicationController
   def index
+    @purchases = current_user.purchases.order(:id)
   end
 
   def new
@@ -16,6 +17,10 @@ class PurchasesController < ApplicationController
         render :new, alert: '購入に失敗しました。', status: :unprocessable_entity
       end
     end
+  end
+
+  def show
+    @purchase = current_user.purchases.find(params[:id])
   end
 
   private

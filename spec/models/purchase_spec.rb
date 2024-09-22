@@ -22,15 +22,5 @@ RSpec.describe Purchase, type: :model do
       subject.delivery_date = 15.business_days.after(Date.current)
       expect(subject).to_not be_valid
     end
-
-    it '土曜日だとバリデーションが無効' do
-      subject.delivery_date = '2024-09-21'
-      expect(subject).to_not be_valid
-    end
-
-    it '日曜日だとバリデーションが無効' do
-      subject.delivery_date = '2024-09-22'
-      expect(subject).to_not be_valid
-    end
   end
 end

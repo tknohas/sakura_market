@@ -52,18 +52,6 @@ RSpec.describe 'Purchases', type: :system do
       expect(page).to have_content 'カートには何も入っていません。'
       expect(user.cart.cart_items).to_not be_present
     end
-
-    context '希望配達日時が土曜日または日曜日の場合' do
-      it 'エラーメッセージが表示される' do
-        visit new_purchase_path
-
-        fill_in 'purchase_delivery_date', with: '2024-09-22'
-        click_on '購入する'
-
-        expect(page).to have_content '配達日に土曜日および日曜日は選択できません。'
-        expect(page).to have_css 'h1', text: '購入確認'
-      end
-    end
   end
 
   describe '購入履歴' do

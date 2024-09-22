@@ -3,7 +3,6 @@ class Purchase < ApplicationRecord
   has_many :purchase_items, dependent: :destroy
   has_many :products, through: :purchase_items
 
-  validate :not_weekend
   validate :validate_delivery_date
 
   def cash_on_delivery_fee(subtotal)
@@ -56,12 +55,6 @@ class Purchase < ApplicationRecord
   end
 
   private
-
-  def not_weekend
-    if delivery_date.present? && delivery_date.on_weekend?
-      errors.add(:delivery_date, 'に土曜日および日曜日は選択できません。')
-    end
-  end
 
   def validate_delivery_date
     return if delivery_date.blank?

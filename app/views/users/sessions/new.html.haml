@@ -1,4 +1,4 @@
-%h1.text-3xl.font-bold.mb-4.text-center ログイン
+%h1.text-3xl.font-bold.my-4.text-center ログイン
 
 %div{"class" => "container flex justify-center"}
   %div{"class" => "w-2/5 mx-auto"}
@@ -18,6 +18,6 @@
           = f.input :remember_me, as: :boolean
 
       .form-actions.flex.justify-center
-        = f.button :submit, 'ログイン', class: "w-1/2 bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700"
+        = f.button :submit, 'ログイン', class: submit_button_class
 
     = render "users/shared/links", class: "text-sm text-indigo-600 hover:text-indigo-800"

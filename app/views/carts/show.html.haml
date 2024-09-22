@@ -1,7 +1,8 @@
 .bg-gray-100.min-h-screen.py-4
   %h1.text-3xl.font-bold.mb-4.text-center カート
+  = back_button
 
-  - continue_shopping = link_to '買い物を続ける', root_path, class: 'bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l ml-4'
+  - continue_shopping = link_to '買い物を続ける', root_path, class: 'bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l ml-4 cursor-pointer'
   - if @cart.cart_items.any?
     .relative.overflow-x-auto
       %table.w-full.text-left
@@ -43,6 +44,9 @@
             %p.text-center
               = link_to 'こちらから住所を登録してください。', new_address_path, class: "#{common_class} text-lg"
               = continue_shopping
+      -else
+        .text-center.my-4
+          = continue_shopping
 
   - else
     %p.text-center カートには何も入っていません。

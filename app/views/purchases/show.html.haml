@@ -52,3 +52,8 @@
           = @purchase.user.address.street
         %p= @purchase.user.address.building
         %p #{@purchase.user.name} 様
+
+      .bg-white.rounded-lg.shadow-md.p-6.mb-8
+        %h2.text-xl.font-semibold.mb-4 希望配達日時
+        %p= @purchase.delivery_date.strftime('%Y年%m月%d日') if @purchase.delivery_date.present?
+        %p= @purchase.delivery_time if @purchase.delivery_time.present?

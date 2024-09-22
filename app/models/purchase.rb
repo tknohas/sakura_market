@@ -3,6 +3,9 @@ class Purchase < ApplicationRecord
   has_many :purchase_items, dependent: :destroy
   has_many :products, through: :purchase_items
 
+  validates :delivery_time, presence: true
+  validate :validate_delivery_date
+
   def cash_on_delivery_fee(subtotal)
     case subtotal
     when 0...10_000
@@ -28,5 +31,37 @@ class Purchase < ApplicationRecord
 
   def ordered_products_price
     products.sum(:price)
+  end
+
+  DELIVERY_TIME_OPTION = [
+    '指定なし',
+    '8:00~12:00',
+    '12:00~14:00',
+    '14:00~16:00',
+    '16:00~18:00',
+    '18:00~20:00',
+    '20:00~21:00'
+  ].map { |time| [time, time] }.freeze
+
+  def delivery_time_option
+    DELIVERY_TIME_OPTION
+  end
+
+  def earliest_allowed_date
+    3.business_days.after(Date.current)
+  end
+
+  def latest_allowed_date
+    14.business_days.after(Date.current)
+  end
+
+  private
+
+  def validate_delivery_date
+    return if delivery_date.blank?
+
+    unless delivery_date.between?(earliest_allowed_date, latest_allowed_date)
+      errors.add(:delivery_date, 'は3営業日（営業日: 月-金）から14営業日までの範囲で指定可能です。')
+    end
   end
 end

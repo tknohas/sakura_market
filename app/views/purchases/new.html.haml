@@ -54,18 +54,21 @@
         %p #{@purchase.user.name} 様
         = link_to '変更', edit_address_path, class: 'text-blue-500 hover:underline mt-2 inline-block'
 
-      .text-center
-        %p.text-gray-500.mb-4 ※配送日時を指定する場合は下記からご選択ください。
-        = simple_form_for @purchase do |f|
-          - @purchase.purchase_items.each do |item|
-            = f.hidden_field :product_ids, multiple: true, value: item.product.id
-          = f.label :delivery_date
-          = f.date_field :delivery_date, label: :delivery_date, class: 'bg-white rounded-lg shadow-md p-4 rounded-lg ml-2',
-            min: @purchase.earliest_allowed_date, max: @purchase.latest_allowed_date
-          = f.input :delivery_time, as: :select,
-            selected: '指定なし',
-            input_html: { class: "bg-white rounded-lg shadow-md p-4 rounded-lg mt-4 ml-2" },
-            collection: @purchase.delivery_time_option
+      %p.text-gray-500.mb-4
+        ※配送日時を指定する場合は下記からご選択ください。
+        %br ※配送日時は3営業日〜14営業日の範囲でご選択いただけます(営業日: 月曜日〜金曜日)。
+
+      = simple_form_for @purchase do |f|
+        - @purchase.purchase_items.each do |item|
+          = f.hidden_field :product_ids, multiple: true, value: item.product.id
+        = f.label :delivery_date
+        = f.date_field :delivery_date, label: :delivery_date, class: 'bg-white rounded-lg shadow-md p-4 rounded-lg ml-2',
+          min: @purchase.earliest_allowed_date, max: @purchase.latest_allowed_date
+        = f.input :delivery_time, as: :select,
+          selected: '指定なし',
+          input_html: { class: "bg-white rounded-lg shadow-md p-4 rounded-lg mt-4 ml-2" },
+          collection: @purchase.delivery_time_option
+        .text-center
           = f.button :submit, '購入する', class: 'bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg text-lg hover:bg-indigo-700 cursor-pointer mt-4'
           = link_to 'カートに戻る', cart_path, class: 'bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg ml-4'
 

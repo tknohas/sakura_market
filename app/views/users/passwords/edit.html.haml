@@ -1,4 +1,4 @@
-%h1.text-3xl.font-bold.mb-4.text-center パスワード変更
+%h1.text-3xl.font-bold.my-4.text-center パスワード変更
 
 %div{"class" => "container flex justify-center"}
   %div{"class" => "w-2/5 mx-auto"}
@@ -17,6 +17,6 @@
           wrapper_html: { class: 'block' }, label_html: { class: 'block mb-1' }
 
       .form-actions.flex.justify-center
-        = f.button :submit, 'パスワード変更', class: "w-1/2 bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700"
+        = f.button :submit, 'パスワード変更', class: submit_button_class
 
     = render "users/shared/links", class: "text-sm text-indigo-600 hover:text-indigo-800"

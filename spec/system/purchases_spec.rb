@@ -19,15 +19,15 @@ RSpec.describe 'Purchases', type: :system do
       expect(page).to have_content '1,000円'
     end
 
-    # TODO: 次の実装で送料が加算されるため、テスト追加
-    it '小計、代引き手数料、消費税、合計金額が表示される' do
+    it '小計、送料、代引き手数料、消費税、合計金額が表示される' do
       visit new_purchase_path
 
       expect(page).to have_css 'h1', text: '購入確認'
       expect(page).to have_content '1,000円'
+      expect(page).to have_content '600円'
       expect(page).to have_content '300円'
-      expect(page).to have_content '130円'
-      expect(page).to have_content '1,430円'
+      expect(page).to have_content '190円'
+      expect(page).to have_content '2,090円'
     end
 
     it '配送先情報が表示される' do
@@ -66,7 +66,7 @@ RSpec.describe 'Purchases', type: :system do
       expect(page).to have_css 'h1', text: '購入履歴'
       expect(page).to have_content Purchase.last.id
       expect(page).to have_content 'ピーマン / にんじん'
-      expect(page).to have_content '3,630円'
+      expect(page).to have_content '4,290円'
     end
 
     it '購入履歴詳細画面へ遷移する' do
@@ -74,12 +74,13 @@ RSpec.describe 'Purchases', type: :system do
       click_on 'ピーマン / にんじん'
 
       expect(page).to have_css 'h1', text: '購入履歴詳細'
+      expect(page).to have_content '4,290円'
     end
   end
 
   describe '購入履歴詳細' do
     let!(:purchase) { create(:purchase, user:, delivery_date: 3.business_days.after(Date.current), delivery_time: '8:00~12:00') }
-    let!(:product1) { create(:product, name: 'にんじん', price: 2_000, sort_position: 2) }
+    let!(:product1) { create(:product, name: 'にんじん', price: 10_000, sort_position: 2) }
     let!(:purchase_item) { create(:purchase_item, purchase:, product:) }
     let!(:purchase_item1) { create(:purchase_item, purchase:, product: product1) }
 
@@ -89,19 +90,18 @@ RSpec.describe 'Purchases', type: :system do
       expect(page).to have_css 'h1', text: '購入履歴詳細'
       expect(page).to have_css 'img.product-image'
       texts = all('tbody tr td').map(&:text)
-      expect(texts).to eq ['ピーマン', '1,000円', 'にんじん', '2,000円']
-      expect(page).to have_content '3,630円'
+      expect(texts).to eq ['ピーマン', '1,000円', 'にんじん', '10,000円']
     end
 
-    # TODO: 次の実装で送料が加算されるため、テスト追加
-    it '小計、代引き手数料、消費税、合計金額が表示される' do
+    it '小計、送料、代引き手数料、消費税、合計金額が表示される' do
       visit purchase_path(purchase)
 
       expect(page).to have_css 'h1', text: '購入履歴詳細'
-      expect(page).to have_content '3,000円'
-      expect(page).to have_content '300円'
-      expect(page).to have_content '330円'
-      expect(page).to have_content '3,630円'
+      expect(page).to have_content '11,000円'
+      expect(page).to have_content '600円'
+      expect(page).to have_content '400円'
+      expect(page).to have_content '1,200円'
+      expect(page).to have_content '13,200円'
     end
 
     it '配送先情報が表示される' do

@@ -2,6 +2,11 @@ RSpec.describe Purchase, type: :model do
   let(:user) { create(:user) }
   subject { described_class.new(delivery_date: 3.business_days.after(Date.current),delivery_time: '指定なし', user:) }
 
+  before do
+    stub_const("#{Purchase}::SHIPPING_FEE_PER_TIER", 600)
+    stub_const("#{Purchase}::SHIPPING_TIER_COUNT", 5)
+  end
+
   describe 'バリデーション' do
     it '3営業日目だとバリデーションが有効' do
       expect(subject).to be_valid
@@ -25,6 +30,63 @@ RSpec.describe Purchase, type: :model do
     it '配達時間が不正' do
       subject.delivery_time = nil
       expect(subject).to_not be_valid
+    end
+  end
+
+  describe '送料の計算' do
+    it 'total_amountが1であれば600を返す' do
+      allow(subject).to receive(:total_amount).and_return(1)
+      expect(subject.calculate_shipping_fee).to eq 600
+    end
+
+    it 'total_amountが5であれば600を返す' do
+      allow(subject).to receive(:total_amount).and_return(5)
+      expect(subject.calculate_shipping_fee).to eq 600
+    end
+
+    it 'total_amountが6であれば1200を返す' do
+      allow(subject).to receive(:total_amount).and_return(6)
+      expect(subject.calculate_shipping_fee).to eq 1_200
+    end
+
+    it 'total_amountが10であれば1200を返す' do
+      allow(subject).to receive(:total_amount).and_return(10)
+      expect(subject.calculate_shipping_fee).to eq 1_200
+    end
+
+    it 'total_amountが11であれば1800を返す' do
+      allow(subject).to receive(:total_amount).and_return(11)
+      expect(subject.calculate_shipping_fee).to eq 1_800
+    end
+  end
+
+  describe '代引き手数料の計算' do
+    it '小計が0であれば300を返す' do
+      expect(subject.cash_on_delivery_fee(0)).to eq 300
+    end
+
+    it '小計が9_999であれば300を返す' do
+      expect(subject.cash_on_delivery_fee(9_999)).to eq 300
+    end
+
+    it '小計が10_000であれば400を返す' do
+      expect(subject.cash_on_delivery_fee(10_000)).to eq 400
+    end
+
+    it '小計が29_999であれば400を返す' do
+      expect(subject.cash_on_delivery_fee(29_999)).to eq 400
+    end
+
+    it '小計が30_000であれば600を返す' do
+      expect(subject.cash_on_delivery_fee(30_000)).to eq 600
+    end
+
+    it '小計が99_999であれば600を返す' do
+      expect(subject.cash_on_delivery_fee(99_999)).to eq 600
+    end
+
+    it '小計が100_000であれば1_000を返す' do
+      expect(subject.cash_on_delivery_fee(100_000)).to eq 1_000
     end
   end
 end

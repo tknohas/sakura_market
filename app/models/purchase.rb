@@ -3,6 +3,7 @@ class Purchase < ApplicationRecord
   has_many :purchase_items, dependent: :destroy
   has_many :products, through: :purchase_items
 
+  validates :delivery_time, presence: true
   validate :validate_delivery_date
 
   def cash_on_delivery_fee(subtotal)

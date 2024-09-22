@@ -31,7 +31,7 @@
           %span #{number_to_currency(subtotal)}(税抜)
         .flex.justify-between.mb-2
           %span 送料:
-          %span 無料
+          %span #{number_to_currency(@purchase.calculate_shipping_fee)}(税抜)
         .flex.justify-between.mb-2
           %span 代引き手数料:
           %span #{number_to_currency(@purchase.cash_on_delivery_fee(subtotal))}(税抜)

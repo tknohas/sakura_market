@@ -21,4 +21,8 @@ class Cart < ApplicationRecord
   def cart_items_destroy!
     cart_items.destroy_all
   end
+
+  def item_count
+    cart_items.size
+  end
 end

@@ -26,6 +26,6 @@ class PurchasesController < ApplicationController
   private
 
   def purchase_params
-    params.require(:purchase).permit(product_ids: [])
+    params.require(:purchase).permit(:delivery_date, :delivery_time, product_ids: [])
   end
 end

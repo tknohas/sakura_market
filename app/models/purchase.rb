@@ -22,15 +22,22 @@ class Purchase < ApplicationRecord
   TAX_RATE = 1.1
 
   def total_price(subtotal)
-    ((subtotal + cash_on_delivery_fee((subtotal))) * TAX_RATE).floor
+    ((subtotal + cash_on_delivery_fee(subtotal) + calculate_shipping_fee) * TAX_RATE).floor
   end
 
   def tax_amount(subtotal)
-    total_price(subtotal) - cash_on_delivery_fee(subtotal) - subtotal
+    total_price(subtotal) - cash_on_delivery_fee(subtotal) - calculate_shipping_fee - subtotal
   end
 
   def ordered_products_price
     products.sum(:price)
+  end
+
+  SHIPPING_FEE_PER_TIER = 600
+  SHIPPING_TIER_COUNT = 5
+
+  def calculate_shipping_fee
+    return SHIPPING_FEE_PER_TIER * (total_amount.to_f / SHIPPING_TIER_COUNT).ceil
   end
 
   DELIVERY_TIME_OPTION = [
@@ -63,5 +70,10 @@ class Purchase < ApplicationRecord
     unless delivery_date.between?(earliest_allowed_date, latest_allowed_date)
       errors.add(:delivery_date, 'は3営業日（営業日: 月-金）から14営業日までの範囲で指定可能です。')
     end
+  end
+
+  def total_amount
+    user.cart.item_count if user.cart.cart_items.present?
+    purchase_items.size
   end
 end

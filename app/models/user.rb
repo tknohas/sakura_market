@@ -16,11 +16,17 @@ class User < ApplicationRecord
   include PasswordComplexity
 
   def active_for_authentication?
-    super && !unavailable
+    super && canceled_at.nil? && !unavailable
   end
 
   def inactive_message
-    unavailable ? :account_unavailable : super
+    if canceled_at.present?
+      :canceled_user
+    elsif unavailable
+      :account_unavailable
+    else
+      super
+    end
   end
 
   def toggle_availability
@@ -29,5 +35,9 @@ class User < ApplicationRecord
 
   def availability_status
     unavailable ? '無効化' : '有効化'
+  end
+
+  def canceled?
+    canceled_at.present?
   end
 end

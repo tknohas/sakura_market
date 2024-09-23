@@ -23,7 +23,8 @@
         - if user_signed_in?
           = link_to '購入履歴', purchases_path, class: 'text-black mr-4'
           = link_to 'カート', cart_path, class: 'text-black mr-4'
-          = button_to 'ログアウト', destroy_user_session_path, method: :delete, data: { turbo_confirm: 'ログアウトしますか？' }, class: 'text-black'
+          = button_to 'ログアウト', destroy_user_session_path, method: :delete, data: { turbo_confirm: 'ログアウトしますか？' }, class: 'text-black mr-4'
+          = button_to '退会する', cancel_user_path, method: :patch, data: { turbo_confirm: '本当に退会しますか？' }, class: 'text-black mr-2'
         - else
           = link_to 'カート', cart_path, class: 'text-black mr-4'
           = button_to '新規登録', new_user_registration_path, method: :get, class: 'mr-4'

@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  include Discard::Model
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable
 
@@ -9,5 +11,23 @@ class User < ApplicationRecord
   validates :name, presence: true
   validate :password_complexity
 
+  default_scope -> { kept }
+
   include PasswordComplexity
+
+  def active_for_authentication?
+    super && !unavailable
+  end
+
+  def inactive_message
+    unavailable ? :account_unavailable : super
+  end
+
+  def toggle_availabilty
+    update(unavailable: !unavailable)
+  end
+
+  def availabilty_status
+    unavailable ? '無効化' : '有効化'
+  end
 end

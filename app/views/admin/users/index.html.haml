@@ -1,0 +1,22 @@
+%h1.text-3xl.font-bold.my-4.text-center 顧客一覧
+
+.relative.overflow-x-auto
+  %table.w-full.text-left
+    %thead
+      %tr.border-b.border-black
+        %th.px-6.py-3{scope: "col"} 顧客番号
+        %th.px-6.py-3{scope: "col"} 顧客名
+        %th.px-6.py-3.text-lg{scope: "col"} メールアドレス
+        %th.px-6.py-3.text-lg{scope: "col"} 登録日時
+        %th.px-6.py-3.text-lg{scope: "col"}
+        %th.px-6.py-3{scope: "col"}
+    - @users.each do |user|
+      %tbody
+        %tr.border-b.border-black
+          %td.px-6.py-4= user.id
+          %td.px-6.py-4= link_to "#{user.name} 様", admin_user_path(user), class: 'text-blue-600 dark:text-blue-500 hover:underline'
+          %td.px-6.py-4= user.email
+          %td.px-6.py-4= user.created_at.strftime('%Y年%m月%d日')
+          %td.px-6.py-4
+            = button_to '削除', admin_user_path(user), method: :delete, data: { turbo_confirm: '本当に削除しますか？' },
+              class: 'bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded ml-2'

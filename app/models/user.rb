@@ -23,11 +23,11 @@ class User < ApplicationRecord
     unavailable ? :account_unavailable : super
   end
 
-  def toggle_availabilty
+  def toggle_availability
     update(unavailable: !unavailable)
   end
 
-  def availabilty_status
+  def availability_status
     unavailable ? '無効化' : '有効化'
   end
 end

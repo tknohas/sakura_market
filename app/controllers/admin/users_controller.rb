@@ -9,8 +9,8 @@ class Admin::UsersController < Admin::ApplicationController
   end
 
   def update
-    if @user.toggle_availabilty
-      redirect_to admin_users_path, notice: "アカウントを#{@user.availabilty_status}しました。"
+    if @user.toggle_availability
+      redirect_to admin_users_path, notice: "アカウントを#{@user.availability_status}しました。"
     else
       render :show, alert: '変更に失敗しました。'
     end

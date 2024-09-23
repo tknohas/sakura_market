@@ -35,6 +35,7 @@ class DeviseCreateUsers < ActiveRecord::Migration[7.1]
 
       t.datetime :discarded_at
       t.boolean :unavailable, null: false, default: false
+      t.datetime :canceled_at
       t.timestamps null: false
     end
 

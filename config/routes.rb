@@ -19,4 +19,9 @@ Rails.application.routes.draw do
   resource :cart, only: %i[show]
   resource :address, only: %i[new create edit update]
   resources :purchases, only: %i[index new create show]
+  resource :user do
+    collection do
+      patch :cancel
+    end
+  end
 end

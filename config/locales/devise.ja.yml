@@ -75,6 +75,7 @@ ja:
       unauthenticated: ログインもしくはアカウント登録してください。
       unconfirmed: メールアドレスの本人確認が必要です。
       account_unavailable: 'このアカウントは利用できません。'
+      canceled_user: '退会済みです。'
     mailer:
       confirmation_instructions:
         action: メールアドレスの確認

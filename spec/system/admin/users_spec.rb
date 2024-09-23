@@ -16,17 +16,22 @@ RSpec.describe 'Users', type: :system do
       expect(texts).to eq ["#{User.last.id}", 'Alice 様', 'alice@example.com', '2024年09月23日', '削除']
     end
 
-    it '論理削除される', :js do
+    it '論理削除できる', :js do
       visit admin_users_path
-      click_on '削除'
 
+      click_on '削除'
       expect(page.accept_confirm).to eq '本当に削除しますか？'
+
       expect(page).to have_content '削除に成功しました。'
       expect(page).to have_css 'h1', text: '顧客一覧'
       texts = all('tbody tr td').map(&:text)
       expect(texts).to eq []
+      
       expect(User.last).to_not be_present
       expect(User.with_discarded.discarded).to be_present
+
+      user_login(user)
+      expect(page).to have_content 'メールアドレスまたはパスワードが違います。'
     end
 
     it '顧客詳細画面へ遷移する' do

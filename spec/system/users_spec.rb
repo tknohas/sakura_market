@@ -209,4 +209,25 @@ RSpec.describe 'Users', type: :system do
       end
     end
   end
+
+  describe '退会' do
+    let(:canceled_user) { create(:user, canceled_at: Time.current) }
+
+    it '退会することができる', :js do
+      user_login(user)
+      click_on '退会'
+
+      expect(page.accept_confirm).to eq '本当に退会しますか？'
+      expect(page).to have_content '退会処理が完了しました。'
+      expect(User.last.canceled_at).to be_present
+    end
+
+    it '退会済みのユーザーはログインできない' do
+      user_login(canceled_user)
+
+      expect(page).to have_css 'h1', text: 'ログイン'
+      expect(page).to have_current_path new_user_session_path
+      expect(page).to have_content '退会済みです。'
+    end
+  end
 end

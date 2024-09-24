@@ -34,28 +34,28 @@ RSpec.describe Purchase, type: :model do
   end
 
   describe '送料の計算' do
-    it 'total_amountが1であれば600を返す' do
-      allow(subject).to receive(:total_amount).and_return(1)
+    it 'total_quantityが1であれば600を返す' do
+      allow(subject).to receive(:total_quantity).and_return(1)
       expect(subject.calculate_shipping_fee).to eq 600
     end
 
-    it 'total_amountが5であれば600を返す' do
-      allow(subject).to receive(:total_amount).and_return(5)
+    it 'total_quantityが5であれば600を返す' do
+      allow(subject).to receive(:total_quantity).and_return(5)
       expect(subject.calculate_shipping_fee).to eq 600
     end
 
-    it 'total_amountが6であれば1200を返す' do
-      allow(subject).to receive(:total_amount).and_return(6)
+    it 'total_quantityが6であれば1200を返す' do
+      allow(subject).to receive(:total_quantity).and_return(6)
       expect(subject.calculate_shipping_fee).to eq 1_200
     end
 
-    it 'total_amountが10であれば1200を返す' do
-      allow(subject).to receive(:total_amount).and_return(10)
+    it 'total_quantityが10であれば1200を返す' do
+      allow(subject).to receive(:total_quantity).and_return(10)
       expect(subject.calculate_shipping_fee).to eq 1_200
     end
 
-    it 'total_amountが11であれば1800を返す' do
-      allow(subject).to receive(:total_amount).and_return(11)
+    it 'total_quantityが11であれば1800を返す' do
+      allow(subject).to receive(:total_quantity).and_return(11)
       expect(subject.calculate_shipping_fee).to eq 1_800
     end
   end

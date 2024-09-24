@@ -11,18 +11,26 @@
             %th.px-6.py-3{scope: "col"}
             %th.px-6.py-3.text-lg{scope: "col"} 商品名
             %th.px-6.py-3.text-lg{scope: "col"} 価格
+            %th.px-6.py-3.text-lg{scope: "col"} 数量
+            %th.px-6.py-3.text-lg{scope: "col"} 価格x数量
             %th.px-6.py-3{scope: "col"}
+        - subtotal = 0
         - @cart.cart_items.each do |item|
+          - subtotal += item.cart_item_total_price
           %tbody
             %tr.border-b.border-black
               %td.ml-4= render 'shared/product_image', product: item.product, size: '120x80', variant: :small
               %td.px-6.py-4= item.product.name
               %td.px-6.py-4 #{number_to_currency(item.product.price)}
+              %td.px-6.py-4= item.quantity
+              %td.px-6.py-4 #{number_to_currency(item.cart_item_total_price)}
               %td.px-6.py-4
                 = delete_button(cart_item_path(item))
       - if current_user
         - common_class = 'font-medium text-blue-600 dark:text-blue-500 hover:underline'
         .container.mx-auto.mt-8
+          .max-w-md.mx-auto.mb-4.text-lg
+            %p.text-center.font-bold 小計: #{number_to_currency(subtotal)}(税抜)
           - if @cart.user.address.present? && @cart.user.address.persisted?
             .max-w-md.mx-auto.bg-gray-white.shadow-xl.rounded-lg.overflow-hidden.border-2.border-blue-400
               .px-6.py-4

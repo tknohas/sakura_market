@@ -12,10 +12,8 @@
       %p.text-gray-600.mt-2.text-2xl 商品説明:
       %br #{@product.description}
     %div.ml-4
+      %p.text-gray-500.text-sm.mb-1 ※1度の注文につき最大10個まで
       = simple_form_for CartItem.new do |f|
-        - if @cart.product_in_cart?(@product.id)
-          %button.bg-indigo-600.text-white.py-2.px-4.rounded.disabled:opacity-80.disabled:bg-indigo-400{disabled: true}
-            カートに追加済みです。
-        - else
-          = hidden_field_tag :product_id, @product.id
-          = f.submit 'カートに追加', class: 'bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700'
+        = hidden_field_tag :product_id, @product.id
+        = f.input :quantity, collection: 1..10, prompt: "数量を選択してください", input_html: { class: "border-2 border-black p-1 rounded-lg mb-2 ml-2" }
+        = f.submit 'カートに追加', class: 'bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700'

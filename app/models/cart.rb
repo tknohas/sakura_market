@@ -11,7 +11,13 @@ class Cart < ApplicationRecord
     if guest_cart.present?
       guest_cart.transaction do
         guest_cart.cart_items.each do |item|
-          cart_items.create(product_id: item.product.id)
+          existing_item = cart_items.find_by(product_id: item.product.id)
+
+          if existing_item
+            existing_item.update(quantity: existing_item.quantity + item.quantity)
+          else
+            cart_items.create(product_id: item.product.id, quantity: item.quantity)
+          end
         end
       end
       guest_cart.destroy!
@@ -23,6 +29,6 @@ class Cart < ApplicationRecord
   end
 
   def item_count
-    cart_items.size
+    cart_items.sum(:quantity)
   end
 end

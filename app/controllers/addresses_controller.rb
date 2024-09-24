@@ -20,7 +20,7 @@ class AddressesController < ApplicationController
 
   def update
     if @address.update(address_params)
-      redirect_to cart_path, notice: '住所が変更されました。'
+      redirect_to new_purchase_path, notice: '住所が変更されました。'
     else
       render :edit, alert: '変更に失敗しました。', status: :unprocessable_entity
     end

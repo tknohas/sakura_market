@@ -3,6 +3,8 @@ class Purchase < ApplicationRecord
   has_many :purchase_items, dependent: :destroy
   has_many :products, through: :purchase_items
 
+  accepts_nested_attributes_for :purchase_items
+
   validates :delivery_time, presence: true
   validate :validate_delivery_date
 
@@ -29,15 +31,11 @@ class Purchase < ApplicationRecord
     total_price(subtotal) - cash_on_delivery_fee(subtotal) - calculate_shipping_fee - subtotal
   end
 
-  def ordered_products_price
-    products.sum(:price)
-  end
-
   SHIPPING_FEE_PER_TIER = 600
   SHIPPING_TIER_COUNT = 5
 
   def calculate_shipping_fee
-    return SHIPPING_FEE_PER_TIER * (total_amount.to_f / SHIPPING_TIER_COUNT).ceil
+    return SHIPPING_FEE_PER_TIER * (total_quantity.to_f / SHIPPING_TIER_COUNT).ceil
   end
 
   DELIVERY_TIME_OPTION = [
@@ -62,6 +60,17 @@ class Purchase < ApplicationRecord
     14.business_days.after(Date.current)
   end
 
+  def build_purchase_items_from_cart(cart)
+    transaction do
+      cart.cart_items.each do |cart_item|
+        purchase_items.build(
+          product_id: cart_item.product_id,
+          quantity: cart_item.quantity
+        )
+      end
+    end
+  end
+
   private
 
   def validate_delivery_date
@@ -72,8 +81,8 @@ class Purchase < ApplicationRecord
     end
   end
 
-  def total_amount
-    user.cart.item_count if user.cart.cart_items.present?
-    purchase_items.size
+  def total_quantity
+    return user.cart.item_count if user.cart.cart_items.present?
+    purchase_items.sum(:quantity)
   end
 end

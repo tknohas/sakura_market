@@ -37,6 +37,8 @@ RSpec.describe 'Products', type: :system do
         expect(page).to have_css 'img.product-image'
         expect(page).to have_content 'ピーマン'
         expect(page).to have_content '1,000円'
+        expect(page).to have_content '1'
+        expect(CartItem.last.quantity).to eq 1
       end
     end
 
@@ -44,12 +46,18 @@ RSpec.describe 'Products', type: :system do
       let!(:cart) { create(:cart, user:) }
       let!(:cart_item) { create(:cart_item, cart:, product:) }
 
-      it 'カートに商品を追加できない' do
+      it 'カートに商品を追加できる' do
         visit product_path(product)
+        click_on 'カートに追加'
 
-        expect(page).to have_css 'h1', text: '商品詳細'
-        expect(page).to_not have_button 'カートに追加'
-        expect(page).to have_content 'カートに追加済みです。'
+        expect(page).to have_content '商品がカートに追加されました。'
+        expect(page).to have_css 'h1', text: 'カート'
+        expect(page).to have_css 'img.product-image'
+        expect(page).to have_content 'ピーマン'
+        expect(page).to have_content '1,000円'
+        expect(page).to have_content '2'
+        expect(page).to have_content '2,000円'
+        expect(CartItem.last.quantity).to eq 2
       end
     end
 
@@ -89,15 +97,20 @@ RSpec.describe 'Products', type: :system do
     end
 
     context 'カートにすでに同じ商品がある場合' do
-      it 'カートに商品を追加できない' do
-        visit root_path
-        click_on 'ピーマン'
+      it 'カートに商品を追加できる' do
+        visit product_path(product)
+        click_on 'カートに追加'
+        visit product_path(product)
         click_on 'カートに追加'
 
-        visit product_path(product)
-        expect(page).to have_css 'h1', text: '商品詳細'
-        expect(page).to_not have_button 'カートに追加'
-        expect(page).to have_content 'カートに追加済みです。'
+        expect(page).to have_content '商品がカートに追加されました。'
+        expect(page).to have_css 'h1', text: 'カート'
+        expect(page).to have_css 'img.product-image'
+        expect(page).to have_content 'ピーマン'
+        expect(page).to have_content '1,000円'
+        expect(page).to have_content '2'
+        expect(page).to have_content '2,000円'
+        expect(CartItem.last.quantity).to eq 2
       end
     end
 

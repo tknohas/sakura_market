@@ -14,9 +14,9 @@
             %th.px-6.py-3.text-lg{scope: "col"} 数量
             %th.px-6.py-3.text-lg{scope: "col"} 価格x数量
             %th.px-6.py-3{scope: "col"}
-        - total_price = 0
+        - subtotal = 0
         - @cart.cart_items.each do |item|
-          - total_price += item.cart_item_total_price
+          - subtotal += item.cart_item_total_price
           %tbody
             %tr.border-b.border-black
               %td.ml-4= render 'shared/product_image', product: item.product, size: '120x80', variant: :small
@@ -30,7 +30,7 @@
         - common_class = 'font-medium text-blue-600 dark:text-blue-500 hover:underline'
         .container.mx-auto.mt-8
           .max-w-md.mx-auto.mb-4.text-lg
-            %p.text-center.font-bold 小計: #{number_to_currency(total_price)}(税抜)
+            %p.text-center.font-bold 小計: #{number_to_currency(subtotal)}(税抜)
           - if @cart.user.address.present? && @cart.user.address.persisted?
             .max-w-md.mx-auto.bg-gray-white.shadow-xl.rounded-lg.overflow-hidden.border-2.border-blue-400
               .px-6.py-4

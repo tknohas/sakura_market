@@ -31,10 +31,6 @@ class Purchase < ApplicationRecord
     total_price(subtotal) - cash_on_delivery_fee(subtotal) - calculate_shipping_fee - subtotal
   end
 
-  def ordered_products_price
-    products.sum(:price) * total_quantity
-  end
-
   SHIPPING_FEE_PER_TIER = 600
   SHIPPING_TIER_COUNT = 5
 

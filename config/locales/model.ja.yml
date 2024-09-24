@@ -19,3 +19,5 @@ ja:
       purchase:
         delivery_date: '配達日'
         delivery_time: '配達時間'
+      cart_item:
+        quantity: '数量'

@@ -7,8 +7,8 @@
         %tr.border-b.border-black
           %th.px-6.py-3{scope: "col"} 購入番号
           %th.px-6.py-3.text-lg{scope: "col"} 商品名
-          %th.px-6.py-3.text-lg{scope: "col"} 価格
-          %th.px-6.py-3{scope: "col"}
+          %th.px-6.py-3.text-lg{scope: "col"} 購入日
+          %th.px-6.py-3.text-lg{scope: "col"} 支払い方法
       - @purchases.each do |purchase|
         %tbody
           %tr.border-b.border-black
@@ -16,7 +16,8 @@
             %td.px-6.py-4
               = link_to purchase.products.pluck(:name).join(' / '), purchase_path(purchase),
                 class: 'text-blue-600 dark:text-blue-500 hover:underline'
-            %td.px-6.py-4 #{number_to_currency(purchase.total_price(purchase.ordered_products_price))}
+            %td.px-6.py-4= purchase.created_at.strftime('%Y年%m月%d日')
+            %td.px-6.py-4 代金引換
 
 - else
   %p.text-center 購入履歴はありません。

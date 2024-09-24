@@ -69,6 +69,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_20_081115) do
   create_table "cart_items", force: :cascade do |t|
     t.bigint "product_id", null: false
     t.bigint "cart_id", null: false
+    t.integer "quantity", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["cart_id", "product_id"], name: "index_cart_items_on_cart_id_and_product_id", unique: true
@@ -97,6 +98,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_20_081115) do
   create_table "purchase_items", force: :cascade do |t|
     t.bigint "purchase_id", null: false
     t.bigint "product_id", null: false
+    t.integer "quantity", default: 0, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["product_id"], name: "index_purchase_items_on_product_id"

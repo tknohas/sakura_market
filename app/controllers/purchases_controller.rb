@@ -4,7 +4,8 @@ class PurchasesController < ApplicationController
   end
 
   def new
-    @purchase = current_user.purchases.build(product_ids: current_cart.product_ids)
+    @purchase = current_user.purchases.build
+    @purchase.build_purchase_items_from_cart(current_cart)
   end
 
   def create
@@ -26,6 +27,6 @@ class PurchasesController < ApplicationController
   private
 
   def purchase_params
-    params.require(:purchase).permit(:delivery_date, :delivery_time, product_ids: [])
+    params.require(:purchase).permit(:delivery_date, :delivery_time, purchase_items_attributes: [:product_id, :quantity])
   end
 end

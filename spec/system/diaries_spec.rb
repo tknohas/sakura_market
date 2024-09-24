@@ -12,8 +12,6 @@ RSpec.describe 'Diaries', type: :system do
   describe '日記一覧' do
     it '日記が表示される' do
       expect(page).to have_css 'h1', text: '日記一覧'
-      # TODO: 画像機能実装後、追加
-      # expect(page).to have_css 'img.diary-image'
       expect(page).to have_content 'さくらんぼが届きました。'
       expect(page).to have_content 'Alice'
       expect(page).to have_content '家族みんなで食べる予定です。'
@@ -42,14 +40,14 @@ RSpec.describe 'Diaries', type: :system do
 
         fill_in 'diary_title', with: 'じゃがバターを作りました。'
         fill_in 'diary_content', with: 'ホクホクで美味しかったです。'
+        attach_file 'diary_image', file_fixture('test_image.jpg')
 
         click_on '日記を投稿する'
 
         expect(page).to have_css 'h1', text: '日記一覧'
-      # TODO: 画像機能実装後、追加
-      # expect(page).to have_css 'img.diary-image'
-      expect(page).to have_content 'じゃがバターを作りました。'
-      expect(page).to have_content 'ホクホクで美味しかったです。'
+        expect(page).to have_css 'img.diary-image'
+        expect(page).to have_content 'じゃがバターを作りました。'
+        expect(page).to have_content 'ホクホクで美味しかったです。'
       end
     end
 
@@ -141,14 +139,14 @@ RSpec.describe 'Diaries', type: :system do
 
         fill_in 'diary_title', with: 'じゃがバターを作りました。'
         fill_in 'diary_content', with: 'ホクホクで美味しかったです。'
+        attach_file 'diary_image', file_fixture('test_image.jpg')
 
         click_on '内容を更新する'
 
         expect(page).to have_css 'h1', text: '日記詳細'
-      # TODO: 画像機能実装後、追加
-      # expect(page).to have_css 'img.diary-image'
-      expect(page).to have_content 'じゃがバターを作りました。'
-      expect(page).to have_content 'ホクホクで美味しかったです。'
+        expect(page).to have_css 'img.diary-image'
+        expect(page).to have_content 'じゃがバターを作りました。'
+        expect(page).to have_content 'ホクホクで美味しかったです。'
       end
     end
 

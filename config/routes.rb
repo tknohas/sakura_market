@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   mount LetterOpenerWeb::Engine, at: '/letter_opener'
-  root to: 'home#index'
+  root to: 'diaries#index'
   devise_for :users, controllers: {
     sessions: 'users/sessions',
     registrations: 'users/registrations',
@@ -14,7 +14,7 @@ Rails.application.routes.draw do
     resources :products
     resources :users, only: %i[index show update destroy]
   end
-  resources :products, only: %i[show]
+  resources :products, only: %i[index show]
   resources :cart_items, only: %i[create destroy]
   resource :cart, only: %i[show]
   resource :address, only: %i[new create edit update]
@@ -24,4 +24,5 @@ Rails.application.routes.draw do
       patch :cancel
     end
   end
+  resources :diaries
 end

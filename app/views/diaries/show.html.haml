@@ -1,0 +1,20 @@
+%h1.text-3xl.font-bold.my-4.text-center 日記詳細
+= back_button
+= link_to_user_top
+
+.container.flex.justify-center.mt-4
+  .flex.justify-center.mt-4
+    .mr-4
+      -# TODO: 画像機能追加後、実装
+      -# = render 'shared/product_image', product: @product, size: '660x438', variant: :large
+    .flex.flex-col.items-start.ms-4
+      %p.text-2xl #{@diary.title}
+      %p.text-gray-600.mt-2
+        = safe_join(@diary.content.split("\n"),tag(:br))
+
+- if current_user === @diary.user
+  .div{ 'class' => 'w-9/12' }
+    .flex.justify-end.mt-4
+      = link_to '編集', edit_diary_path(@diary),
+        class: 'bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'
+      = delete_button(diary_path(@diary))

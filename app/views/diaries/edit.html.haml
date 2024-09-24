@@ -1,0 +1,9 @@
+%h1.text-3xl.font-bold.my-4.text-center 日記編集
+= back_button
+= link_to_user_top
+
+- if current_user === @diary.user
+  = render 'diaries/form', diary: @diary, button: '内容を更新する'
+
+- else
+  %p.text-center 他のユーザーの投稿は編集できません。

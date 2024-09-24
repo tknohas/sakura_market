@@ -3,14 +3,13 @@
 = link_to_user_top
 
 .container.flex.justify-center.mt-4
-  .flex.justify-center.mt-4
-    .mr-4
-      -# TODO: 画像機能追加後、実装
-      -# = render 'shared/product_image', product: @product, size: '660x438', variant: :large
-    .flex.flex-col.items-start.ms-4
+  .mt-4
+    .flex.flex-col.items-start.ms-4.mb-4
       %p.text-2xl #{@diary.title}
       %p.text-gray-600.mt-2
         = safe_join(@diary.content.split("\n"),tag(:br))
+    - if @diary.image.attached?
+      = image_tag @diary.image.variant(:small), class: 'diary-image object-cover'
 
 - if current_user === @diary.user
   .div{ 'class' => 'w-9/12' }

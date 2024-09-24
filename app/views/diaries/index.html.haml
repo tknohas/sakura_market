@@ -12,3 +12,6 @@
           %span.mt-4.text-blue-500= diary.user.name
           .mt-2
             = safe_join(diary.content.split("\n"),tag(:br))
+          .mt-2
+          - if diary.image.attached?
+            = image_tag diary.image.variant(:small), class: 'diary-image object-cover'

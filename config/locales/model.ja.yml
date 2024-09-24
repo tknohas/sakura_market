@@ -21,3 +21,6 @@ ja:
         delivery_time: '配達時間'
       cart_item:
         quantity: '数量'
+      diary:
+        title: 'タイトル'
+        content: '投稿内容'

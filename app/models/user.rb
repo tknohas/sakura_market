@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_one :cart, dependent: :destroy
   has_one :address, dependent: :destroy
   has_many :purchases, dependent: :restrict_with_exception
+  has_many :diaries, dependent: :destroy
 
   validates :name, presence: true
   validate :password_complexity

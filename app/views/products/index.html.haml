@@ -1,4 +1,6 @@
 %h1.text-3xl.font-bold.my-4.text-center 商品一覧
+.ml-6
+  = link_to '日記一覧', root_path, class: 'bg-black hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full ml-2'
 
 .product-container.mx-8.grid.grid-cols-3.gap-4.mb-4.mt-4
   - @products.each do |product|

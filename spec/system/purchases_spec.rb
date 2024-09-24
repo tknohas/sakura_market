@@ -66,7 +66,8 @@ RSpec.describe 'Purchases', type: :system do
       expect(page).to have_css 'h1', text: '購入履歴'
       expect(page).to have_content Purchase.last.id
       expect(page).to have_content 'ピーマン / にんじん'
-      expect(page).to have_content '4,290円'
+      expect(page).to have_content purchase.created_at.strftime('%Y年%m月%d日')
+      expect(page).to have_content '代金引換'
     end
 
     it '購入履歴詳細画面へ遷移する' do
@@ -82,7 +83,7 @@ RSpec.describe 'Purchases', type: :system do
     let!(:purchase) { create(:purchase, user:, delivery_date: 3.business_days.after(Date.current), delivery_time: '8:00~12:00') }
     let!(:product1) { create(:product, name: 'にんじん', price: 10_000, sort_position: 2) }
     let!(:purchase_item) { create(:purchase_item, purchase:, product:) }
-    let!(:purchase_item1) { create(:purchase_item, purchase:, product: product1) }
+    let!(:purchase_item1) { create(:purchase_item, purchase:, product: product1, quantity: 2) }
 
     it '商品情報が表示される' do
       visit purchase_path(purchase)
@@ -90,18 +91,18 @@ RSpec.describe 'Purchases', type: :system do
       expect(page).to have_css 'h1', text: '購入履歴詳細'
       expect(page).to have_css 'img.product-image'
       texts = all('tbody tr td').map(&:text)
-      expect(texts).to eq ['ピーマン', '1,000円', 'にんじん', '10,000円']
+      expect(texts).to eq ['ピーマン', '1,000円', '1', '1,000円', 'にんじん', '10,000円', '2', '20,000円']
     end
 
     it '小計、送料、代引き手数料、消費税、合計金額が表示される' do
       visit purchase_path(purchase)
 
       expect(page).to have_css 'h1', text: '購入履歴詳細'
-      expect(page).to have_content '11,000円'
+      expect(page).to have_content '21,000円'
       expect(page).to have_content '600円'
       expect(page).to have_content '400円'
-      expect(page).to have_content '1,200円'
-      expect(page).to have_content '13,200円'
+      expect(page).to have_content '2,200円'
+      expect(page).to have_content '24,200円'
     end
 
     it '配送先情報が表示される' do

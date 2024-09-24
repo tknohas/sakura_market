@@ -71,7 +71,7 @@ RSpec.describe 'Products', type: :system do
         click_on '変更'
 
         expect(page).to have_content '住所が変更されました。'
-        expect(page).to have_css 'h1', text: 'カート'
+        expect(page).to have_css 'h1', text: '購入確認'
         expect(page).to have_content '279-0031'
         expect(page).to have_content '千葉県'
         expect(page).to have_content '浦安市'

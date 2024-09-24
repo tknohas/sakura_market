@@ -16,5 +16,10 @@ RSpec.describe Diary, type: :model do
       subject.content = nil
       expect(subject).to_not be_valid
     end
+
+    it 'ユーザーが不正' do
+      subject.user = nil
+      expect(subject).to_not be_valid
+    end
   end
 end

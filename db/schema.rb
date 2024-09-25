@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_25_065937) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_25_122327) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -94,6 +94,25 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_25_065937) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
+  create_table "coupon_usages", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "coupon_id", null: false
+    t.datetime "used_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["coupon_id"], name: "index_coupon_usages_on_coupon_id"
+    t.index ["user_id"], name: "index_coupon_usages_on_user_id"
+  end
+
+  create_table "coupons", force: :cascade do |t|
+    t.string "code", null: false
+    t.integer "point", null: false
+    t.datetime "expires_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_coupons_on_code", unique: true
+  end
+
   create_table "diaries", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "title", null: false
@@ -174,6 +193,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_25_065937) do
   add_foreign_key "carts", "users"
   add_foreign_key "comments", "diaries"
   add_foreign_key "comments", "users"
+  add_foreign_key "coupon_usages", "coupons"
+  add_foreign_key "coupon_usages", "users"
   add_foreign_key "diaries", "users"
   add_foreign_key "likes", "diaries"
   add_foreign_key "likes", "users"

@@ -1,0 +1,24 @@
+%h1.text-3xl.font-bold.my-4.text-center クーポン一覧
+= link_to 'クーポン登録', new_admin_coupon_path,
+      class: 'ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full'
+
+.relative.overflow-x-auto.mt-4
+  %table.w-full.text-left
+    %thead
+      %tr.border-b.border-black
+        %th.px-6.py-3.text-lg{scope: "col"} クーポンコード
+        %th.px-6.py-3.text-lg{scope: "col"} ポイント
+        %th.px-6.py-3.text-lg{scope: "col"} 有効期限
+        %th.px-6.py-3.text-lg{scope: "col"}
+    - @coupons.each do |coupon|
+      %tbody
+        %tr.border-b.border-black
+          %td.px-6.py-4
+            = coupon.code
+          %td.px-6.py-4= coupon.point
+          %td.px-6.py-4= coupon.expires_at.strftime('%Y年%m月%d日') if coupon.expires_at.present?
+          %td.px-6.py-4
+            = button_to '編集', edit_admin_coupon_path(coupon), method: :get,
+              class: 'bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'
+          %td.px-6.py-4
+            = delete_button(admin_coupon_path(coupon))

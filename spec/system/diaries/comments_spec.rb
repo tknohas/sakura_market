@@ -82,6 +82,21 @@ RSpec.describe 'Comments', type: :system do
           expect(page).to have_content '冷えてきたのでじゃがバターがより美味しく感じますね。'
         end
       end
+
+      it 'コメントを追加すると日記を書いたユーザーにメールが送信される' do
+        click_on 'コメントを書く'
+
+        fill_in 'comment_content', with: '冷えてきたのでじゃがバターがより美味しく感じますね。'
+
+        click_on 'コメントする'
+
+        email = open_last_email
+        expect(email).to have_subject 'Aliceさんがあなたの日記にコメントしました'
+        expect(email.body).to have_content '冷えてきたのでじゃがバターがより美味しく感じますね'
+        click_first_link_in_email(email)
+
+        expect(page).to have_css 'h1', text: '日記詳細'
+      end
     end
 
     context 'フォームの入力値が異常な場合' do

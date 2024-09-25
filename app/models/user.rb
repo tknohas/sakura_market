@@ -9,6 +9,7 @@ class User < ApplicationRecord
   has_many :purchases, dependent: :restrict_with_exception
   has_many :diaries, dependent: :destroy
   has_many :comments, dependent: :destroy
+  has_many :likes, dependent: :destroy
 
   validates :name, presence: true
   validate :password_complexity

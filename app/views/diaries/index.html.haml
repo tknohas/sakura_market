@@ -15,5 +15,13 @@
           .mt-2
           - if diary.image.attached?
             = image_tag diary.image.variant(:small), class: 'diary-image object-cover'
-          - unless diary.user === current_user
-            = link_to 'コメントを書く', new_diary_comment_path(diary), class: 'text-blue-500 text-sm hover:underline'
+          - if current_user
+            - unless diary.user === current_user
+              .flex.items-center.mt-4
+                = link_to 'コメントを書く', new_diary_comment_path(diary), class: 'text-blue-500 text-sm hover:underline mr-4'
+                - if diary.liked_by?(current_user)
+                  = button_to diary_likes_path(diary), method: :delete do
+                    %span.material-symbols-outlined.text-blue-500 thumb_up
+                - else
+                  = button_to diary_likes_path(diary), method: :post do
+                    %span.material-symbols-outlined thumb_up

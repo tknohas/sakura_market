@@ -132,8 +132,8 @@ RSpec.describe 'Comments', type: :system do
     end
 
     it '自身(Alice)の投稿には「コメントを書く」リンクが表示されない' do
-      diaries = all('a div.bg-white').map(&:text)
-      expect(diaries[0]).to eq "大きなアボカドを購入しました。\nBob\nサイズの大きなアボカドが売っていたので買ってみました。\nコメントを書く"
+      diaries = all('.container .bg-white').map(&:text)
+      expect(diaries[0]).to eq "大きなアボカドを購入しました。\nBob\nサイズの大きなアボカドが売っていたので買ってみました。\nコメントを書く\nthumb_up"
       expect(diaries[1]).to eq "さくらんぼが届きました。\nAlice\n家族みんなで食べる予定です。"
     end
   end

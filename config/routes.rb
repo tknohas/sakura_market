@@ -26,5 +26,6 @@ Rails.application.routes.draw do
   end
   resources :diaries do
     resources :comments, only: %i[new create edit update destroy], module: :diaries
+    resource :likes, only: %i[create destroy], module: :diaries
   end
 end

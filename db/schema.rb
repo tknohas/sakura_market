@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_25_011314) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_25_065937) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -103,6 +103,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_25_011314) do
     t.index ["user_id"], name: "index_diaries_on_user_id"
   end
 
+  create_table "likes", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "diary_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["diary_id"], name: "index_likes_on_diary_id"
+    t.index ["user_id", "diary_id"], name: "index_likes_on_user_id_and_diary_id", unique: true
+    t.index ["user_id"], name: "index_likes_on_user_id"
+  end
+
   create_table "products", force: :cascade do |t|
     t.string "name", null: false
     t.integer "price", null: false
@@ -165,6 +175,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_25_011314) do
   add_foreign_key "comments", "diaries"
   add_foreign_key "comments", "users"
   add_foreign_key "diaries", "users"
+  add_foreign_key "likes", "diaries"
+  add_foreign_key "likes", "users"
   add_foreign_key "purchase_items", "products"
   add_foreign_key "purchase_items", "purchases"
   add_foreign_key "purchases", "users"

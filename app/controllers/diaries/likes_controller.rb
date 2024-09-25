@@ -2,7 +2,8 @@ class Diaries::LikesController < ApplicationController
   before_action :set_diary, only: %i[create destroy]
 
   def create
-    @diary.like!(current_user)
+    like = @diary.like!(current_user)
+    LikeMailer.notify_liked(like).deliver_now
     redirect_back fallback_location: root_path, notice: 'いいねしました！'
   end
 

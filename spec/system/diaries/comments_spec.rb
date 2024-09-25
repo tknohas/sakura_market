@@ -92,7 +92,7 @@ RSpec.describe 'Comments', type: :system do
 
         email = open_last_email
         expect(email).to have_subject 'Aliceさんがあなたの日記にコメントしました'
-        expect(email.body).to have_content '下記の日記にコメントが追加されました。'
+        expect(email.body).to have_content '冷えてきたのでじゃがバターがより美味しく感じますね'
         click_first_link_in_email(email)
 
         expect(page).to have_css 'h1', text: '日記詳細'

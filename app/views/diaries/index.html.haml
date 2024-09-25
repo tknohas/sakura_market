@@ -6,7 +6,7 @@
 
     - @diaries.each do |diary|
       = link_to diary_path(diary) do
-        .bg-white.rounded-lg.shadow-md.p-6.mb-8.mt-4
+        .bg-white.rounded-lg.shadow-md.p-6.mb-8.mt-8
           %h2.text-xl.font-semibold= diary.title
           -# TODO: ユーザーページへのリンクを追加
           %span.mt-4.text-blue-500= diary.user.name
@@ -15,3 +15,5 @@
           .mt-2
           - if diary.image.attached?
             = image_tag diary.image.variant(:small), class: 'diary-image object-cover'
+          - unless diary.user === current_user
+            = link_to 'コメントを書く', new_diary_comment_path(diary), class: 'text-blue-500 text-sm hover:underline'

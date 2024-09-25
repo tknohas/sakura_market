@@ -1,0 +1,12 @@
+%div{"class" => "container flex justify-center"}
+  %div{"class" => "w-2/5 mx-auto"}
+    = simple_form_for [diary, comment], html: { class: 'space-y-6' } do |f|
+      = render 'users/shared/error_messages', object: comment
+
+      .form-inputs.space-y-4
+        = f.input :content, required: true, as: :text,
+          input_html: { class: "w-full p-2 border border-gray-500 rounded focus:ring focus:ring-indigo-500" },
+          wrapper_html: { class: 'block' }, label_html: { class: 'block mb-1' }
+
+      .form-actions.flex.justify-center
+        = f.button :submit, button, class: submit_button_class

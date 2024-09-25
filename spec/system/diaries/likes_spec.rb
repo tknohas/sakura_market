@@ -2,7 +2,7 @@ RSpec.describe 'Comments', type: :system do
   let(:current_user) { create(:user, name: 'Alice') }
   let!(:current_user_diary) { create(:diary, title: 'さくらんぼが届きました。', content: '家族みんなで食べる予定です。', user: current_user) }
   let!(:current_user_like) { create(:like, user: current_user, diary: current_user_diary) }
-  let(:user) { create(:user, name: 'Bob') }
+  let(:user) { create(:user, name: 'Bob', email: 'bob@example.com') }
   let!(:user_diary) { create(:diary, title: '大きなアボカドを購入しました。', content: 'サイズの大きなアボカドが売っていたので買ってみました。', user:) }
   let!(:like) { create(:like, user:, diary: user_diary) }
 
@@ -49,6 +49,19 @@ RSpec.describe 'Comments', type: :system do
       texts = all('.container .bg-white').map(&:text)
       expect(texts[0]).to eq "大きなアボカドを購入しました。\nBob\nサイズの大きなアボカドが売っていたので買ってみました。"
       expect(texts[1]).to eq "さくらんぼが届きました。\nAlice\n家族みんなで食べる予定です。"
+    end
+
+    it '「いいね」された日記のユーザーにメールが送信される' do
+      expect(page).to have_css 'h1', text: '日記一覧'
+      click_on 'thumb_up'
+
+      email = open_last_email
+      expect(email).to have_subject 'Aliceさんがあなたの日記にいいねしました'
+      expect(email.body).to have_content '大きなアボカドを購入しました。'
+      expect(email.to).to eq ['bob@example.com']
+      click_first_link_in_email(email)
+
+      expect(page).to have_css 'h1', text: '日記詳細'
     end
   end
 end

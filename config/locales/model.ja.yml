@@ -26,3 +26,7 @@ ja:
         content: '投稿内容'
       comment:
         content: 'コメント内容'
+      coupon:
+        code: 'クーポンコード'
+        point: 'ポイント'
+        expires_at: '有効期限'

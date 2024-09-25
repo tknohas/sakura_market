@@ -11,6 +11,7 @@ class Diaries::CommentsController < ApplicationController
     @comment = @diary.comments.build(comment_params)
     @comment.user = current_user
     if @comment.save
+      CommentMailer.notify_commented(@comment).deliver_now
       redirect_to diary_path(@diary), notice: 'コメントしました。'
     else
       render :new, alert: 'コメントに失敗しました。', status: :unprocessable_entity

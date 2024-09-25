@@ -24,5 +24,7 @@ Rails.application.routes.draw do
       patch :cancel
     end
   end
-  resources :diaries
+  resources :diaries do
+    resources :comments, only: %i[new create edit update destroy], module: :diaries
+  end
 end

@@ -24,3 +24,5 @@ ja:
       diary:
         title: 'タイトル'
         content: '投稿内容'
+      comment:
+        content: 'コメント内容'

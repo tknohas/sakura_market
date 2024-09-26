@@ -101,6 +101,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_25_122327) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["coupon_id"], name: "index_coupon_usages_on_coupon_id"
+    t.index ["user_id", "coupon_id"], name: "index_coupon_usages_on_user_id_and_coupon_id", unique: true
     t.index ["user_id"], name: "index_coupon_usages_on_user_id"
   end
 

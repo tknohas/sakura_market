@@ -6,6 +6,16 @@ class PurchasesController < ApplicationController
   def new
     @purchase = current_user.purchases.build
     @purchase.build_purchase_items_from_cart(current_cart)
+    @use_point = params[:use_point].to_i if params[:use_point].present?
+  end
+
+  def apply
+    use_point = params[:use_point].to_i
+    if current_user.total_point >= use_point
+      redirect_to new_purchase_path(use_point:), notice: 'ポイントが適用されました。'
+    else
+      redirect_back fallback_location: new_purchase_path, alert: 'ポイントが不足しています。'
+    end
   end
 
   def create
@@ -27,6 +37,6 @@ class PurchasesController < ApplicationController
   private
 
   def purchase_params
-    params.require(:purchase).permit(:delivery_date, :delivery_time, purchase_items_attributes: [:product_id, :quantity])
+    params.require(:purchase).permit(:delivery_date, :delivery_time, :used_point, purchase_items_attributes: [:product_id, :quantity])
   end
 end

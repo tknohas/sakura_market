@@ -52,6 +52,42 @@ RSpec.describe 'Purchases', type: :system do
       expect(page).to have_content 'カートには何も入っていません。'
       expect(user.cart.cart_items).to_not be_present
     end
+
+    context 'ポイントを使用する場合' do
+      let!(:coupon) { create(:coupon, point: 1000) }
+      let!(:coupon_usage) { create(:coupon_usage, user:, coupon:) }
+
+      it 'ポイントを適用できる' do
+        visit new_purchase_path
+
+        fill_in 'use_point', with: 900
+
+        click_on '適用'
+
+        expect(page).to have_css 'h1', text: '購入確認'
+        expect(page).to have_content '1,000円'  # 小計
+        expect(page).to have_content '900円'    # 使用ポイント
+        expect(page).to have_content '100円'    # ポイント使用後小計
+        expect(page).to have_content '600円'    # 送料
+        expect(page).to have_content '300円'    # 代引き手数料
+        expect(page).to have_content '100円'    # 消費税
+        expect(page).to have_content '1,100円'  # 合計
+
+        expect(page).to have_content '使用可能ポイント: 100'
+        expect(page).to have_content '適用ポイント: 900'
+      end
+
+      it '所持ポイント以上を適用するとエラーメッセージが表示される' do
+        visit new_purchase_path
+
+        fill_in 'use_point', with: 1001
+
+        click_on '適用'
+
+        expect(page).to have_css 'h1', text: '購入確認'
+        expect(page).to have_content 'ポイントが不足しています。'
+      end
+    end
   end
 
   describe '購入履歴' do
@@ -122,6 +158,50 @@ RSpec.describe 'Purchases', type: :system do
       expect(page).to have_css 'h1', text: '購入履歴詳細'
       expect(page).to have_content purchase.delivery_date.strftime('%Y年%m月%d日')
       expect(page).to have_content '8:00~12:00'
+    end
+  end
+
+  context 'ポイントを使用して購入した場合' do
+    let!(:coupon) { create(:coupon, point: 1000) }
+    let!(:coupon_usage) { create(:coupon_usage, user:, coupon:) }
+
+    it '支払い情報にポイントが反映されている' do
+      visit new_purchase_path
+
+      fill_in 'use_point', with: 900
+
+      click_on '適用'
+      expect(page).to have_content 'ポイントが適用されました。'
+
+      click_on '購入する'
+      click_on 'ピーマン'
+
+      expect(page).to have_css 'h1', text: '購入履歴詳細'
+      expect(page).to have_content '1,000円'  # 小計
+      expect(page).to have_content '900円'    # 使用ポイント
+      expect(page).to have_content '100円'    # ポイント使用後小計
+      expect(page).to have_content '600円'    # 送料
+      expect(page).to have_content '300円'    # 代引き手数料
+      expect(page).to have_content '100円'    # 消費税
+      expect(page).to have_content '1,100円'  # 合計
+    end
+
+    it 'ポイント使用後に使用可能ポイントが減少している' do
+      visit new_purchase_path
+
+      fill_in 'use_point', with: 900
+
+      click_on '適用'
+      expect(page).to have_content 'ポイントが適用されました。'
+
+      click_on '購入する'
+
+      visit product_path(product)
+      click_on 'カートに追加'
+      click_on '購入確認'
+
+      expect(page).to have_css 'h1', text: '購入確認'
+      expect(page).to have_content '使用可能ポイント: 100'
     end
   end
 end

@@ -6,7 +6,7 @@
 
     .mt-4
       - if @purchase.purchase_items.any?
-        = render 'purchases/purchase_details', purchase: @purchase
+        = render 'purchases/purchase_details', purchase: @purchase, use_point: @purchase.used_point
 
         .bg-white.rounded-lg.shadow-md.p-6.my-8
           %h2.text-xl.font-semibold.mb-4 希望配達日時

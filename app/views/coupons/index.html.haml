@@ -1,0 +1,17 @@
+%h1.text-3xl.font-bold.my-4.text-center 登録クーポン一覧
+
+.relative.overflow-x-auto.mt-4
+  %table.w-full.text-left
+    %thead
+      %tr.border-b.border-black
+        %th.px-6.py-3.text-lg{scope: "col"} クーポンコード
+        %th.px-6.py-3.text-lg{scope: "col"} ポイント
+        %th.px-6.py-3.text-lg{scope: "col"} 有効期限
+        %th.px-6.py-3.text-lg{scope: "col"}
+    - @coupon_usages.each do |usage|
+      %tbody
+        %tr.border-b.border-black
+          %td.px-6.py-4
+            = usage.coupon.code
+          %td.px-6.py-4= usage.coupon.point
+          %td.px-6.py-4= usage.coupon.expires_at.strftime('%Y年%m月%d日') if usage.coupon.expires_at.present?

@@ -7,5 +7,6 @@ class CreateCouponUsages < ActiveRecord::Migration[7.1]
 
       t.timestamps
     end
+    add_index :coupon_usages, [:user_id, :coupon_id], unique: true
   end
 end

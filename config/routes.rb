@@ -29,4 +29,6 @@ Rails.application.routes.draw do
     resources :comments, only: %i[new create edit update destroy], module: :diaries
     resource :likes, only: %i[create destroy], module: :diaries
   end
+  resources :coupons, only: %i[index]
+  post 'apply_coupon', to: 'coupons#apply'
 end

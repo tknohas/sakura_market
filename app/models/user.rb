@@ -10,6 +10,8 @@ class User < ApplicationRecord
   has_many :diaries, dependent: :destroy
   has_many :comments, dependent: :destroy
   has_many :likes, dependent: :destroy
+  has_many :coupon_usages, dependent: :destroy
+  has_many :coupons, through: :coupon_usages
 
   validates :name, presence: true
   validate :password_complexity
@@ -42,5 +44,9 @@ class User < ApplicationRecord
 
   def canceled?
     canceled_at.present?
+  end
+
+  def used_coupon_code?(coupon)
+    coupon_usages.exists?(coupon: coupon)
   end
 end

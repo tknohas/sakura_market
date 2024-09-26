@@ -8,8 +8,8 @@ class Purchase < ApplicationRecord
   validates :delivery_time, presence: true
   validate :validate_delivery_date
 
-  def cash_on_delivery_fee(subtotal)
-    case subtotal
+  def cash_on_delivery_fee(adjusted_subtotal)
+    case adjusted_subtotal
     when 0...10_000
       300
     when 10_000...30_000
@@ -23,12 +23,19 @@ class Purchase < ApplicationRecord
 
   TAX_RATE = 1.1
 
-  def total_price(subtotal)
-    ((subtotal + cash_on_delivery_fee(subtotal) + calculate_shipping_fee) * TAX_RATE).floor
+  def adjusted_subtotal(subtotal, use_point)
+    return 0 if use_point > subtotal
+    return subtotal - use_point if used_point
+    return subtotal - use_point if user.total_point >= use_point
+    return subtotal
   end
 
-  def tax_amount(subtotal)
-    total_price(subtotal) - cash_on_delivery_fee(subtotal) - calculate_shipping_fee - subtotal
+  def total_price(adjusted_subtotal)
+    ((adjusted_subtotal + cash_on_delivery_fee(adjusted_subtotal) + calculate_shipping_fee) * TAX_RATE).floor
+  end
+
+  def tax_amount(adjusted_subtotal)
+    total_price(adjusted_subtotal) - cash_on_delivery_fee(adjusted_subtotal) - calculate_shipping_fee - adjusted_subtotal
   end
 
   SHIPPING_FEE_PER_TIER = 600

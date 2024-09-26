@@ -49,4 +49,8 @@ class User < ApplicationRecord
   def used_coupon_code?(coupon)
     coupon_usages.exists?(coupon: coupon)
   end
+
+  def total_point
+    coupons.sum(:point) - purchases.sum(:used_point)
+  end
 end

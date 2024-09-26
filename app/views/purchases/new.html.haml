@@ -5,7 +5,7 @@
     %h1.text-3xl.font-bold.mb-4.text-center 購入確認
 
     - if @purchase.purchase_items.any?
-      = render 'purchases/purchase_details', purchase: @purchase
+      = render 'purchases/purchase_details', purchase: @purchase, use_point: @use_point
       = link_to '住所を変更', edit_address_path, class: 'text-blue-500 hover:underline mt-1 mb-4 inline-block'
 
       %p.text-gray-500.mb-4
@@ -23,6 +23,8 @@
           selected: '指定なし',
           input_html: { class: "bg-white rounded-lg shadow-md p-4 rounded-lg mt-4 ml-2" },
           collection: @purchase.delivery_time_option
+        - if @use_point.present?
+          = f.hidden_field :used_point, value: @use_point
         .text-center
           = f.button :submit, '購入する', class: 'bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg text-lg hover:bg-indigo-700 cursor-pointer mt-4'
           = link_to 'カートに戻る', cart_path, class: 'bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg ml-4'

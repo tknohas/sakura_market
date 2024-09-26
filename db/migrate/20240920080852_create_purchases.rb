@@ -4,6 +4,7 @@ class CreatePurchases < ActiveRecord::Migration[7.1]
       t.references :user, null: false, foreign_key: true
       t.date :delivery_date
       t.string :delivery_time, null: false
+      t.integer :used_point
 
       t.timestamps
     end

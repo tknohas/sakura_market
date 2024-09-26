@@ -1,4 +1,3 @@
-- subtotal = 0
 .bg-white.rounded-lg.shadow-md.overflow-hidden.mb-8
   %table.w-full
     %thead.bg-gray-200
@@ -8,6 +7,7 @@
         %th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.uppercase.tracking-wider 数量
         %th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.uppercase.tracking-wider 価格x数量
     %tbody.divide-y.divide-gray-200
+      - subtotal = 0
       - purchase.purchase_items.each do |item|
         - subtotal += item.purchase_item_total_price
         %tr
@@ -23,24 +23,45 @@
           %td.px-6.py-4.whitespace-nowrap
             .text-sm.text-gray-900 #{number_to_currency(item.purchase_item_total_price)}
 
+- if current_page?(new_purchase_path)
+  .bg-white.rounded-lg.shadow-md.p-6.mb-8
+    %h2.text-xl.font-semibold.mb-4 ポイント
+    - total_point = purchase.user.total_point
+    - total_point -= use_point if use_point.present?
+    %p.mb-4
+      使用可能ポイント: #{total_point}
+      %br 適用ポイント: #{use_point || 0}
+    = form_tag apply_point_path, method: :post do
+      .flex.mr-8
+        = number_field_tag :use_point, nil, min: 0, max: subtotal, placeholder: '使用するポイントを入力',
+          class: 'w-40 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-100'
+        = submit_tag '適用', class: 'w-1/8 ml-2 px-4 py-2 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 cursor-pointer'
+
 .bg-white.rounded-lg.shadow-md.p-6.mb-8
   %h2.text-xl.font-semibold.mb-4 注文サマリー
+  - adjusted_subtotal = use_point.present? ? purchase.adjusted_subtotal(subtotal, use_point) : subtotal
   .flex.justify-between.mb-2
     %span 小計:
     %span #{number_to_currency(subtotal)}(税抜)
+  .flex.justify-between.mb-2
+    %span 使用ポイント:
+    %span #{number_to_currency(use_point || 0)}(税抜)
+  .flex.justify-between.mb-2
+    %span 小計 - ポイント:
+    %span #{number_to_currency(adjusted_subtotal)}(税抜)
   .flex.justify-between.mb-2
     %span 送料:
     %span #{number_to_currency(purchase.calculate_shipping_fee)}(税抜)
   .flex.justify-between.mb-2
     %span 代引き手数料:
-    %span #{number_to_currency(purchase.cash_on_delivery_fee(subtotal))}(税抜)
+    %span #{number_to_currency(purchase.cash_on_delivery_fee(adjusted_subtotal))}(税抜)
   .flex.justify-between.mb-2
     %span 消費税:
-    %span #{number_to_currency(purchase.tax_amount(subtotal))}
+    %span #{number_to_currency(purchase.tax_amount(adjusted_subtotal))}
   - tax = 1.1
   .flex.justify-between.font-bold.text-lg
     %span 合計:
-    %span #{number_to_currency(purchase.total_price(subtotal))}(税込)
+    %span #{number_to_currency(purchase.total_price(adjusted_subtotal))}(税込)
 
 .bg-white.rounded-lg.shadow-md.p-6
   %h2.text-xl.font-semibold.mb-4 配送先住所

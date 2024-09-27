@@ -97,7 +97,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_27_050524) do
   create_table "coupon_usages", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "coupon_id", null: false
-    t.datetime "used_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["coupon_id"], name: "index_coupon_usages_on_coupon_id"

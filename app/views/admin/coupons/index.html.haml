@@ -14,7 +14,7 @@
       %tbody
         %tr.border-b.border-black
           %td.px-6.py-4
-            = coupon.code
+            = link_to coupon.code, admin_coupon_path(coupon), class: 'text-blue-500 hover:underline'
           %td.px-6.py-4= coupon.point
           %td.px-6.py-4= coupon.expires_at.strftime('%Y年%m月%d日') if coupon.expires_at.present?
           %td.px-6.py-4

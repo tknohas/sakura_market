@@ -136,6 +136,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_27_050524) do
     t.bigint "user_id", null: false
     t.integer "point_change", null: false
     t.string "description"
+    t.datetime "expires_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_point_activities_on_user_id"

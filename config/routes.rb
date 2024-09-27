@@ -12,7 +12,9 @@ Rails.application.routes.draw do
   }
   namespace :admin do
     resources :products
-    resources :users, only: %i[index show update destroy]
+    resources :users, only: %i[index show update destroy] do
+      resources :point_activities, only: %i[index new create], module: :users
+    end
     resources :coupons
   end
   resources :products, only: %i[index show]

@@ -30,3 +30,7 @@ ja:
         code: 'クーポンコード'
         point: 'ポイント'
         expires_at: '有効期限'
+      point_activity:
+        point_change: '追加ポイント'
+        description: '適用理由'
+        expires_at: '有効期限'

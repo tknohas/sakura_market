@@ -3,7 +3,7 @@ class CreatePointActivities < ActiveRecord::Migration[7.1]
     create_table :point_activities do |t|
       t.references :user, null: false, foreign_key: true
       t.integer :point_change, null: false
-      t.string :description
+      t.string :description, null: false
       t.datetime :expires_at
 
       t.timestamps

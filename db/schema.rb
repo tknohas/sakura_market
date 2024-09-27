@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_25_122327) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_27_050524) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -133,6 +133,15 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_25_122327) do
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
+  create_table "point_activities", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "point_change", null: false
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_point_activities_on_user_id"
+  end
+
   create_table "products", force: :cascade do |t|
     t.string "name", null: false
     t.integer "price", null: false
@@ -200,6 +209,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_25_122327) do
   add_foreign_key "diaries", "users"
   add_foreign_key "likes", "diaries"
   add_foreign_key "likes", "users"
+  add_foreign_key "point_activities", "users"
   add_foreign_key "purchase_items", "products"
   add_foreign_key "purchase_items", "purchases"
   add_foreign_key "purchases", "users"

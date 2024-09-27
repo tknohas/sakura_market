@@ -1,4 +1,6 @@
 class Purchase < ApplicationRecord
+  after_create :record_used_point
+
   belongs_to :user
   has_many :purchase_items, dependent: :destroy
   has_many :products, through: :purchase_items
@@ -91,5 +93,14 @@ class Purchase < ApplicationRecord
   def total_quantity
     return user.cart.item_count if user.cart.cart_items.present?
     purchase_items.sum(:quantity)
+  end
+
+  def record_used_point
+    if used_point.present? && used_point > 0
+      user.point_activities.create!(
+        point_change: -used_point,
+        description: '購入時のポイント使用',
+      )
+    end
   end
 end

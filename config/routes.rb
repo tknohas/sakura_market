@@ -32,5 +32,5 @@ Rails.application.routes.draw do
   resources :coupons, only: %i[index]
   post 'apply_coupon', to: 'coupons#apply'
   post 'apply_point', to: 'purchases#apply'
-  resources :points, only: %i[index]
+  resources :point_activities, only: %i[index]
 end

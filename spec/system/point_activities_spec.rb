@@ -1,4 +1,4 @@
-RSpec.describe 'Points', type: :system do
+RSpec.describe 'PointActivities', type: :system do
   let(:user) { create(:user) }
   let!(:coupon) { create(:coupon, code: 'Abcd-1234-febw', point: 1000) }
   let!(:coupon_usage) { create(:coupon_usage, coupon: coupon, user:, created_at: '2024-09-27') }
@@ -9,16 +9,8 @@ RSpec.describe 'Points', type: :system do
 
   describe 'ポイント履歴' do
     it 'ポイント残高が表示される' do
-      visit points_path
+      visit point_activities_path
       expect(page).to have_content 'ポイント残高: 1000'
-    end
-
-    it '取得ポイントが表示される' do
-      visit points_path
-
-      expect(page).to have_css 'h1', text: 'ポイント履歴'
-      texts = all('.earn-point table').map(&:text)
-      expect(texts).to eq ['取得ポイント 取得日 1000 ポイント 2024年09月27日']
     end
 
     context '購入時にポイント使用した場合' do
@@ -26,12 +18,19 @@ RSpec.describe 'Points', type: :system do
       let!(:purchase) { create(:purchase, user:, used_point: 800, created_at: '2024-09-27') }
       let!(:purchase_item) { create(:purchase_item, purchase:, product:) }
 
-      it '使用ポイントが表示される' do
-        visit points_path
+      it 'ポイントの増減が表示される' do
+        visit point_activities_path
 
         expect(page).to have_css 'h1', text: 'ポイント履歴'
-        texts = all('.used-point table').map(&:text)
-        expect(texts).to eq ['購入商品 使用ポイント 使用日 ピーマン 800 ポイント 2024年09月27日']
+        thead = all('div table thead').map(&:text)
+        expect(thead).to eq ['取引内容 ポイント 日付']
+        tr = all('div tbody tr').map(&:text)
+        expect(tr[0]).to eq '購入時のポイント使用 -800 ポイント 2024年09月27日'
+        expect(tr[1]).to eq  'クーポンによるポイント獲得 1000 ポイント 2024年09月27日'
+      end
+
+      it 'ポイント残高が表示される' do
+        visit point_activities_path
         expect(page).to have_content 'ポイント残高: 200'
       end
     end

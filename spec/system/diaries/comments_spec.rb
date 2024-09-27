@@ -1,8 +1,8 @@
 RSpec.describe 'Comments', type: :system do
-  let(:current_user) { create(:user, name: 'Alice') }
+  let(:current_user) { create(:user, name: 'Alice', nickname: 'ありす') }
   let!(:current_user_diary) { create(:diary, title: 'さくらんぼが届きました。', content: '家族みんなで食べる予定です。', user: current_user) }
   let!(:current_user_comment) { create(:comment, content: '我が家にもさくらんぼが届きました。', user: current_user, diary: current_user_diary) }
-  let(:user) { create(:user, name: 'Bob') }
+  let(:user) { create(:user, name: 'Bob', nickname: 'bb') }
   let!(:user_comment) { create(:comment, content: '食パンにアボカドを塗って食べると美味しいですよ！', user:, diary: current_user_diary) }
   let!(:user_diary) { create(:diary, title: '大きなアボカドを購入しました。', content: 'サイズの大きなアボカドが売っていたので買ってみました。', user:) }
 
@@ -16,9 +16,9 @@ RSpec.describe 'Comments', type: :system do
       visit diary_path(current_user_diary)
 
       expect(page).to have_css 'h1', text: '日記詳細'
-      expect(page).to have_content 'Alice'
+      expect(page).to have_content 'ありす'
       expect(page).to have_content '我が家にもさくらんぼが届きました。'
-      expect(page).to have_content 'Bob'
+      expect(page).to have_content 'bb'
       expect(page).to have_content '食パンにアボカドを塗って食べると美味しいですよ！'
 
     end
@@ -91,7 +91,7 @@ RSpec.describe 'Comments', type: :system do
         click_on 'コメントする'
 
         email = open_last_email
-        expect(email).to have_subject 'Aliceさんがあなたの日記にコメントしました'
+        expect(email).to have_subject 'ありすさんがあなたの日記にコメントしました'
         expect(email.body).to have_content '冷えてきたのでじゃがバターがより美味しく感じますね'
         click_first_link_in_email(email)
 
@@ -133,8 +133,8 @@ RSpec.describe 'Comments', type: :system do
 
     it '自身(Alice)の投稿には「コメントを書く」リンクが表示されない' do
       diaries = all('.container .bg-white').map(&:text)
-      expect(diaries[0]).to eq "大きなアボカドを購入しました。\nBob\nサイズの大きなアボカドが売っていたので買ってみました。\nコメントを書く\nthumb_up"
-      expect(diaries[1]).to eq "さくらんぼが届きました。\nAlice\n家族みんなで食べる予定です。"
+      expect(diaries[0]).to eq "大きなアボカドを購入しました。\nbb\nサイズの大きなアボカドが売っていたので買ってみました。\nコメントを書く\nthumb_up"
+      expect(diaries[1]).to eq "さくらんぼが届きました。\nありす\n家族みんなで食べる予定です。"
     end
   end
 

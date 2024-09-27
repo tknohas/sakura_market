@@ -31,6 +31,7 @@ ja:
         price: "価格"
       user:
         name: "氏名"
+        nickname: "ニックネーム"
         email: "Eメール"
         confirmation_sent_at: パスワード確認送信時刻
         confirmation_token: パスワード確認用トークン

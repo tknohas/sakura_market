@@ -209,6 +209,7 @@ RSpec.describe 'Products', type: :system do
       visit new_user_registration_path
 
       fill_in 'user_name', with: 'Bob'
+      fill_in 'user_nickname', with: 'bb'
       fill_in 'user_email', with: 'bob@example.com'
       fill_in 'user_password', with: 'Abcd1234'
       fill_in 'user_password_confirmation', with: 'Abcd1234'

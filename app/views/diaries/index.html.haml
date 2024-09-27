@@ -1,27 +1,46 @@
 .bg-gray-100.min-h-screen.py-4
-  .container.mx-auto
-    %h1.text-3xl.font-bold.text-center 日記一覧
-    = link_to '日記の投稿はこちら', new_diary_path, class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full'
-    = link_to '商品一覧', products_path, class: 'bg-black hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full ml-2'
+  %h1.text-3xl.font-bold.text-center.mb-4 日記一覧
+  %div
+    = link_to '商品一覧', products_path, class: 'bg-black hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full ml-8'
+  .container.flex
+    .side-menu.ml-8.mt-8{ class: 'w-1/5' }
+      .flex.items-center.gap-2
+        - if current_user
+          - if current_user.image.attached?
+            = image_tag current_user.image.variant(:large), class: 'user-image rounded-full'
+          - else
+            = image_tag 'no_image.png', class: 'user-image rounded-full', size: '70x70'
+          %p.text-xl.font-semibold #{current_user.nickname}
+      .mt-4
+        = link_to 'プロフィールを編集する', edit_user_path, class: 'text-blue-500 hover:under-line'
+      .mt-4
+        = link_to '日記の投稿はこちら', new_diary_path, class: 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full'
 
-    - @diaries.each do |diary|
-      = link_to diary_path(diary) do
-        .bg-white.rounded-lg.shadow-md.p-6.mb-8.mt-8
-          %h2.text-xl.font-semibold= diary.title
-          -# TODO: ユーザーページへのリンクを追加
-          %span.mt-4.text-blue-500= diary.user.name
-          .mt-2
-            = safe_join(diary.content.split("\n"),tag(:br))
-          .mt-2
-          - if diary.image.attached?
-            = image_tag diary.image.variant(:small), class: 'diary-image object-cover'
-          - if current_user
-            - unless diary.user === current_user
-              .flex.items-center.mt-4
-                = link_to 'コメントを書く', new_diary_comment_path(diary), class: 'text-blue-500 text-sm hover:underline mr-4'
-                - if diary.liked_by?(current_user)
-                  = button_to diary_likes_path(diary), method: :delete do
-                    %span.material-symbols-outlined.text-blue-500 thumb_up
-                - else
-                  = button_to diary_likes_path(diary), method: :post do
-                    %span.material-symbols-outlined thumb_up
+    .mr-8{ class: "#{current_user ? 'w-4/5' : 'w-full'}" }
+      - @diaries.each do |diary|
+        = link_to diary_path(diary) do
+          .bg-white.rounded-lg.shadow-md.p-6.mb-8.mt-8
+            .flex.items-center
+              - if diary.user.image.attached?
+                = image_tag diary.user.image.variant(:small), class: 'user-image rounded-full'
+              - else
+                = image_tag 'no_image.png', class: 'user-image rounded-full', size: '50x50'
+              %div.ml-2
+                %h2.text-xl.font-semibold= diary.title
+                %span.mt-4.text-blue-500= diary.user.nickname
+            .mt-4.ml-4
+              .mt-2
+                = safe_join(diary.content.split("\n"), tag(:br))
+              .mt-2
+              - if diary.image.attached?
+                = image_tag diary.image.variant(:small), class: 'diary-image object-cover'
+              - if current_user
+                - unless diary.user === current_user
+                  .flex.items-center.mt-4
+                    = link_to 'コメントを書く', new_diary_comment_path(diary), class: 'text-blue-500 text-sm hover:underline mr-4'
+                    - if diary.liked_by?(current_user)
+                      = button_to diary_likes_path(diary), method: :delete do
+                        %span.material-symbols-outlined.text-blue-500 thumb_up
+                    - else
+                      = button_to diary_likes_path(diary), method: :post do
+                        %span.material-symbols-outlined thumb_up

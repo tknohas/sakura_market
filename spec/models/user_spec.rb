@@ -1,6 +1,6 @@
 RSpec.describe User, type: :model do
   let(:user) { create(:user) }
-  subject { described_class.new(name: 'Alice', email: 'alice@example.com', password: 'Abcd1234') }
+  subject { described_class.new(name: 'Alice', nickname: 'ありす', email: 'alice@example.com', password: 'Abcd1234') }
 
   describe 'バリデーション' do
     it 'バリデーションが有効' do
@@ -9,6 +9,11 @@ RSpec.describe User, type: :model do
 
     it '名前が不正' do
       subject.name = nil
+      expect(subject).to_not be_valid
+    end
+
+    it 'ニックネームが不正' do
+      subject.nickname = nil
       expect(subject).to_not be_valid
     end
 

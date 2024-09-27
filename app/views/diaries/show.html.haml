@@ -13,7 +13,7 @@
         = image_tag @diary.image.variant(:small), class: 'diary-image object-cover'
   - @diary.comments.order(created_at: :desc).each do |comment|
     .comment-area.max-w-2xl.mx-auto.bg-white.rounded-lg.shadow-md.p-6.mt-2
-      %p.text-blue-500= comment.user.name
+      %p.text-blue-500= comment.user.nickname
       %p= safe_join(comment.content.split("\n"),tag(:br))
       - if current_user === comment.user
         .flex.justify-end.mt-4

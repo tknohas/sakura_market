@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   resource :cart, only: %i[show]
   resource :address, only: %i[new create edit update]
   resources :purchases, only: %i[index new create show]
-  resource :user do
+  resource :user, only: %i[show edit update] do
     collection do
       patch :cancel
     end

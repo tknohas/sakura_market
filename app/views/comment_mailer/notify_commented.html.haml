@@ -1,10 +1,10 @@
-#{@comment.diary.user.name} さん
+#{@comment.diary.user.nickname} さん
 
 %p 下記の日記にコメントが追加されました。
 %p= link_to @comment.diary.title, diary_url(@comment.diary)
 %hr
 %p
-  #{@comment.user.name}さんからのコメント:
+  #{@comment.user.nickname}さんからのコメント:
   %br
   #{@comment.content}
 %hr

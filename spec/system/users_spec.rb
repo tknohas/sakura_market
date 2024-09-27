@@ -55,6 +55,7 @@ RSpec.describe 'Users', type: :system do
     context 'フォームの入力値が正常' do
       it '登録成功' do
         fill_in 'user_name', with: 'Bob'
+        fill_in 'user_nickname', with: 'bb'
         fill_in 'user_email', with: 'bob@example.com'
         fill_in 'user_password', with: 'Abcd1234'
         fill_in 'user_password_confirmation', with: 'Abcd1234'
@@ -85,6 +86,7 @@ RSpec.describe 'Users', type: :system do
     context 'フォームの入力値が異常' do
       it '登録失敗' do
         fill_in 'user_name', with: 'Bob'
+        fill_in 'user_nickname', with: 'bb'
         fill_in 'user_email', with: 'alice@example.com'
         fill_in 'user_password', with: 'Abcd1234'
         fill_in 'user_password_confirmation', with: 'Abcd1235'
@@ -100,6 +102,7 @@ RSpec.describe 'Users', type: :system do
 
       it '登録失敗（パスワード不正）' do
         fill_in 'user_name', with: 'Bob'
+        fill_in 'user_nickname', with: 'bb'
         fill_in 'user_email', with: 'bob@example.com'
         fill_in 'user_password', with: '12345678'
         fill_in 'user_password_confirmation', with: '12345678'
@@ -228,6 +231,60 @@ RSpec.describe 'Users', type: :system do
       expect(page).to have_css 'h1', text: 'ログイン'
       expect(page).to have_current_path new_user_session_path
       expect(page).to have_content '退会済みです。'
+    end
+  end
+
+  describe 'プロフィール編集' do
+    before do
+      user_login(user)
+    end
+
+    context 'フォームの入力値が正常な場合' do
+      it '編集することができる' do
+        click_on 'プロフィールを編集する'
+
+        fill_in 'user_name', with: 'Bob'
+        fill_in 'user_nickname', with: 'bb'
+        attach_file 'user_image', file_fixture('test_image.jpg')
+
+        click_on '変更'
+
+        expect(page).to have_css 'h1', text: '日記一覧'
+        expect(page).to have_content 'プロフィールを変更しました。'
+        within '.side-menu' do
+          expect(page).to have_content 'bb'
+          expect(page).to have_selector 'img[src$="test_image.jpg"]'
+        end
+      end
+    end
+
+    context 'フォームの入力値が異常な場合' do
+      it 'エラーメッセージが表示される' do
+        click_on 'プロフィールを編集する'
+
+        fill_in 'user_name', with: ''
+        fill_in 'user_nickname', with: ''
+
+        click_on '変更'
+
+        expect(page).to have_css 'h1', text: 'プロフィール編集'
+        expect(page).to have_content '氏名を入力してください'
+        expect(page).to have_content 'ニックネームを入力してください'
+      end
+    end
+
+    it 'トップ画面へ遷移する' do
+      visit edit_user_path
+      click_on 'トップ'
+
+      expect(page).to have_css 'h1', text: '日記一覧'
+    end
+
+    it '前の画面へ遷移する' do
+      click_on 'プロフィールを編集する'
+      click_on '戻る'
+
+      expect(page).to have_css 'h1', text: '日記一覧'
     end
   end
 end

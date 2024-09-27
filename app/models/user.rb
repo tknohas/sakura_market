@@ -12,6 +12,7 @@ class User < ApplicationRecord
   has_many :likes, dependent: :destroy
   has_many :coupon_usages, dependent: :destroy
   has_many :coupons, through: :coupon_usages
+  has_many :point_activities, dependent: :destroy
 
   validates :name, presence: true
   validate :password_complexity
@@ -51,6 +52,6 @@ class User < ApplicationRecord
   end
 
   def total_point
-    coupons.sum(:point) - purchases.sum(:used_point)
+    point_activities.sum(:point_change)
   end
 end

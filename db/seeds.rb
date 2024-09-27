@@ -21,3 +21,6 @@ contents = %w(サイズの大きなアボカドが売っていたので買って
 (1..titles.length).each do |n|
   Diary.create!(user: User.find(n), title: titles[n - 1], content: contents[n - 1])
 end
+
+Coupon.create!(code: '1111-1111-1111', point: 100)
+Coupon.create!(code: 'aaaa-aaaa-aaaa', point: 1000)

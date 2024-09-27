@@ -1,6 +1,6 @@
 class Admin::CouponsController < Admin::ApplicationController
-  before_action :set_coupon, only: %i[edit update destroy]
-  
+  before_action :set_coupon, only: %i[show edit update destroy]
+
   def index
     @coupons = Coupon.order(:id)
   end
@@ -16,6 +16,9 @@ class Admin::CouponsController < Admin::ApplicationController
     else
       render :new, alert: 'クーポンの作成に失敗しました。', status: :unprocessable_entity
     end
+  end
+
+  def show
   end
 
   def edit

@@ -4,6 +4,10 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable
 
+  has_one_attached :image do |attachable|
+    attachable.variant :small, resize_to_limit: [50, 50], preprocessed: true
+    attachable.variant :large, resize_to_limit: [70, 70], preprocessed: true
+  end
   has_one :cart, dependent: :destroy
   has_one :address, dependent: :destroy
   has_many :purchases, dependent: :restrict_with_exception
@@ -15,6 +19,7 @@ class User < ApplicationRecord
   has_many :point_activities, dependent: :destroy
 
   validates :name, presence: true
+  validates :nickname, presence: true
   validate :password_complexity
 
   default_scope -> { kept }

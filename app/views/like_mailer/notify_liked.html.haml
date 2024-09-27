@@ -1,6 +1,6 @@
-#{@like.diary.user.name} さん
+#{@like.diary.user.nickname} さん
 
-%p #{@like.user.name}さんが下記の日記にいいねしました。
+%p #{@like.user.nickname}さんが下記の日記にいいねしました。
 %p= link_to @like.diary.title, diary_url(@like.diary)
 
 

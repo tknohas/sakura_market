@@ -188,6 +188,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_27_050524) do
     t.datetime "discarded_at"
     t.boolean "unavailable", default: false, null: false
     t.datetime "canceled_at"
+    t.string "nickname", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true

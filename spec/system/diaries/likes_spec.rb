@@ -1,8 +1,8 @@
 RSpec.describe 'Comments', type: :system do
-  let(:current_user) { create(:user, name: 'Alice') }
+  let(:current_user) { create(:user, name: 'Alice', nickname: 'ありす') }
   let!(:current_user_diary) { create(:diary, title: 'さくらんぼが届きました。', content: '家族みんなで食べる予定です。', user: current_user) }
   let!(:current_user_like) { create(:like, user: current_user, diary: current_user_diary) }
-  let(:user) { create(:user, name: 'Bob', email: 'bob@example.com') }
+  let(:user) { create(:user, name: 'Bob', email: 'bob@example.com', nickname: 'bb') }
   let!(:user_diary) { create(:diary, title: '大きなアボカドを購入しました。', content: 'サイズの大きなアボカドが売っていたので買ってみました。', user:) }
   let!(:like) { create(:like, user:, diary: user_diary) }
 
@@ -36,8 +36,8 @@ RSpec.describe 'Comments', type: :system do
       expect(page).to have_css 'h1', text: '日記一覧'
 
       texts = all('.container .bg-white').map(&:text)
-      expect(texts[0]).to eq "大きなアボカドを購入しました。\nBob\nサイズの大きなアボカドが売っていたので買ってみました。\nコメントを書く\nthumb_up"
-      expect(texts[1]).to eq "さくらんぼが届きました。\nAlice\n家族みんなで食べる予定です。"
+      expect(texts[0]).to eq "大きなアボカドを購入しました。\nbb\nサイズの大きなアボカドが売っていたので買ってみました。\nコメントを書く\nthumb_up"
+      expect(texts[1]).to eq "さくらんぼが届きました。\nありす\n家族みんなで食べる予定です。"
     end
 
     it 'ログイン前は「いいね」ボタンが表示されない', :js do
@@ -46,9 +46,9 @@ RSpec.describe 'Comments', type: :system do
 
       expect(page).to have_css 'h1', text: '日記一覧'
 
-      texts = all('.container .bg-white').map(&:text)
-      expect(texts[0]).to eq "大きなアボカドを購入しました。\nBob\nサイズの大きなアボカドが売っていたので買ってみました。"
-      expect(texts[1]).to eq "さくらんぼが届きました。\nAlice\n家族みんなで食べる予定です。"
+      texts = all('.container.flex .mr-8.w-full a').map(&:text)
+      expect(texts[0]).to eq "大きなアボカドを購入しました。\nbb\nサイズの大きなアボカドが売っていたので買ってみました。"
+      expect(texts[1]).to eq "さくらんぼが届きました。\nありす\n家族みんなで食べる予定です。"
     end
 
     it '「いいね」された日記のユーザーにメールが送信される' do
@@ -56,7 +56,7 @@ RSpec.describe 'Comments', type: :system do
       click_on 'thumb_up'
 
       email = open_last_email
-      expect(email).to have_subject 'Aliceさんがあなたの日記にいいねしました'
+      expect(email).to have_subject 'ありすさんがあなたの日記にいいねしました'
       expect(email.body).to have_content '大きなアボカドを購入しました。'
       expect(email.to).to eq ['bob@example.com']
       click_first_link_in_email(email)

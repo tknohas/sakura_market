@@ -1,7 +1,7 @@
 RSpec.describe 'Diaries', type: :system do
-  let(:current_user) { create(:user, name: 'Alice') }
+  let(:current_user) { create(:user, name: 'Alice', nickname: 'ありす') }
   let!(:current_user_diary) { create(:diary, title: 'さくらんぼが届きました。', content: '家族みんなで食べる予定です。', user: current_user) }
-  let(:user) { create(:user, name: 'Bob') }
+  let(:user) { create(:user, name: 'Bob', nickname: 'bb') }
   let!(:user_diary) { create(:diary, title: '大きなアボカドを購入しました。', content: 'サイズの大きなアボカドが売っていたので買ってみました。', user:) }
 
   before do
@@ -11,12 +11,13 @@ RSpec.describe 'Diaries', type: :system do
 
   describe '日記一覧' do
     it '日記が表示される' do
+      expect(page).to have_css 'img.user-image'
       expect(page).to have_css 'h1', text: '日記一覧'
       expect(page).to have_content 'さくらんぼが届きました。'
-      expect(page).to have_content 'Alice'
+      expect(page).to have_content 'ありす'
       expect(page).to have_content '家族みんなで食べる予定です。'
       expect(page).to have_content '大きなアボカドを購入しました。'
-      expect(page).to have_content 'Bob'
+      expect(page).to have_content 'bb'
       expect(page).to have_content 'サイズの大きなアボカドが売っていたので買ってみました。'
     end
 

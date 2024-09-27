@@ -25,8 +25,8 @@ RSpec.describe 'PointActivities', type: :system do
         thead = all('div table thead').map(&:text)
         expect(thead).to eq ['取引内容 ポイント 有効期限 取得日']
         tr = all('div tbody tr').map(&:text)
-        expect(tr[0]).to eq '購入時のポイント使用 -800 ポイント 2024年09月27日'
-        expect(tr[1]).to eq  'クーポンによるポイント獲得 1000 ポイント 2024年09月27日'
+        expect(tr[0]).to eq "購入時のポイント使用 -800 ポイント #{Date.current.strftime('%Y年%m月%d日')}"
+        expect(tr[1]).to eq  "クーポンによるポイント獲得 1000 ポイント #{Date.current.strftime('%Y年%m月%d日')}"
       end
 
       it 'ポイント残高が表示される' do
@@ -48,7 +48,7 @@ RSpec.describe 'PointActivities', type: :system do
         thead = all('div table thead').map(&:text)
         expect(thead).to eq ['取引内容 ポイント 有効期限 取得日']
         tr = all('div tbody tr').map(&:text)
-        expect(tr).to eq ["クーポンによるポイント獲得 100 ポイント #{Date.current.next_month.strftime('%Y年%m月%d日')} 2024年09月27日"]
+        expect(tr).to eq ["クーポンによるポイント獲得 100 ポイント #{Date.current.next_month.strftime('%Y年%m月%d日')} #{Date.current.strftime('%Y年%m月%d日')}"]
       end
     end
 
@@ -63,7 +63,7 @@ RSpec.describe 'PointActivities', type: :system do
         thead = all('div table thead').map(&:text)
         expect(thead).to eq ['取引内容 ポイント 有効期限 取得日']
         tr = all('div tbody tr').map(&:text)
-        expect(tr).to eq ["クーポンによるポイント獲得 200 ポイント #{Date.current.since(7.days).strftime('%Y年%m月%d日')} 2024年09月27日"]
+        expect(tr).to eq ["クーポンによるポイント獲得 200 ポイント #{Date.current.since(7.days).strftime('%Y年%m月%d日')} #{Date.current.strftime('%Y年%m月%d日')}"]
       end
     end
 
@@ -78,7 +78,7 @@ RSpec.describe 'PointActivities', type: :system do
         thead = all('div table thead').map(&:text)
         expect(thead).to eq ['取引内容 ポイント 有効期限 取得日']
         tr = all('div tbody tr').map(&:text)
-        expect(tr).to eq ["クーポンによるポイント獲得 300 ポイント #{Date.current.end_of_month.strftime('%Y年%m月%d日')} 2024年09月27日"]
+        expect(tr).to eq ["クーポンによるポイント獲得 300 ポイント #{Date.current.end_of_month.strftime('%Y年%m月%d日')} #{Date.current.strftime('%Y年%m月%d日')}"]
       end
     end
   end

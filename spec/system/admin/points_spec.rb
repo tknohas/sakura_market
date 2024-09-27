@@ -55,7 +55,7 @@ RSpec.describe 'PointActivities', type: :system do
 
         expect(page).to have_css 'h1', text: 'Alice様 ポイント履歴'
         tr = all('div tbody tr').map(&:text)
-        expect(tr[0]).to eq '対象商品購入キャンペーン 100 ポイント 2024年10月27日 2024年09月27日' # NOTE: 日付は左が有効期限、右が適用日
+        expect(tr[0]).to eq "対象商品購入キャンペーン 100 ポイント 2024年10月27日 #{Date.current.strftime('%Y年%m月%d日')}" # NOTE: 日付は左が有効期限、右が適用日
       end
 
       it 'ポイントを減少させることができる' do
@@ -68,7 +68,7 @@ RSpec.describe 'PointActivities', type: :system do
 
         expect(page).to have_css 'h1', text: 'Alice様 ポイント履歴'
         tr = all('div tbody tr').map(&:text)
-        expect(tr[0]).to eq '失効 -50 ポイント 2024年09月27日'
+        expect(tr[0]).to eq "失効 -50 ポイント #{Date.current.strftime('%Y年%m月%d日')}"
       end
     end
 

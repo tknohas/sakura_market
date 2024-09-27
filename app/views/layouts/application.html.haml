@@ -23,6 +23,7 @@
         = link_to 'さくらマーケット', root_path, class: 'text-xl'
       .flex.items-center
         - if user_signed_in?
+          = link_to 'ポイント履歴', points_path, class: 'text-black mr-4'
           = link_to '購入履歴', purchases_path, class: 'text-black mr-4'
           = link_to 'カート', cart_path, class: 'text-black mr-4'
           = button_to 'ログアウト', destroy_user_session_path, method: :delete, data: { turbo_confirm: 'ログアウトしますか？' }, class: 'text-black mr-4'

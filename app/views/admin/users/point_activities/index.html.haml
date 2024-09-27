@@ -1,0 +1,30 @@
+.container.mx-auto.px-4.mt-4
+  %h1.text-3xl.font-bold.mb-4.text-center #{@user.name}様 ポイント履歴
+  .flex.justify-between
+    %div
+      = back_button
+      = link_to_admin_top
+    %div
+      = link_to 'ポイント管理画面', new_admin_user_point_activity_path(@user),
+        class: 'ml-8 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full'
+  %p.text-center.text-lg.font-bold.mb-4
+    ポイント残高: #{@point_activities.sum(:point_change)}
+  .grid
+    .bg-white.shadow-md.rounded-lg.overflow-hidden
+      %h2.text-xl.font-bold.p-4.bg-gray-200 ポイント取引履歴
+      .overflow-x-auto
+        %table.w-full
+          %thead.bg-gray-50
+            %tr
+              %th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.tracking-wider 取引内容
+              %th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.tracking-wider ポイント
+              %th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.tracking-wider 有効期限
+              %th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.tracking-wider 取得日
+          %tbody.bg-white.divide-y.divide-gray-200
+            - @point_activities.each do |activity|
+              %tr
+                %td.px-6.py-4.whitespace-nowrap= activity.description
+                %td.px-6.py-4.whitespace-nowrap{class: activity.point_change.positive? ? 'text-green-600' : 'text-red-600'}
+                  = "#{activity.point_change} ポイント"
+                %td.px-6.py-4.whitespace-nowrap #{activity.expires_at&.strftime('%Y年%m月%d日')}
+                %td.px-6.py-4.whitespace-nowrap= activity.created_at.strftime('%Y年%m月%d日')

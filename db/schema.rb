@@ -135,7 +135,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_27_050524) do
   create_table "point_activities", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.integer "point_change", null: false
-    t.string "description"
+    t.string "description", null: false
     t.datetime "expires_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

@@ -130,4 +130,25 @@ RSpec.describe 'Coupons', type: :system do
       expect(page).to have_css 'h1', text: 'クーポン一覧'
     end
   end
+
+  describe '利用状況' do
+    let!(:user) { create(:user, name: 'Alice') }
+    let!(:coupon_usage) { create(:coupon_usage, user:, coupon:, created_at: '2024-09-27') }
+
+    it 'クーポンの使用者と使用日が表示される' do
+      visit admin_coupon_path(coupon)
+
+      expect(page).to have_css 'h1', text: '利用状況'
+      expect(page).to have_content 'Alice 様'
+      expect(page).to have_content '2024年09月27日'
+    end
+
+    it '前の画面へ戻る' do
+      visit admin_coupons_path
+      click_on 'Abcd-1234-febw'
+      click_on '戻る'
+
+      expect(page).to have_css 'h1', text: 'クーポン一覧'
+    end
+  end
 end

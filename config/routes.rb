@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   }
   devise_for :vendors, controllers: {
     registrations: 'vendors/registrations',
+    sessions: 'vendors/sessions',
   }
   namespace :admin do
     resources :products
@@ -39,4 +40,7 @@ Rails.application.routes.draw do
   post 'apply_coupon', to: 'coupons#apply'
   post 'apply_point', to: 'purchases#apply'
   resources :point_activities, only: %i[index]
+  namespace :vendor do
+    resources :products
+  end
 end

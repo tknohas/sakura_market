@@ -1,0 +1,26 @@
+.container.mx-auto.px-4.mt-4
+  %h1.text-3xl.font-bold.mb-4.text-center 業者一覧
+  = link_to '商品一覧', admin_products_path,
+    class: 'bg-black hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full'
+  %p.text-center.text-lg.font-bold.mb-4
+  .grid
+    .bg-white.shadow-md.rounded-lg.overflow-hidden
+      .overflow-x-auto
+        %table.w-full
+          %thead.bg-gray-300
+            %tr
+              %th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.tracking-wider 業者名
+              %th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.tracking-wider メールアドレス
+              %th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.tracking-wider 登録日
+              %th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.tracking-wider
+              %th.px-6.py-3.text-left.text-xs.font-medium.text-gray-500.tracking-wider
+          %tbody.bg-white.divide-y.divide-gray-200
+            - @vendors.each do |vendor|
+              %tr
+                %td.px-6.py-4.whitespace-nowrap= vendor.name
+                %td.px-6.py-4.whitespace-nowrap= vendor.email
+                %td.px-6.py-4.whitespace-nowrap= vendor.created_at.strftime('%Y年%m月%d日')
+                %td.px-6.py-4.whitespace-nowrap
+                  = button_to '編集', edit_admin_vendor_path(vendor), method: :get,
+                    class: 'bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded'
+                %td.px-6.py-4.whitespace-nowrap= delete_button(admin_vendor_path(vendor))

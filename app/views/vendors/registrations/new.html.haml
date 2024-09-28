@@ -1,0 +1,28 @@
+%h1.text-3xl.font-bold.my-4.text-center 業者アカウント追加
+= link_to '業者一覧', admin_vendors_path, class: 'bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l ml-4'
+
+%div{"class" => "container flex justify-center"}
+  %div{"class" => "w-2/5 mx-auto"}
+    = simple_form_for resource, as: resource_name, url: registration_path(resource_name), html: { class: 'space-y-6' } do |f|
+      = render 'users/shared/error_messages', object: resource
+
+      .form-inputs.space-y-4
+        = f.input :email, required: true, autofocus: true,
+          input_html: { class: "w-full p-2 border border-gray-500 rounded focus:ring focus:ring-indigo-500" },
+          wrapper_html: { class: 'block' }, label_html: { class: 'block mb-1' }
+
+        = f.input :name, required: true,
+          input_html: { class: "w-full p-2 border border-gray-500 rounded focus:ring focus:ring-indigo-500" },
+          wrapper_html: { class: 'block' }, label_html: { class: 'block mb-1' }
+
+        = f.input :password, required: true,
+          input_html: { class: "w-full p-2 border border-gray-500 rounded focus:ring focus:ring-indigo-500", autocomplete: "new-password" },
+          wrapper_html: { class: 'block' }, label_html: { class: 'block mb-1' }
+        %p.text-gray-500.text-sm 8字以上20字以下で、半角英数字の小文字、大文字、数字をそれぞれ1つ以上含めてください
+
+        = f.input :password_confirmation, required: true,
+          input_html: { class: "w-full p-2 border border-gray-500 rounded focus:ring focus:ring-indigo-500", autocomplete: "new-password" },
+          wrapper_html: { class: 'block' }, label_html: { class: 'block mb-1' }
+
+      .form-actions.flex.justify-center
+        = f.button :submit, '業者を追加', class: submit_button_class

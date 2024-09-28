@@ -10,12 +10,16 @@ Rails.application.routes.draw do
   devise_for :admins, controllers: {
     sessions: 'admins/sessions',
   }
+  devise_for :vendors, controllers: {
+    registrations: 'vendors/registrations',
+  }
   namespace :admin do
     resources :products
     resources :users, only: %i[index show update destroy] do
       resources :point_activities, only: %i[index new create], module: :users
     end
     resources :coupons
+    resources :vendors, only: %i[index edit update destroy]
   end
   resources :products, only: %i[index show]
   resources :cart_items, only: %i[create destroy]

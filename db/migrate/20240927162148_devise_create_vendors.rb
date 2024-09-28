@@ -33,6 +33,7 @@ class DeviseCreateVendors < ActiveRecord::Migration[7.1]
       # t.datetime :locked_at
 
       t.string :name, null: false
+      t.boolean :password_changed, default: false
 
       t.timestamps null: false
     end

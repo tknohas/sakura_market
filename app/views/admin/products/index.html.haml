@@ -6,6 +6,8 @@
       class: 'ml-8 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full'
     = link_to 'クーポン一覧', admin_coupons_path,
       class: 'ml-4 bg-black hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full'
+    = link_to '業者一覧', admin_vendors_path,
+      class: 'ml-4 bg-black hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-full'
 
   %div.sort-options.mr-8
     %form{ action: admin_products_path, method: :get }

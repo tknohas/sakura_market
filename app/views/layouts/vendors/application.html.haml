@@ -18,7 +18,7 @@
         = alert
     %nav.flex.items-center.justify-between.flex-wrap.bg-blue-300.p-6.mb-4
       .flex.items-center.text-white.mr-6
-        =link_to 'さくらマーケット', admin_products_path, class: 'text-2xl'
+        =link_to 'さくらマーケット', vendor_products_path, class: 'text-2xl'
       .flex.items-center
         - if vendor_signed_in?
           = button_to "ログアウト", destroy_vendor_session_path, method: :delete, data: { turbo_confirm: 'ログアウトしますか？' }, class: "text-black"

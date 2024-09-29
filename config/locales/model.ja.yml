@@ -34,3 +34,5 @@ ja:
         point_change: '追加ポイント'
         description: '適用理由'
         expires_at: '有効期限'
+      stock:
+        quantity: '在庫数'

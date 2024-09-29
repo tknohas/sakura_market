@@ -24,3 +24,5 @@ end
 
 Coupon.create!(code: '1111-1111-1111', point: 100)
 Coupon.create!(code: 'aaaa-aaaa-aaaa', point: 1000)
+
+Vendor.create!(name: 'アリスファーム', email: 'alicefarm@example.com', password: 'Abcd1234')

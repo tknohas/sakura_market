@@ -3,5 +3,7 @@
   - @products.each do |product|
     .border-4.flex.justify-center
       .product-item.w-100.mx-auto
-        = render 'shared/product_image', product: product, size: '330x219', variant: :middle
-        %p.product-name.mt-2.font-bold.text-center= product.name
+        = link_to vendor_product_path(product) do
+          = render 'shared/product_image', product: product, size: '330x219', variant: :middle
+          %p.product-name.mt-2.font-bold.text-center= product.name
+        

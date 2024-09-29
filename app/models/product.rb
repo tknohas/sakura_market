@@ -6,6 +6,8 @@ class Product < ApplicationRecord
   end
   has_many :cart_items, dependent: :destroy
   has_many :carts, through: :cart_items
+  has_many :stocks, dependent: :destroy
+  has_many :vendors, through: :stocks
 
   with_options presence: true do
     validates :name

@@ -41,6 +41,8 @@ Rails.application.routes.draw do
   post 'apply_point', to: 'purchases#apply'
   resources :point_activities, only: %i[index]
   namespace :vendor do
-    resources :products
+    resources :products, only: %i[index show] do
+      resource :stock, only: %i[new create edit update], module: :products
+    end
   end
 end

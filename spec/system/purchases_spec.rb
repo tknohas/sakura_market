@@ -5,7 +5,7 @@ RSpec.describe 'Purchases', type: :system do
   let!(:cart_item) { create(:cart_item, cart:, product:, vendor:) }
   let!(:address) { create(:address, postal_code: '100-0005', prefecture: '東京都', city: '千代田区', street: '丸の内1丁目', user:) }
   let(:vendor) { create(:vendor, name: 'アリスファーム') }
-  let!(:stock) { create(:stock, product:, vendor:) }
+  let!(:stock) { create(:stock, product:, vendor:, quantity: 10) }
 
   before do
     user_login(user)
@@ -53,6 +53,10 @@ RSpec.describe 'Purchases', type: :system do
       visit cart_path
       expect(page).to have_content 'カートには何も入っていません。'
       expect(user.cart.cart_items).to_not be_present
+
+      visit product_path(product)
+      find('#cart_item_vendor_id').select('アリスファーム (在庫: 9)')
+      expect(Stock.last.quantity).to eq 9
     end
 
     context 'ポイントを使用する場合' do
@@ -90,13 +94,26 @@ RSpec.describe 'Purchases', type: :system do
         expect(page).to have_content 'ポイントが不足しています。'
       end
     end
+
+    context '在庫より商品数が多い場合' do
+      let!(:stock) { create(:stock, product:, vendor:, quantity: 9) }
+      let!(:cart_item) { create(:cart_item, cart:, product:, vendor:, quantity: 10) }
+
+      it '購入できない' do
+        visit new_purchase_path
+        click_on '購入する'
+
+        expect(page).to have_css 'h1', text: '購入確認'
+        expect(page).to have_content '「ピーマン」の在庫が不足しています'
+      end
+    end
   end
 
   describe '購入履歴' do
     let!(:purchase) { create(:purchase, user:) }
     let!(:product1) { create(:product, name: 'にんじん', price: 2_000, sort_position: 2) }
-    let!(:purchase_item) { create(:purchase_item, purchase:, product:) }
-    let!(:purchase_item1) { create(:purchase_item, purchase:, product: product1) }
+    let!(:purchase_item) { create(:purchase_item, purchase:, product:, vendor:) }
+    let!(:purchase_item1) { create(:purchase_item, purchase:, product: product1, vendor:) }
 
     it '商品情報が表示される' do
       click_on '購入履歴'
@@ -120,16 +137,17 @@ RSpec.describe 'Purchases', type: :system do
   describe '購入履歴詳細' do
     let!(:purchase) { create(:purchase, user:, delivery_date: 3.business_days.after(Date.current), delivery_time: '8:00~12:00') }
     let!(:product1) { create(:product, name: 'にんじん', price: 10_000, sort_position: 2) }
-    let!(:purchase_item) { create(:purchase_item, purchase:, product:) }
-    let!(:purchase_item1) { create(:purchase_item, purchase:, product: product1, quantity: 2) }
+    let!(:purchase_item) { create(:purchase_item, purchase:, product:, vendor:) }
+    let!(:purchase_item1) { create(:purchase_item, purchase:, product: product1, quantity: 2, vendor:) }
 
     it '商品情報が表示される' do
       visit purchase_path(purchase)
 
       expect(page).to have_css 'h1', text: '購入履歴詳細'
       expect(page).to have_css 'img.product-image'
-      texts = all('tbody tr td').map(&:text)
-      expect(texts).to eq ['ピーマン', '1,000円', '1', '1,000円', 'にんじん', '10,000円', '2', '20,000円']
+      texts = all('tbody tr').map(&:text)
+      expect(texts[0]).to eq "ピーマン\nアリスファーム\n1,000円\n1\n1,000円"
+      expect(texts[1]).to eq "にんじん\nアリスファーム\n10,000円\n2\n20,000円"
     end
 
     it '小計、送料、代引き手数料、消費税、合計金額が表示される' do

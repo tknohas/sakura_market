@@ -5,8 +5,6 @@ class Purchase < ApplicationRecord
   has_many :purchase_items, dependent: :destroy
   has_many :products, through: :purchase_items
 
-  accepts_nested_attributes_for :purchase_items
-
   validates :delivery_time, presence: true
   validate :validate_delivery_date
 
@@ -74,10 +72,30 @@ class Purchase < ApplicationRecord
       cart.cart_items.each do |cart_item|
         purchase_items.build(
           product_id: cart_item.product_id,
-          quantity: cart_item.quantity
+          quantity: cart_item.quantity,
+          vendor_id: cart_item.vendor_id
         )
       end
     end
+  end
+
+  def complete(cart)
+    return false unless valid?
+    transaction do
+      save!
+      cart.cart_items.each do |cart_item|
+        purchase_items.create!(
+          product: cart_item.product,
+          vendor: cart_item.vendor,
+          quantity: cart_item.quantity
+        )
+        update_stock_after_purchase(cart_item)
+        cart.cart_items_destroy!
+      end
+    end
+    true
+  rescue ActiveRecord::RecordInvalid
+    false
   end
 
   private
@@ -101,6 +119,19 @@ class Purchase < ApplicationRecord
         point_change: -used_point,
         description: '購入時のポイント使用',
       )
+    end
+  end
+
+  def update_stock_after_purchase(cart_item)
+    stock = cart_item.product.stocks.lock.find_by(vendor: cart_item.vendor)
+    if stock
+      if stock.quantity >= cart_item.quantity
+        new_stock_quantity = stock.quantity - cart_item.quantity
+        stock.update!(quantity: new_stock_quantity)
+      else
+        errors.add(:base, "「#{cart_item.product.name}」の在庫が不足しています")
+        raise ActiveRecord::RecordInvalid.new(self)
+      end
     end
   end
 end

@@ -20,13 +20,12 @@ class PurchasesController < ApplicationController
 
   def create
     @purchase = current_user.purchases.build(purchase_params)
-    @purchase.transaction do
-      if @purchase.save
-        current_user.cart.cart_items_destroy!
-        redirect_to purchases_path, notice: '購入が完了しました。'
-      else
-        render :new, alert: '購入に失敗しました。', status: :unprocessable_entity
-      end
+
+    if @purchase.complete(current_cart)
+      redirect_to purchases_path, notice: '購入が完了しました。'
+    else
+      flash.now[:alert] = @purchase.errors.full_messages.join(", ")
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -37,6 +36,6 @@ class PurchasesController < ApplicationController
   private
 
   def purchase_params
-    params.require(:purchase).permit(:delivery_date, :delivery_time, :used_point, purchase_items_attributes: [:product_id, :quantity])
+    params.require(:purchase).permit(:delivery_date, :delivery_time, :used_point)
   end
 end

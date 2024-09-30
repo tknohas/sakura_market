@@ -16,7 +16,8 @@ RSpec.describe 'PointActivities', type: :system do
     context '購入時にポイント使用した場合' do
       let!(:product) { create(:product, name: 'ピーマン', price: 1_000, description: '苦味が少ないです。') }
       let!(:purchase) { create(:purchase, user:, used_point: 800, created_at: '2024-09-27') }
-      let!(:purchase_item) { create(:purchase_item, purchase:, product:) }
+      let!(:vendor) { create(:vendor) }
+      let!(:purchase_item) { create(:purchase_item, purchase:, product:, vendor:) }
 
       it 'ポイントの増減が表示される' do
         visit point_activities_path

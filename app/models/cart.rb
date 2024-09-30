@@ -40,6 +40,6 @@ class Cart < ApplicationRecord
   end
 
   def vendor_exists?(vendor_id)
-    cart_items.exists?(["vendor_id != ?", vendor_id])
+    vendor_id.present? && cart_items.exists?(["vendor_id != ?", vendor_id])
   end
 end

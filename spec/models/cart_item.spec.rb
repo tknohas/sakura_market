@@ -21,7 +21,6 @@ RSpec.describe CartItem, type: :model do
       expect(subject).to_not be_valid
     end
 
-
     it '商品数が不正(在庫より多い)' do
       subject.quantity = 9
       expect(subject).to_not be_valid

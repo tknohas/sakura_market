@@ -2,8 +2,10 @@ RSpec.describe 'Purchases', type: :system do
   let(:user) { create(:user, name: 'Alice') }
   let!(:cart) { create(:cart, user:) }
   let!(:product) { create(:product, name: 'ピーマン', price: 1_000, description: '苦味が少ないです。') }
-  let!(:cart_item) { create(:cart_item, cart:, product:) }
+  let!(:cart_item) { create(:cart_item, cart:, product:, vendor:) }
   let!(:address) { create(:address, postal_code: '100-0005', prefecture: '東京都', city: '千代田区', street: '丸の内1丁目', user:) }
+  let(:vendor) { create(:vendor, name: 'アリスファーム') }
+  let!(:stock) { create(:stock, product:, vendor:) }
 
   before do
     user_login(user)
@@ -197,6 +199,7 @@ RSpec.describe 'Purchases', type: :system do
       click_on '購入する'
 
       visit product_path(product)
+      find('#cart_item_vendor_id').select('アリスファーム')
       click_on 'カートに追加'
       click_on '購入確認'
 

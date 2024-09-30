@@ -5,7 +5,7 @@ class CartItem < ApplicationRecord
 
   validates :cart_id, uniqueness: { scope: :product_id }
   validates :quantity, presence: true,
-  numericality: { greater_than: 0, less_than: 11, only_integer: true }
+            numericality: { greater_than: 0, less_than: 11, only_integer: true }
   validate :validate_stock_sufficiency
 
   def cart_item_total_price

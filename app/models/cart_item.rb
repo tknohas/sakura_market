@@ -20,6 +20,8 @@ class CartItem < ApplicationRecord
     end
   end
 
+  private
+
   def validate_stock_sufficiency
     stock = vendor.stocks.find_by(product:)
     if stock.present? && stock.quantity < quantity

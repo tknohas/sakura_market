@@ -132,6 +132,13 @@ RSpec.describe 'Purchases', type: :system do
       expect(page).to have_css 'h1', text: '購入履歴詳細'
       expect(page).to have_content '4,290円'
     end
+
+    it 'トップ画面へ遷移する' do
+      click_on '購入履歴'
+      click_on 'トップ'
+
+      expect(page).to have_css 'h1', text: '日記一覧'
+    end
   end
 
   describe '購入履歴詳細' do

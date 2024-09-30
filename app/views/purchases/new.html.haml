@@ -1,15 +1,12 @@
 .bg-gray-100.min-h-screen.py-4
   .container.mx-auto
     %h1.text-3xl.font-bold.mb-4.text-center 購入確認
-
     - if @purchase.purchase_items.any?
       = render 'purchases/purchase_details', purchase: @purchase, use_point: @use_point
       = link_to '住所を変更', edit_address_path, class: 'text-blue-500 hover:underline mt-1 mb-4 inline-block'
-
       %p.text-gray-500.mb-4
         ※配送日時を指定する場合は下記からご選択ください。
         %br ※配送日時は3営業日〜14営業日の範囲でご選択いただけます(営業日: 月曜日〜金曜日)。
-
       = simple_form_for @purchase do |f|
         = f.label :delivery_date
         = f.date_field :delivery_date, label: :delivery_date, class: 'bg-white rounded-lg shadow-md p-4 rounded-lg ml-2',
@@ -23,7 +20,6 @@
         .text-center
           = f.button :submit, '購入する', class: 'bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg text-lg hover:bg-indigo-700 cursor-pointer mt-4'
           = link_to 'カートに戻る', cart_path, class: 'bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg ml-4'
-
     - else
       .bg-white.rounded-lg.shadow-md.p-6.text-center
         %p.text-lg お買い物をお楽しみください。

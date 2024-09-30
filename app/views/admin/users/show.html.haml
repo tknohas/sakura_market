@@ -18,6 +18,7 @@
           - if @user.address.present?
             %p.mb-1.text-lg 〒#{@user.address.postal_code}
             %p.text-lg #{@user.address.prefecture} #{@user.address.city} #{@user.address.street} #{@user.address.building}
+
 - unless @user.canceled?
   = simple_form_for [:admin, @user] do |f|
     .text-center.mt-4
@@ -29,6 +30,5 @@
         = f.submit 'アカウントを無効化',
           data: { turbo_confirm: '変更しますか？' },
           class: 'bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 border border-red-500 hover:border-transparent rounded ml-2 cursor-pointer'
-
   .text-center.mt-4
     = link_to 'ポイント一覧', admin_user_point_activities_path(@user), class: 'text-blue-500 hover:underline'

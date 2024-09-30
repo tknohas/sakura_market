@@ -1,5 +1,6 @@
 .container.mx-auto.px-4.mt-4
   %h1.text-3xl.font-bold.mb-4.text-center ポイント履歴
+  = link_to_user_top
   %p.text-center.text-lg.font-bold.mb-4
     ポイント残高: #{@point_activities.sum(:point_change)}
   .grid

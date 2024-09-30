@@ -5,6 +5,7 @@ RSpec.describe 'PointActivities', type: :system do
 
   before do
     admin_login(admin)
+    expect(page).to have_content 'ログインしました。'
   end
 
   describe 'ユーザーポイント履歴' do
@@ -20,14 +21,13 @@ RSpec.describe 'PointActivities', type: :system do
     it 'ポイント管理画面へ遷移する' do
       visit admin_user_point_activities_path(user)
       click_on 'ポイント管理画面'
-
       expect(page).to have_css 'h1', text: 'ポイント管理'
     end
 
     it '前の画面へ戻る' do
       visit admin_user_path(user)
-      expect(page).to have_css 'h1', text: '顧客詳細'
 
+      expect(page).to have_css 'h1', text: '顧客詳細'
       click_on 'ポイント一覧'
       click_on '戻る'
 
@@ -37,7 +37,6 @@ RSpec.describe 'PointActivities', type: :system do
     it 'トップへ戻る' do
       visit admin_user_point_activities_path(user)
       click_on 'トップ'
-
       expect(page).to have_css 'h1', text: '商品一覧(管理画面)'
     end
   end
@@ -50,7 +49,6 @@ RSpec.describe 'PointActivities', type: :system do
         fill_in 'point_activity_point_change', with: 100
         fill_in 'point_activity_description', with: '対象商品購入キャンペーン'
         fill_in 'point_activity_expires_at', with: '2024-10-27'
-
         click_on 'ポイントを反映させる'
 
         expect(page).to have_css 'h1', text: 'Alice様 ポイント履歴'
@@ -63,7 +61,6 @@ RSpec.describe 'PointActivities', type: :system do
 
         fill_in 'point_activity_point_change', with: -50
         fill_in 'point_activity_description', with: '失効'
-
         click_on 'ポイントを反映させる'
 
         expect(page).to have_css 'h1', text: 'Alice様 ポイント履歴'
@@ -78,7 +75,6 @@ RSpec.describe 'PointActivities', type: :system do
 
         fill_in 'point_activity_point_change', with: ''
         fill_in 'point_activity_description', with: ''
-
         click_on 'ポイントを反映させる'
 
         expect(page).to have_css 'h1', text: 'ポイント管理'
@@ -89,8 +85,8 @@ RSpec.describe 'PointActivities', type: :system do
 
     it '前の画面へ戻る' do
       visit admin_user_point_activities_path(user)
-      expect(page).to have_css 'h1', text: 'Alice様 ポイント履歴'
 
+      expect(page).to have_css 'h1', text: 'Alice様 ポイント履歴'
       click_on 'ポイント管理画面'
       click_on '戻る'
 
@@ -100,7 +96,6 @@ RSpec.describe 'PointActivities', type: :system do
     it 'トップへ戻る' do
       visit new_admin_user_point_activity_path(user)
       click_on 'トップ'
-
       expect(page).to have_css 'h1', text: '商品一覧(管理画面)'
     end
   end

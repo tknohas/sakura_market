@@ -16,7 +16,7 @@ RSpec.describe 'Products', type: :system do
       expect(page).to have_content 'ピーマン'
     end
 
-    it '価格が安い順に並び替わる', js: true do
+    it '価格が安い順に並び替わる', :js do
       select '価格が安い順', from: 'sort_order'
 
       expect(page).to have_css 'h1', text: '商品一覧(管理画面)'
@@ -25,7 +25,7 @@ RSpec.describe 'Products', type: :system do
       expect(products).to eq ['玉ねぎ', 'ピーマン', 'にんじん']
     end
 
-    it '価格が高い順に並び替わる', js: true do
+    it '価格が高い順に並び替わる', :js do
       select '価格が高い順', from: 'sort_order'
 
       expect(page).to have_css 'h1', text: '商品一覧(管理画面)'
@@ -34,7 +34,7 @@ RSpec.describe 'Products', type: :system do
       expect(products).to eq ['にんじん', 'ピーマン', '玉ねぎ']
     end
 
-    it '表示順に並び替わる', js: true do
+    it '表示順に並び替わる', :js do
       select '表示順', from: 'sort_order'
 
       expect(page).to have_css 'h1', text: '商品一覧(管理画面)'
@@ -43,7 +43,7 @@ RSpec.describe 'Products', type: :system do
       expect(products).to eq ['ピーマン', '玉ねぎ', 'にんじん']
     end
 
-    it '新着順に並び替わる', js: true do
+    it '新着順に並び替わる', :js do
       select '新着順', from: 'sort_order'
 
       expect(page).to have_css 'h1', text: '商品一覧(管理画面)'
@@ -59,7 +59,6 @@ RSpec.describe 'Products', type: :system do
 
     it '商品詳細画面へ遷移する' do
       click_on 'ピーマン'
-
       expect(page).to have_css 'h1', text: '商品詳細(管理画面)'
     end
   end
@@ -75,7 +74,6 @@ RSpec.describe 'Products', type: :system do
         attach_file 'product_image', file_fixture('test_image.jpg')
         find('#product_is_public').check
         fill_in 'product_sort_position', with: 2
-
         click_on '登録'
 
         expect(page).to have_content '登録に成功しました'
@@ -95,7 +93,6 @@ RSpec.describe 'Products', type: :system do
         fill_in 'product_price', with: nil
         fill_in 'product_description', with: ''
         fill_in 'product_sort_position', with: 1
-
         click_on '登録'
 
         expect(page).to have_css 'h1', text: '商品登録'
@@ -108,9 +105,10 @@ RSpec.describe 'Products', type: :system do
 
     it '戻るボタンで一覧画面に戻る' do
       visit admin_products_path
-      click_on '商品登録画面'
 
+      click_on '商品登録画面'
       click_on '戻る'
+
       expect(page).to have_css 'h1', text: '商品一覧(管理画面)'
     end
   end
@@ -127,11 +125,10 @@ RSpec.describe 'Products', type: :system do
     end
 
     it '商品を削除できる', :js do
-      expect(page).to have_content 'ログインしました。'
-
+      expect(page).to have_content 'ログインしました。' # NOTE: テストが落ちてしまうため記載
       visit admin_product_path(product)
-      expect(page).to have_css 'h1', text: '商品詳細(管理画面)'
 
+      expect(page).to have_css 'h1', text: '商品詳細(管理画面)'
       expect{
         click_on '削除'
         expect(page.accept_confirm).to eq '本当に削除しますか？'
@@ -142,12 +139,12 @@ RSpec.describe 'Products', type: :system do
     it 'トップ画面へ遷移する' do
       visit admin_product_path(product)
       click_on 'トップ'
-
       expect(page).to have_css 'h1', text: '商品一覧(管理画面)'
     end
 
     it '前の画面へ戻る' do
       visit admin_products_path
+
       click_on 'ピーマン'
       click_on '戻る'
 
@@ -157,7 +154,6 @@ RSpec.describe 'Products', type: :system do
     it '編集画面へ遷移する' do
       visit admin_product_path(product)
       click_on '編集'
-
       expect(page).to have_css 'h1', text: '商品編集'
     end
   end
@@ -173,7 +169,6 @@ RSpec.describe 'Products', type: :system do
         attach_file 'product_image', file_fixture('test_image.jpg')
         find('#product_is_public').uncheck
         fill_in 'product_sort_position', with: 1
-
         click_on '変更'
 
         expect(page).to have_content '更新に成功しました'
@@ -192,7 +187,6 @@ RSpec.describe 'Products', type: :system do
         fill_in 'product_name', with: ''
         fill_in 'product_price', with: ''
         fill_in 'product_description', with: ''
-
         click_on '変更'
 
         expect(page).to have_css 'h1', text: '商品編集'
@@ -205,12 +199,12 @@ RSpec.describe 'Products', type: :system do
     it 'トップ画面へ遷移する' do
       visit edit_admin_product_path(product)
       click_on 'トップ'
-
       expect(page).to have_css 'h1', text: '商品一覧(管理画面)'
     end
 
     it '前の画面へ戻る' do
       visit admin_product_path(product)
+
       click_on '編集'
       click_on '戻る'
 

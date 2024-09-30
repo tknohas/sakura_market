@@ -10,7 +10,6 @@ RSpec.describe 'Admins', type: :system do
       it 'ログイン成功' do
         fill_in 'admin_email', with: admin.email
         fill_in 'admin_password', with: 'Abcd1234'
-
         within '.form-actions' do
           click_button 'ログイン'
         end
@@ -24,7 +23,6 @@ RSpec.describe 'Admins', type: :system do
       it 'ログイン失敗(パスワード不正)' do
         fill_in 'admin_email', with: 'admin@example.com'
         fill_in 'admin_password', with: 'aaa'
-
         within '.form-actions' do
           click_button 'ログイン'
         end
@@ -36,7 +34,6 @@ RSpec.describe 'Admins', type: :system do
       it 'ログイン失敗(メールアドレス不正)' do
         fill_in 'admin_email', with: 'aaa@example.com'
         fill_in 'admin_password', with: 'Abcd1234'
-
         within '.form-actions' do
           click_button 'ログイン'
         end
@@ -49,7 +46,7 @@ RSpec.describe 'Admins', type: :system do
 
   it 'ログイン前はadmin_root_pathに遷移できない' do
     visit admin_products_path
-
+    
     expect(page).to have_css 'h1', text: 'ログイン'
     expect(page).to have_content 'ログインもしくはアカウント登録してください。'
   end

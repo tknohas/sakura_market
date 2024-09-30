@@ -23,13 +23,11 @@ RSpec.describe 'Diaries', type: :system do
 
     it '日記投稿画面へ遷移する' do
       click_on '日記の投稿はこちら'
-
       expect(page).to have_css 'h1', text: '日記投稿'
     end
 
     it '日記詳細画面へ遷移する' do
       click_on 'さくらんぼが届きました。'
-
       expect(page).to have_css 'h1', text: '日記詳細'
     end
   end
@@ -42,7 +40,6 @@ RSpec.describe 'Diaries', type: :system do
         fill_in 'diary_title', with: 'じゃがバターを作りました。'
         fill_in 'diary_content', with: 'ホクホクで美味しかったです。'
         attach_file 'diary_image', file_fixture('test_image.jpg')
-
         click_on '日記を投稿する'
 
         expect(page).to have_css 'h1', text: '日記一覧'
@@ -58,7 +55,6 @@ RSpec.describe 'Diaries', type: :system do
 
         fill_in 'diary_title', with: ''
         fill_in 'diary_content', with: ''
-
         click_on '日記を投稿する'
 
         expect(page).to have_css 'h1', text: '日記投稿'
@@ -88,8 +84,8 @@ RSpec.describe 'Diaries', type: :system do
 
     it '日記を削除できる', :js do
       visit diary_path(current_user_diary)
-      expect(page).to have_css 'h1', text: '日記詳細'
 
+      expect(page).to have_css 'h1', text: '日記詳細'
       expect {
         click_on '削除'
         expect(page.accept_confirm).to eq '本当に削除しますか？'
@@ -100,7 +96,6 @@ RSpec.describe 'Diaries', type: :system do
     it '編集画面へ遷移する' do
       visit diary_path(current_user_diary)
       click_on '編集'
-
       expect(page).to have_css 'h1', text: '日記編集'
     end
 
@@ -116,19 +111,16 @@ RSpec.describe 'Diaries', type: :system do
     it 'トップ画面へ遷移する' do
       visit diary_path(current_user_diary)
       click_on 'トップ'
-
       expect(page).to have_css 'h1', text: '日記一覧'
     end
 
     it '自身の投稿ではなければ編集ボタンが表示されない' do
       visit diary_path(user_diary)
-
       expect(page).to_not have_content '編集'
     end
 
     it '自身の投稿ではなければ削除ボタンが表示されない' do
       visit diary_path(user_diary)
-
       expect(page).to_not have_content '削除'
     end
   end
@@ -141,7 +133,6 @@ RSpec.describe 'Diaries', type: :system do
         fill_in 'diary_title', with: 'じゃがバターを作りました。'
         fill_in 'diary_content', with: 'ホクホクで美味しかったです。'
         attach_file 'diary_image', file_fixture('test_image.jpg')
-
         click_on '内容を更新する'
 
         expect(page).to have_css 'h1', text: '日記詳細'
@@ -157,7 +148,6 @@ RSpec.describe 'Diaries', type: :system do
 
         fill_in 'diary_title', with: ''
         fill_in 'diary_content', with: ''
-
         click_on '内容を更新する'
 
         expect(page).to have_css 'h1', text: '日記編集'
@@ -168,8 +158,8 @@ RSpec.describe 'Diaries', type: :system do
 
     it '前の画面へ遷移する' do
       visit diary_path(current_user_diary)
-      expect(page).to have_css 'h1', text: '日記詳細'
 
+      expect(page).to have_css 'h1', text: '日記詳細'
       click_on '編集'
       click_on '戻る'
 
@@ -179,7 +169,6 @@ RSpec.describe 'Diaries', type: :system do
     it 'トップ画面へ遷移する' do
       visit edit_diary_path(current_user_diary)
       click_on 'トップ'
-
       expect(page).to have_css 'h1', text: '日記一覧'
     end
   end

@@ -31,6 +31,11 @@ RSpec.describe Purchase, type: :model do
       subject.delivery_time = nil
       expect(subject).to_not be_valid
     end
+
+    it 'userが不正' do
+      subject.user = nil
+      expect(subject).to_not be_valid
+    end
   end
 
   describe '送料の計算' do

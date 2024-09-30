@@ -20,19 +20,18 @@ RSpec.describe 'Vendors', type: :system do
     it '商品一覧画面へ遷移する' do
       visit admin_vendors_path
       click_on '商品一覧'
-
       expect(page).to have_css 'h1', text: '商品一覧(管理画面)'
     end
 
     it '編集画面へ遷移する' do
       visit admin_vendors_path
       click_on '編集'
-
       expect(page).to have_css 'h1', text: '業者アカウント編集'
     end
 
     it '業者を削除できる', :js do
       visit admin_vendors_path
+
       expect{
         click_on '削除'
         expect(page.accept_confirm).to eq '本当に削除しますか？'
@@ -50,7 +49,6 @@ RSpec.describe 'Vendors', type: :system do
         fill_in 'vendor_name', with: 'ボブ農園'
         fill_in 'vendor_password', with: 'Abcd1234'
         fill_in 'vendor_password_confirmation', with: 'Abcd1234'
-
         within '.form-actions' do
           click_button '業者を追加'
         end
@@ -68,7 +66,6 @@ RSpec.describe 'Vendors', type: :system do
         fill_in 'vendor_name', with: ''
         fill_in 'vendor_password', with: ''
         fill_in 'vendor_password_confirmation', with: ''
-
         within '.form-actions' do
           click_button '業者を追加'
         end
@@ -83,7 +80,6 @@ RSpec.describe 'Vendors', type: :system do
     it '業者一覧画面へ遷移する' do
       visit new_vendor_registration_path
       click_on '業者一覧'
-
       expect(page).to have_css 'h1', text: '業者一覧'
     end
   end
@@ -95,7 +91,6 @@ RSpec.describe 'Vendors', type: :system do
 
         fill_in 'vendor_email', with: 'bobfarm@example.com'
         fill_in 'vendor_name', with: 'ボブ農園'
-
         within '.form-actions' do
           click_button '変更'
         end
@@ -111,7 +106,6 @@ RSpec.describe 'Vendors', type: :system do
 
         fill_in 'vendor_email', with: ''
         fill_in 'vendor_name', with: ''
-
         within '.form-actions' do
           click_button '変更'
         end
@@ -124,7 +118,6 @@ RSpec.describe 'Vendors', type: :system do
       it '業者一覧画面へ遷移する' do
         visit edit_admin_vendor_path(vendor)
         click_on '業者一覧'
-
         expect(page).to have_css 'h1', text: '業者一覧'
       end
     end

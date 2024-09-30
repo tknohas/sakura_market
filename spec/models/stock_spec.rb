@@ -18,12 +18,12 @@ RSpec.describe Stock, type: :model do
       expect(subject).to_not be_valid
     end
 
-    it '業者が不正' do
+    it 'vendorが不正' do
       subject.vendor = nil
       expect(subject).to_not be_valid
     end
 
-    it '商品' do
+    it 'productが不正' do
       subject.product = nil
       expect(subject).to_not be_valid
     end

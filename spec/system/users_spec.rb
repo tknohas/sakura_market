@@ -10,7 +10,6 @@ RSpec.describe 'Users', type: :system do
       it 'ログイン成功' do
         fill_in 'user_email', with: 'alice@example.com'
         fill_in 'user_password', with: 'Abcd1234'
-
         within '.form-actions' do
           click_button 'ログイン'
         end
@@ -24,7 +23,6 @@ RSpec.describe 'Users', type: :system do
       it 'ログイン失敗(パスワード不正)' do
         fill_in 'user_email', with: 'alice@example.com'
         fill_in 'user_password', with: 'aaa'
-
         within '.form-actions' do
           click_button 'ログイン'
         end
@@ -36,7 +34,6 @@ RSpec.describe 'Users', type: :system do
       it 'ログイン失敗(メールアドレス不正)' do
         fill_in 'user_email', with: 'aaa@example.com'
         fill_in 'user_password', with: 'Abcd1234'
-
         within '.form-actions' do
           click_button 'ログイン'
         end
@@ -59,13 +56,11 @@ RSpec.describe 'Users', type: :system do
         fill_in 'user_email', with: 'bob@example.com'
         fill_in 'user_password', with: 'Abcd1234'
         fill_in 'user_password_confirmation', with: 'Abcd1234'
-
         within '.form-actions' do
           click_button '新規登録'
         end
 
         expect(page).to have_content '本人確認用のメールを送信しました。メール内のリンクからアカウントを有効化させてください。'
-
         email = open_last_email
         expect(email).to have_subject 'メールアドレス確認メール'
         click_first_link_in_email(email)
@@ -73,7 +68,6 @@ RSpec.describe 'Users', type: :system do
         expect(page).to have_content 'メールアドレスが確認できました。'
         fill_in 'user_email', with: 'bob@example.com'
         fill_in 'user_password', with: 'Abcd1234'
-
         within '.form-actions' do
           click_button 'ログイン'
         end
@@ -90,7 +84,6 @@ RSpec.describe 'Users', type: :system do
         fill_in 'user_email', with: 'alice@example.com'
         fill_in 'user_password', with: 'Abcd1234'
         fill_in 'user_password_confirmation', with: 'Abcd1235'
-
         within '.form-actions' do
           click_button '新規登録'
         end
@@ -106,7 +99,6 @@ RSpec.describe 'Users', type: :system do
         fill_in 'user_email', with: 'bob@example.com'
         fill_in 'user_password', with: '12345678'
         fill_in 'user_password_confirmation', with: '12345678'
-
         within '.form-actions' do
           click_button '新規登録'
         end
@@ -128,11 +120,9 @@ RSpec.describe 'Users', type: :system do
     context '登録されていないメールアドレスの場合' do
       it '登録成功' do
         fill_in 'user_email', with: 'franky@example.com'
-
         click_button '確認メール再送信'
 
         expect(page).to have_content 'アカウントの有効化について数分以内にメールでご連絡します。'
-
         email = open_last_email
         expect(email).to have_subject 'メールアドレス確認メール'
         click_first_link_in_email(email)
@@ -140,7 +130,6 @@ RSpec.describe 'Users', type: :system do
         expect(page).to have_content 'メールアドレスが確認できました。'
         fill_in 'user_email', with: 'franky@example.com'
         fill_in 'user_password', with: 'Abcd1234'
-
         within '.form-actions' do
           click_button 'ログイン'
         end
@@ -153,7 +142,6 @@ RSpec.describe 'Users', type: :system do
     context '登録済みのメールアドレスの場合' do
       it 'メールが送信されない' do
         fill_in 'user_email', with: 'alice@example.com'
-
         click_button '確認メール再送信'
 
         expect(page).to have_content 'メールアドレスは既に登録済みです。ログインしてください。'
@@ -164,7 +152,6 @@ RSpec.describe 'Users', type: :system do
     context '新規登録前の場合' do
       it 'メールが送信されない' do
         fill_in 'user_email', with: 'koby@example.com'
-
         click_button '確認メール再送信'
 
         expect(page).to have_content 'メールアドレスは見つかりませんでした。'
@@ -182,18 +169,15 @@ RSpec.describe 'Users', type: :system do
     context 'フォームの入力値が正常' do
       it '登録成功' do
         fill_in 'user_email', with: 'alice@example.com'
-
         click_button 'パスワードリセット'
 
         expect(page).to have_content 'パスワードの再設定について数分以内にメールでご連絡いたします。'
-
         email = open_last_email
         expect(email).to have_subject 'パスワードの再設定について'
         click_first_link_in_email(email)
 
         fill_in 'user_password', with: 'Abcd9876'
         fill_in 'user_password_confirmation', with: 'Abcd9876'
-
         click_button 'パスワード変更'
 
         expect(page).to have_content 'パスワードが正しく変更されました。'
@@ -204,7 +188,6 @@ RSpec.describe 'Users', type: :system do
     context 'フォームの入力値が異常' do
       it 'メールが送信されない' do
         fill_in 'user_email', with: 'unknown_user@example.com'
-
         click_button 'パスワードリセット'
 
         expect(page).to have_content 'メールアドレスは見つかりませんでした。'
@@ -246,7 +229,6 @@ RSpec.describe 'Users', type: :system do
         fill_in 'user_name', with: 'Bob'
         fill_in 'user_nickname', with: 'bb'
         attach_file 'user_image', file_fixture('test_image.jpg')
-
         click_on '変更'
 
         expect(page).to have_css 'h1', text: '日記一覧'
@@ -264,7 +246,6 @@ RSpec.describe 'Users', type: :system do
 
         fill_in 'user_name', with: ''
         fill_in 'user_nickname', with: ''
-
         click_on '変更'
 
         expect(page).to have_css 'h1', text: 'プロフィール編集'
@@ -276,14 +257,12 @@ RSpec.describe 'Users', type: :system do
     it 'トップ画面へ遷移する' do
       visit edit_user_path
       click_on 'トップ'
-
       expect(page).to have_css 'h1', text: '日記一覧'
     end
 
     it '前の画面へ遷移する' do
       click_on 'プロフィールを編集する'
       click_on '戻る'
-
       expect(page).to have_css 'h1', text: '日記一覧'
     end
   end

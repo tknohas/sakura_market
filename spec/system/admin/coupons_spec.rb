@@ -4,6 +4,7 @@ RSpec.describe 'Coupons', type: :system do
 
   before do
     admin_login(admin)
+    expect(page).to have_content 'ログインしました。'
   end
 
   describe '一覧画面' do
@@ -48,7 +49,6 @@ RSpec.describe 'Coupons', type: :system do
         fill_in 'coupon_code', with: '31vq-ago2-Ned2'
         fill_in 'coupon_point', with: 200
         fill_in 'coupon_expires_at', with: Date.current
-
         click_on '登録'
 
         expect(page).to have_content 'クーポンを作成しました。'
@@ -65,7 +65,6 @@ RSpec.describe 'Coupons', type: :system do
 
         fill_in 'coupon_code', with: ''
         fill_in 'coupon_point', with: ''
-
         click_on '登録'
 
         expect(page).to have_css 'h1', text: 'クーポン登録'
@@ -78,10 +77,11 @@ RSpec.describe 'Coupons', type: :system do
 
     it '戻るボタンでクーポン一覧画面に戻る' do
       visit admin_coupons_path
-      expect(page).to have_css 'h1', text: 'クーポン一覧'
 
+      expect(page).to have_css 'h1', text: 'クーポン一覧'
       click_on 'クーポン登録'
       click_on '戻る'
+
       expect(page).to have_css 'h1', text: 'クーポン一覧'
     end
   end
@@ -94,7 +94,6 @@ RSpec.describe 'Coupons', type: :system do
         fill_in 'coupon_code', with: '31vq-ago2-Ned2'
         fill_in 'coupon_point', with: 200
         fill_in 'coupon_expires_at', with: Date.current
-
         click_on '変更'
 
         expect(page).to have_content 'クーポンを更新しました。'
@@ -111,7 +110,6 @@ RSpec.describe 'Coupons', type: :system do
 
         fill_in 'coupon_code', with: ''
         fill_in 'coupon_point', with: ''
-
         click_on '変更'
 
         expect(page).to have_css 'h1', text: 'クーポン編集'
@@ -124,6 +122,7 @@ RSpec.describe 'Coupons', type: :system do
 
     it '前の画面へ戻る' do
       visit admin_coupons_path
+
       click_on '編集'
       click_on '戻る'
 
@@ -145,6 +144,7 @@ RSpec.describe 'Coupons', type: :system do
 
     it '前の画面へ戻る' do
       visit admin_coupons_path
+
       click_on 'Abcd-1234-febw'
       click_on '戻る'
 

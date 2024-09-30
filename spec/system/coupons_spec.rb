@@ -6,6 +6,7 @@ RSpec.describe 'Coupons', type: :system do
 
   before do
     user_login(user)
+    expect(page).to have_content 'ログインしました。'
   end
 
   describe '一覧画面' do
@@ -24,7 +25,6 @@ RSpec.describe 'Coupons', type: :system do
         visit products_path
 
         fill_in 'code', with: '31vq-ago2-Ned2'
-
         click_on '適用'
 
         expect(page).to have_content 'クーポンを適用しました。'
@@ -40,7 +40,6 @@ RSpec.describe 'Coupons', type: :system do
         visit products_path
 
         fill_in 'code', with: 'Abcd-1234-febw'
-
         click_on '適用'
 
         expect(page).to have_css 'h1', text: '商品一覧'

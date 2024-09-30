@@ -16,7 +16,6 @@ RSpec.describe 'Products::Stocks', type: :system do
 
     it '商品詳細画面へ遷移する' do
       click_on 'ピーマン'
-
       expect(page).to have_css 'h1', text: '商品詳細'
       expect(page).to have_current_path vendor_product_path(product)
     end
@@ -47,6 +46,7 @@ RSpec.describe 'Products::Stocks', type: :system do
 
       it 'トップ画面へ遷移する' do
         visit vendor_product_path(product)
+
         click_on 'トップ'
 
         expect(page).to have_css 'h1', text: '商品一覧'

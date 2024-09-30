@@ -9,6 +9,7 @@ RSpec.describe 'Products', type: :system do
 
     before do
       user_login(user)
+      expect(page).to have_content 'ログインしました。'
     end
 
     context 'フォームの入力値が正常な場合' do
@@ -19,7 +20,6 @@ RSpec.describe 'Products', type: :system do
         fill_in 'address_prefecture', with: '千葉県'
         fill_in 'address_city', with: '浦安市'
         fill_in 'address_street', with: '舞浜1-1'
-
         click_on '登録'
 
         expect(page).to have_content '住所が登録されました。'
@@ -39,7 +39,6 @@ RSpec.describe 'Products', type: :system do
         fill_in 'address_prefecture', with: ''
         fill_in 'address_city', with: ''
         fill_in 'address_street', with: ''
-
         click_on '登録'
 
         expect(page).to have_content '住所登録'
@@ -68,7 +67,6 @@ RSpec.describe 'Products', type: :system do
         fill_in 'address_prefecture', with: '千葉県'
         fill_in 'address_city', with: '浦安市'
         fill_in 'address_street', with: '舞浜1-1'
-
         click_on '変更'
 
         expect(page).to have_content '住所が変更されました。'
@@ -88,7 +86,6 @@ RSpec.describe 'Products', type: :system do
         fill_in 'address_prefecture', with: ''
         fill_in 'address_city', with: ''
         fill_in 'address_street', with: ''
-
         click_on '変更'
 
         expect(page).to have_content '住所変更'
@@ -118,6 +115,7 @@ RSpec.describe 'Products', type: :system do
 
       before do
         user_login(user)
+        expect(page).to have_content 'ログインしました。'
       end
 
       context '住所を登録している場合' do
@@ -135,7 +133,6 @@ RSpec.describe 'Products', type: :system do
 
         it '住所変更画面に遷移できる' do
           visit cart_path
-
           click_on '住所の変更はこちら'
           expect(page).to have_css 'h1', text: '住所変更'
         end
@@ -157,13 +154,13 @@ RSpec.describe 'Products', type: :system do
 
       it 'カートに商品があり、住所が登録されていても住所や登録用リンクが表示されない' do
         visit product_path(product)
+
         find('#cart_item_vendor_id').select('アリスファーム')
         click_on 'カートに追加'
 
         expect(page).to have_css 'h1', text: 'カート'
         expect(page).to have_content 'ピーマン'
         expect(page).to have_content '1,000円'
-
         expect(page).to_not have_content '100-0005'
         expect(page).to_not have_content '東京都'
         expect(page).to_not have_content '千代田区'

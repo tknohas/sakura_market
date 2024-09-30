@@ -20,7 +20,6 @@ RSpec.describe 'Comments', type: :system do
       expect(page).to have_content '我が家にもさくらんぼが届きました。'
       expect(page).to have_content 'bb'
       expect(page).to have_content '食パンにアボカドを塗って食べると美味しいですよ！'
-
     end
 
     it 'コメント編集画面へ遷移する' do
@@ -73,7 +72,6 @@ RSpec.describe 'Comments', type: :system do
         click_on 'コメントを書く'
 
         fill_in 'comment_content', with: '冷えてきたのでじゃがバターがより美味しく感じますね。'
-
         click_on 'コメントする'
 
         expect(page).to have_css 'h1', text: '日記詳細'
@@ -87,7 +85,6 @@ RSpec.describe 'Comments', type: :system do
         click_on 'コメントを書く'
 
         fill_in 'comment_content', with: '冷えてきたのでじゃがバターがより美味しく感じますね。'
-
         click_on 'コメントする'
 
         email = open_last_email
@@ -104,7 +101,6 @@ RSpec.describe 'Comments', type: :system do
         click_on 'コメントを書く'
 
         fill_in 'comment_content', with: ''
-
         click_on 'コメントする'
 
         expect(page).to have_css 'h1', text: 'コメント追加'
@@ -114,8 +110,8 @@ RSpec.describe 'Comments', type: :system do
 
     it '前の画面へ遷移する' do
       visit diaries_path
-      expect(page).to have_css 'h1', text: '日記一覧'
 
+      expect(page).to have_css 'h1', text: '日記一覧'
       click_on 'コメントを書く'
       click_on '戻る'
 
@@ -124,8 +120,8 @@ RSpec.describe 'Comments', type: :system do
 
     it 'トップ画面へ遷移する' do
       click_on 'コメントを書く'
-      expect(page).to have_css 'h1', text: 'コメント追加'
 
+      expect(page).to have_css 'h1', text: 'コメント追加'
       click_on 'トップ'
 
       expect(page).to have_css 'h1', text: '日記一覧'
@@ -144,7 +140,6 @@ RSpec.describe 'Comments', type: :system do
         visit edit_diary_comment_path(current_user_diary, current_user_comment)
 
         fill_in 'comment_content', with: '冷えてきたのでじゃがバターがより美味しく感じますね。'
-
         click_on '内容を更新する'
 
         expect(page).to have_css 'h1', text: '日記詳細'
@@ -160,7 +155,6 @@ RSpec.describe 'Comments', type: :system do
         visit edit_diary_comment_path(current_user_diary, current_user_comment)
 
         fill_in 'comment_content', with: ''
-
         click_on '内容を更新する'
 
         expect(page).to have_css 'h1', text: 'コメント編集'
@@ -170,24 +164,24 @@ RSpec.describe 'Comments', type: :system do
 
     it '前の画面へ遷移する' do
       visit diary_path(current_user_diary)
-      expect(page).to have_css 'h1', text: '日記詳細'
 
+      expect(page).to have_css 'h1', text: '日記詳細'
       comments = all('.comment-area')
       within comments[1] do
         click_on '編集'
       end
-      expect(page).to have_css 'h1', text: 'コメント編集'
 
+      expect(page).to have_css 'h1', text: 'コメント編集'
       click_on '戻る'
+
       expect(page).to have_css 'h1', text: '日記詳細'
     end
 
     it 'トップ画面へ遷移する' do
       visit edit_diary_comment_path(current_user_diary, current_user_comment)
+
       expect(page).to have_css 'h1', text: 'コメント編集'
-
       click_on 'トップ'
-
       expect(page).to have_css 'h1', text: '日記一覧'
     end
   end

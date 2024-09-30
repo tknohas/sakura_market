@@ -8,6 +8,11 @@ RSpec.describe 'Products', type: :system do
     let!(:highest_price_product) { create(:product, name: 'にんじん', price: 10_000, sort_position: 3, created_at: '2024-04-01') }
     let!(:lowest_price_product) { create(:product, name: '玉ねぎ', price: 100, sort_position: 2, created_at: '2024-07-01') }
 
+    before do
+      admin_login(admin)
+      expect(page).to have_content 'ログインしました。'
+    end
+
     it '商品情報が表示される' do
       visit products_path
 
@@ -17,7 +22,6 @@ RSpec.describe 'Products', type: :system do
     end
 
     it '価格が安い順に並び替わる', js: true do
-      admin_login(admin)
       select '価格が安い順', from: 'sort_order'
       visit products_path
 
@@ -27,7 +31,6 @@ RSpec.describe 'Products', type: :system do
     end
 
     it '価格が高い順に並び替わる', js: true do
-      admin_login(admin)
       select '価格が高い順', from: 'sort_order'
       visit products_path
 
@@ -37,7 +40,6 @@ RSpec.describe 'Products', type: :system do
     end
 
     it '表示順に並び替わる', js: true do
-      admin_login(admin)
       select '表示順', from: 'sort_order'
       visit products_path
 
@@ -47,7 +49,6 @@ RSpec.describe 'Products', type: :system do
     end
 
     it '新着順に並び替わる', js: true do
-      admin_login(admin)
       select '新着順', from: 'sort_order'
       visit products_path
 
@@ -59,7 +60,6 @@ RSpec.describe 'Products', type: :system do
     it '商品詳細画面へ遷移する' do
       visit products_path
       click_on 'ピーマン'
-
       expect(page).to have_css 'h1', text: '商品詳細'
     end
   end
@@ -77,6 +77,7 @@ RSpec.describe 'Products', type: :system do
 
     it '前の画面へ戻る' do
       visit products_path
+
       click_on 'ピーマン'
       click_on '戻る'
 
@@ -94,6 +95,7 @@ RSpec.describe 'Products', type: :system do
     context 'カートに同じ商品がない場合' do
       it 'カートに商品を追加できる' do
         visit product_path(product)
+
         find('#cart_item_vendor_id').select('アリスファーム')
         click_on 'カートに追加'
 
@@ -114,6 +116,7 @@ RSpec.describe 'Products', type: :system do
       context 'カートの商品の業者と同じ場合' do
         it 'カートに商品を追加できる' do
           visit product_path(product)
+
           find('#cart_item_vendor_id').select('アリスファーム')
           click_on 'カートに追加'
 
@@ -135,6 +138,7 @@ RSpec.describe 'Products', type: :system do
 
         it 'カートに商品を追加できない' do
           visit product_path(product)
+
           find('#cart_item_vendor_id').select('ボブ食堂')
           click_on 'カートに追加'
 
@@ -146,10 +150,11 @@ RSpec.describe 'Products', type: :system do
 
     it 'カートの商品を削除できる', :js do
       visit product_path(product)
+
       find('#cart_item_vendor_id').select('アリスファーム')
       click_on 'カートに追加'
-      expect(page).to have_css 'h1', text: 'カート'
 
+      expect(page).to have_css 'h1', text: 'カート'
       expect {
         click_on '削除'
         expect(page.accept_confirm).to eq '本当に削除しますか？'
@@ -160,13 +165,13 @@ RSpec.describe 'Products', type: :system do
     it '商品一覧画面へ遷移する' do
       visit cart_path
       click_on '買い物を続ける'
-
       expect(page).to have_css 'h1', text: '商品一覧'
       expect(page).to have_current_path products_path
     end
 
     it '商品の在庫が追加する商品数より少なければエラーメッセージが表示される' do
       visit product_path(product)
+
       find('#cart_item_quantity').select(10)
       find('#cart_item_vendor_id').select('アリスファーム')
       click_on 'カートに追加'
@@ -182,6 +187,7 @@ RSpec.describe 'Products', type: :system do
     context 'カートに同じ商品がない場合' do
       it 'カートに商品を追加できる' do
         visit product_path(product)
+
         find('#cart_item_vendor_id').select('アリスファーム')
         click_on 'カートに追加'
 
@@ -196,10 +202,11 @@ RSpec.describe 'Products', type: :system do
       context 'カートの商品の業者と同じ場合' do
         it 'カートに商品を追加できる' do
           visit product_path(product)
+
           find('#cart_item_vendor_id').select('アリスファーム')
           click_on 'カートに追加'
-
           visit product_path(product)
+
           find('#cart_item_vendor_id').select('アリスファーム')
           click_on 'カートに追加'
 
@@ -220,10 +227,11 @@ RSpec.describe 'Products', type: :system do
 
         it 'カートに商品を追加できない' do
           visit product_path(product)
+
           find('#cart_item_vendor_id').select('アリスファーム')
           click_on 'カートに追加'
-
           visit product_path(product)
+
           find('#cart_item_vendor_id').select('ボブ食堂')
           click_on 'カートに追加'
 
@@ -235,10 +243,11 @@ RSpec.describe 'Products', type: :system do
 
     it 'カートの商品を削除できる', :js do
       visit product_path(product)
+
       find('#cart_item_vendor_id').select('アリスファーム')
       click_on 'カートに追加'
-      expect(page).to have_css 'h1', text: 'カート'
 
+      expect(page).to have_css 'h1', text: 'カート'
       expect {
         click_on '削除'
         expect(page.accept_confirm).to eq '本当に削除しますか？'
@@ -248,8 +257,10 @@ RSpec.describe 'Products', type: :system do
 
     it 'カートの商品をログイン後も引き継ぐことができる(ログイン時)' do
       visit product_path(product)
+
       find('#cart_item_vendor_id').select('アリスファーム')
       click_on 'カートに追加'
+
       expect(Cart.last.cart_items).to be_present
 
       user_login(user)
@@ -263,10 +274,11 @@ RSpec.describe 'Products', type: :system do
 
     it 'カートの商品をログイン後も引き継ぐことができる(新規登録時)' do
       visit product_path(product)
+
       find('#cart_item_vendor_id').select('アリスファーム')
       click_on 'カートに追加'
-      expect(Cart.last.cart_items).to be_present
 
+      expect(Cart.last.cart_items).to be_present
       visit new_user_registration_path
 
       fill_in 'user_name', with: 'Bob'
@@ -274,17 +286,14 @@ RSpec.describe 'Products', type: :system do
       fill_in 'user_email', with: 'bob@example.com'
       fill_in 'user_password', with: 'Abcd1234'
       fill_in 'user_password_confirmation', with: 'Abcd1234'
-
       within '.form-actions' do
         click_button '新規登録'
       end
 
       email = open_last_email
       click_first_link_in_email(email)
-
       fill_in 'user_email', with: 'bob@example.com'
       fill_in 'user_password', with: 'Abcd1234'
-
       within '.form-actions' do
         click_button 'ログイン'
       end
@@ -300,6 +309,7 @@ RSpec.describe 'Products', type: :system do
         user_login(user)
         click_on '商品一覧'
         click_on 'ピーマン'
+
         find('#cart_item_vendor_id').select('アリスファーム')
         click_on 'カートに追加'
 
@@ -307,7 +317,6 @@ RSpec.describe 'Products', type: :system do
         expect(page).to have_content 'ピーマン'
         expect(page).to have_content 1
         expect(page).to have_content '1,000円'
-
         click_on 'ログアウト'
         expect(page.accept_confirm).to eq 'ログアウトしますか？'
       end
@@ -316,6 +325,7 @@ RSpec.describe 'Products', type: :system do
         it '数量が追加される' do
           click_on '商品一覧'
           click_on 'ピーマン'
+
           find('#cart_item_vendor_id').select('アリスファーム')
           click_on 'カートに追加'
 
@@ -341,6 +351,7 @@ RSpec.describe 'Products', type: :system do
         it '商品は引き継がれない' do
           click_on '商品一覧'
           click_on 'ピーマン'
+          
           find('#cart_item_vendor_id').select('ボブ食堂')
           click_on 'カートに追加'
 

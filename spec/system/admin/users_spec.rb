@@ -9,6 +9,7 @@ RSpec.describe 'Users', type: :system do
   describe '顧客一覧' do
     context 'ユーザーが退会していない場合' do
       let!(:user) { create(:user, name: 'Alice', email: 'alice@example.com', created_at: '2024-09-23') }
+
       it '顧客情報が表示される' do
         visit admin_users_path
 
@@ -20,7 +21,6 @@ RSpec.describe 'Users', type: :system do
       it '顧客詳細画面へ遷移する' do
         visit admin_users_path
         click_on 'Alice 様'
-
         expect(page).to have_css 'h1', text: '顧客詳細'
       end
     end
@@ -41,12 +41,10 @@ RSpec.describe 'Users', type: :system do
 
         click_on '削除'
         expect(page.accept_confirm).to eq '本当に削除しますか？'
-
         expect(page).to have_content '削除に成功しました。'
         expect(page).to have_css 'h1', text: '顧客一覧'
         texts = all('tbody tr td').map(&:text)
         expect(texts).to eq []
-
         expect(User.last).to_not be_present
         expect(User.with_discarded.discarded).to be_present
 
@@ -57,7 +55,6 @@ RSpec.describe 'Users', type: :system do
       it '顧客詳細画面へ遷移する' do
         visit admin_users_path
         click_on 'Bob 様'
-
         expect(page).to have_css 'h1', text: '顧客詳細'
       end
     end
@@ -86,15 +83,15 @@ RSpec.describe 'Users', type: :system do
     context 'ユーザーが退会していない場合' do
       it 'アカウントを有効化・無効化できる' do
         visit admin_user_path(user)
-
         click_on 'アカウントを無効化'
+
         expect(page).to have_content 'アカウントを無効化しました。'
         user_login(user)
         expect(page).to have_content 'このアカウントは利用できません。'
 
         visit admin_user_path(user)
-
         click_on 'アカウントを有効化'
+
         expect(page).to have_content 'アカウントを有効化しました。'
         user_login(user)
         expect(page).to have_content 'ログインしました。'

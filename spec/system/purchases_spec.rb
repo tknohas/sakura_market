@@ -9,6 +9,7 @@ RSpec.describe 'Purchases', type: :system do
 
   before do
     user_login(user)
+    expect(page).to have_content 'ログインしました。'
   end
 
   describe '購入確認画面' do
@@ -49,12 +50,12 @@ RSpec.describe 'Purchases', type: :system do
 
       expect(page).to have_content '購入が完了しました。'
       expect(page).to have_css 'h1', text: '購入履歴'
-
       visit cart_path
+
       expect(page).to have_content 'カートには何も入っていません。'
       expect(user.cart.cart_items).to_not be_present
-
       visit product_path(product)
+
       find('#cart_item_vendor_id').select('アリスファーム (在庫: 9)')
       expect(Stock.last.quantity).to eq 9
     end
@@ -67,7 +68,6 @@ RSpec.describe 'Purchases', type: :system do
         visit new_purchase_path
 
         fill_in 'use_point', with: 900
-
         click_on '適用'
 
         expect(page).to have_css 'h1', text: '購入確認'
@@ -78,7 +78,6 @@ RSpec.describe 'Purchases', type: :system do
         expect(page).to have_content '300円'    # 代引き手数料
         expect(page).to have_content '100円'    # 消費税
         expect(page).to have_content '1,100円'  # 合計
-
         expect(page).to have_content '使用可能ポイント: 100'
         expect(page).to have_content '適用ポイント: 900'
       end
@@ -87,7 +86,6 @@ RSpec.describe 'Purchases', type: :system do
         visit new_purchase_path
 
         fill_in 'use_point', with: 1001
-
         click_on '適用'
 
         expect(page).to have_css 'h1', text: '購入確認'
@@ -102,7 +100,6 @@ RSpec.describe 'Purchases', type: :system do
       it '購入できない' do
         visit new_purchase_path
         click_on '購入する'
-
         expect(page).to have_css 'h1', text: '購入確認'
         expect(page).to have_content '「ピーマン」の在庫が不足しています'
       end
@@ -136,7 +133,6 @@ RSpec.describe 'Purchases', type: :system do
     it 'トップ画面へ遷移する' do
       click_on '購入履歴'
       click_on 'トップ'
-
       expect(page).to have_css 'h1', text: '日記一覧'
     end
   end
@@ -196,10 +192,9 @@ RSpec.describe 'Purchases', type: :system do
       visit new_purchase_path
 
       fill_in 'use_point', with: 900
-
       click_on '適用'
-      expect(page).to have_content 'ポイントが適用されました。'
 
+      expect(page).to have_content 'ポイントが適用されました。'
       click_on '購入する'
       click_on 'ピーマン'
 
@@ -217,10 +212,9 @@ RSpec.describe 'Purchases', type: :system do
       visit new_purchase_path
 
       fill_in 'use_point', with: 900
-
       click_on '適用'
-      expect(page).to have_content 'ポイントが適用されました。'
 
+      expect(page).to have_content 'ポイントが適用されました。'
       click_on '購入する'
 
       visit product_path(product)

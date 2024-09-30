@@ -5,6 +5,7 @@ RSpec.describe 'PointActivities', type: :system do
 
   before do
     user_login(user)
+    expect(page).to have_content 'ログインしました。'
   end
 
   describe 'ポイント履歴' do
@@ -38,7 +39,6 @@ RSpec.describe 'PointActivities', type: :system do
       it 'トップ画面へ遷移する' do
         visit point_activities_path
         click_on 'トップ'
-
         expect(page).to have_css 'h1', text: '日記一覧'
       end
     end

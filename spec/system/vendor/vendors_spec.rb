@@ -10,7 +10,6 @@ RSpec.describe 'Vendors', type: :system do
       it 'ログイン成功' do
         fill_in 'vendor_email', with: 'alicefarm@example.com'
         fill_in 'vendor_password', with: 'Abcd1234'
-
         within '.form-actions' do
           click_button 'ログイン'
         end
@@ -24,7 +23,6 @@ RSpec.describe 'Vendors', type: :system do
       it 'ログイン失敗(パスワード不正)' do
         fill_in 'vendor_email', with: 'alicefarm@example.com'
         fill_in 'vendor_password', with: 'Aaaa1234'
-
         within '.form-actions' do
           click_button 'ログイン'
         end
@@ -36,7 +34,6 @@ RSpec.describe 'Vendors', type: :system do
       it 'ログイン失敗(メールアドレス不正)' do
         fill_in 'vendor_email', with: 'aaa@example.com'
         fill_in 'vendor_password', with: 'Abcd1234'
-
         within '.form-actions' do
           click_button 'ログイン'
         end
@@ -50,7 +47,6 @@ RSpec.describe 'Vendors', type: :system do
       it 'ログイン後にパスワード変更を求められる' do
         fill_in 'vendor_email', with: 'alicefarm@example.com'
         fill_in 'vendor_password', with: 'Abcd1234'
-
         within '.form-actions' do
           click_button 'ログイン'
         end
@@ -61,7 +57,6 @@ RSpec.describe 'Vendors', type: :system do
         fill_in 'vendor_current_password', with: 'Abcd1234'
         fill_in 'vendor_password', with: 'aAAA1234'
         fill_in 'vendor_password_confirmation', with: 'aAAA1234'
-
         click_on 'パスワードを変更する'
 
         expect(page).to have_css 'h1', text: '商品一覧'
@@ -75,7 +70,6 @@ RSpec.describe 'Vendors', type: :system do
       it 'ログイン後に商品一覧画面へ遷移する' do
         fill_in 'vendor_email', with: 'bobnouen@example.com'
         fill_in 'vendor_password', with: 'Abcd1234'
-
         within '.form-actions' do
           click_button 'ログイン'
         end

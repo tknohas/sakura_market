@@ -22,7 +22,6 @@
           %p 業者アカウントの登録をご希望の場合、以下のメールアドレスにご希望の業者名をご送付ください。
           %p.mt-2
             %strong sakuramarket@example.com
-
     .mr-8{ class: "#{current_user ? 'w-4/5' : 'w-full'}" }
       - @diaries.each do |diary|
         = link_to diary_path(diary) do

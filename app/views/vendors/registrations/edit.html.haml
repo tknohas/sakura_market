@@ -1,5 +1,7 @@
 %h1.text-3xl.font-bold.my-4.text-center パスワード変更
+
 %p.text-center.text-red-500.text-lg パスワードの変更を推奨しています。
+
 %div{"class" => "container flex justify-center"}
   %div{"class" => "w-2/5 mx-auto"}
     = simple_form_for resource, as: resource_name, url: registration_path(resource_name), html: { class: 'space-y-6' } do |f|

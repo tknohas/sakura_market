@@ -34,6 +34,13 @@ RSpec.describe 'PointActivities', type: :system do
         visit point_activities_path
         expect(page).to have_content 'ポイント残高: 200'
       end
+
+      it 'トップ画面へ遷移する' do
+        visit point_activities_path
+        click_on 'トップ'
+
+        expect(page).to have_css 'h1', text: '日記一覧'
+      end
     end
   end
 

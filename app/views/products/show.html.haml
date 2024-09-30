@@ -5,7 +5,6 @@
   .flex.justify-center.mt-4
     .mr-4
       = render 'shared/product_image', product: @product, size: '660x438', variant: :large
-
     .flex.flex-col.items-start.ms-4
       %p.text-2xl 商品名: #{@product.name}
       %p.text-gray-700.text-2xl.mt-2 価格: #{@product.price}円

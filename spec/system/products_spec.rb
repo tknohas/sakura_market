@@ -157,11 +157,12 @@ RSpec.describe 'Products', type: :system do
       }.to change(CartItem, :count).by(-1)
     end
 
-    it 'トップ画面へ遷移する' do
+    it '商品一覧画面へ遷移する' do
       visit cart_path
       click_on '買い物を続ける'
 
-      expect(page).to have_current_path root_path
+      expect(page).to have_css 'h1', text: '商品一覧'
+      expect(page).to have_current_path products_path
     end
 
     it '商品の在庫が追加する商品数より少なければエラーメッセージが表示される' do

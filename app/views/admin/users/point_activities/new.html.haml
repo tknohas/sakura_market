@@ -1,6 +1,7 @@
 %h1.text-3xl.font-bold.mb-4.text-center ポイント管理
 = back_button
 = link_to_admin_top
+
 %div{"class" => "container flex justify-center"}
   %div{"class" => "w-2/5 mx-auto"}
     = simple_form_for [:admin, @user, @point_activity], html: { class: 'space-y-6' } do |f|

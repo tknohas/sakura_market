@@ -3,11 +3,9 @@
     %h1.text-3xl.font-bold.mb-4.text-center 購入履歴詳細
     = back_button
     = link_to 'トップ', root_path, class: 'bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l ml-4'
-
     .mt-4
       - if @purchase.purchase_items.any?
         = render 'purchases/purchase_details', purchase: @purchase, use_point: @purchase.used_point
-
         .bg-white.rounded-lg.shadow-md.p-6.my-8
           %h2.text-xl.font-semibold.mb-4 希望配達日時
           %p= @purchase.delivery_date.strftime('%Y年%m月%d日') if @purchase.delivery_date.present?

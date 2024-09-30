@@ -1,7 +1,8 @@
 %h1.text-3xl.font-bold.my-4.text-center 購入履歴
+= link_to_user_top
 
 - if @purchases.any?
-  .relative.overflow-x-auto
+  .relative.overflow-x-auto.my-4
     %table.w-full.text-left
       %thead
         %tr.border-b.border-black

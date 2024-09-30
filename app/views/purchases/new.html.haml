@@ -1,5 +1,3 @@
-= render 'users/shared/error_messages', object: @purchase
-
 .bg-gray-100.min-h-screen.py-4
   .container.mx-auto
     %h1.text-3xl.font-bold.mb-4.text-center 購入確認
@@ -13,9 +11,6 @@
         %br ※配送日時は3営業日〜14営業日の範囲でご選択いただけます(営業日: 月曜日〜金曜日)。
 
       = simple_form_for @purchase do |f|
-        = f.fields_for :purchase_items do |item_form|
-          = item_form.hidden_field :product_id
-          = item_form.hidden_field :quantity
         = f.label :delivery_date
         = f.date_field :delivery_date, label: :delivery_date, class: 'bg-white rounded-lg shadow-md p-4 rounded-lg ml-2',
           min: @purchase.earliest_allowed_date, max: @purchase.latest_allowed_date

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_09_29_102650) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_30_074955) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -161,9 +161,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_29_102650) do
     t.integer "quantity", default: 1, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "vendor_id", null: false
     t.index ["product_id"], name: "index_purchase_items_on_product_id"
     t.index ["purchase_id", "product_id"], name: "index_purchase_items_on_purchase_id_and_product_id", unique: true
     t.index ["purchase_id"], name: "index_purchase_items_on_purchase_id"
+    t.index ["vendor_id"], name: "index_purchase_items_on_vendor_id"
   end
 
   create_table "purchases", force: :cascade do |t|
@@ -241,6 +243,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_29_102650) do
   add_foreign_key "point_activities", "users"
   add_foreign_key "purchase_items", "products"
   add_foreign_key "purchase_items", "purchases"
+  add_foreign_key "purchase_items", "vendors"
   add_foreign_key "purchases", "users"
   add_foreign_key "stocks", "products"
   add_foreign_key "stocks", "vendors"

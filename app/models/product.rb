@@ -30,4 +30,11 @@ class Product < ApplicationRecord
       order(:id)
     end
   }
+
+  def vendor_stock_info(product)
+    vendors.map do |vendor|
+      stock = vendor.stocks.find_by(product:)
+      ["#{vendor.name} (在庫: #{stock ? stock.quantity : '不明'})", vendor.id]
+    end
+  end
 end

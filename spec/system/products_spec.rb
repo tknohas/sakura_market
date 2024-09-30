@@ -1,5 +1,7 @@
 RSpec.describe 'Products', type: :system do
   let!(:product) { create(:product, name: 'ピーマン', price: 1_000, description: '苦味が少ないです。', sort_position: 1, created_at: '2024-01-01') }
+  let(:vendor) { create(:vendor, name: 'アリスファーム') }
+  let!(:stock) { create(:stock, product:, vendor:, quantity: 9) }
 
   describe '一覧画面' do
     let(:admin) { create(:admin) }
@@ -92,11 +94,13 @@ RSpec.describe 'Products', type: :system do
     context 'カートに同じ商品がない場合' do
       it 'カートに商品を追加できる' do
         visit product_path(product)
+        find('#cart_item_vendor_id').select('アリスファーム')
         click_on 'カートに追加'
 
         expect(page).to have_css 'h1', text: 'カート'
         expect(page).to have_css 'img.product-image'
         expect(page).to have_content 'ピーマン'
+        expect(page).to have_content 'アリスファーム'
         expect(page).to have_content '1,000円'
         expect(page).to have_content '1'
         expect(CartItem.last.quantity).to eq 1
@@ -105,25 +109,44 @@ RSpec.describe 'Products', type: :system do
 
     context 'カートにすでに同じ商品がある場合' do
       let!(:cart) { create(:cart, user:) }
-      let!(:cart_item) { create(:cart_item, cart:, product:) }
+      let!(:cart_item) { create(:cart_item, cart:, product:, vendor:) }
 
-      it 'カートに商品を追加できる' do
-        visit product_path(product)
-        click_on 'カートに追加'
+      context 'カートの商品の業者と同じ場合' do
+        it 'カートに商品を追加できる' do
+          visit product_path(product)
+          find('#cart_item_vendor_id').select('アリスファーム')
+          click_on 'カートに追加'
 
-        expect(page).to have_content '商品がカートに追加されました。'
-        expect(page).to have_css 'h1', text: 'カート'
-        expect(page).to have_css 'img.product-image'
-        expect(page).to have_content 'ピーマン'
-        expect(page).to have_content '1,000円'
-        expect(page).to have_content '2'
-        expect(page).to have_content '2,000円'
-        expect(CartItem.last.quantity).to eq 2
+          expect(page).to have_content '商品がカートに追加されました。'
+          expect(page).to have_css 'h1', text: 'カート'
+          expect(page).to have_css 'img.product-image'
+          expect(page).to have_content 'ピーマン'
+          expect(page).to have_content 'アリスファーム'
+          expect(page).to have_content '1,000円'
+          expect(page).to have_content '2'
+          expect(page).to have_content '2,000円'
+          expect(CartItem.last.quantity).to eq 2
+        end
+      end
+
+      context 'カートの商品の業者と異なる場合' do
+        let(:unselectable_vendor) { create(:vendor, name: 'ボブ食堂') }
+        let!(:unselectable_vendor_stock) { create(:stock, product:, vendor: unselectable_vendor) }
+
+        it 'カートに商品を追加できない' do
+          visit product_path(product)
+          find('#cart_item_vendor_id').select('ボブ食堂')
+          click_on 'カートに追加'
+
+          expect(page).to have_content '同じ販売元の商品のみカートに追加できます。'
+          expect(page).to have_css 'h1', text: '商品詳細'
+        end
       end
     end
 
     it 'カートの商品を削除できる', :js do
       visit product_path(product)
+      find('#cart_item_vendor_id').select('アリスファーム')
       click_on 'カートに追加'
       expect(page).to have_css 'h1', text: 'カート'
 
@@ -140,14 +163,25 @@ RSpec.describe 'Products', type: :system do
 
       expect(page).to have_current_path root_path
     end
+
+    it '商品の在庫が追加する商品数より少なければエラーメッセージが表示される' do
+      visit product_path(product)
+      find('#cart_item_quantity').select(10)
+      find('#cart_item_vendor_id').select('アリスファーム')
+      click_on 'カートに追加'
+
+      expect(page).to have_content '在庫数を超える商品数を追加できません。'
+      expect(page).to have_css 'h1', text: '商品詳細'
+    end
   end
 
   describe 'カート(セッション)' do
-    let(:user) { create(:user) }
+    let(:user) { create(:user, name: 'alice@example.com', password: 'Abcd1234') }
 
     context 'カートに同じ商品がない場合' do
       it 'カートに商品を追加できる' do
         visit product_path(product)
+        find('#cart_item_vendor_id').select('アリスファーム')
         click_on 'カートに追加'
 
         expect(page).to have_css 'h1', text: 'カート'
@@ -158,25 +192,49 @@ RSpec.describe 'Products', type: :system do
     end
 
     context 'カートにすでに同じ商品がある場合' do
-      it 'カートに商品を追加できる' do
-        visit product_path(product)
-        click_on 'カートに追加'
-        visit product_path(product)
-        click_on 'カートに追加'
+      context 'カートの商品の業者と同じ場合' do
+        it 'カートに商品を追加できる' do
+          visit product_path(product)
+          find('#cart_item_vendor_id').select('アリスファーム')
+          click_on 'カートに追加'
 
-        expect(page).to have_content '商品がカートに追加されました。'
-        expect(page).to have_css 'h1', text: 'カート'
-        expect(page).to have_css 'img.product-image'
-        expect(page).to have_content 'ピーマン'
-        expect(page).to have_content '1,000円'
-        expect(page).to have_content '2'
-        expect(page).to have_content '2,000円'
-        expect(CartItem.last.quantity).to eq 2
+          visit product_path(product)
+          find('#cart_item_vendor_id').select('アリスファーム')
+          click_on 'カートに追加'
+
+          expect(page).to have_content '商品がカートに追加されました。'
+          expect(page).to have_css 'h1', text: 'カート'
+          expect(page).to have_css 'img.product-image'
+          expect(page).to have_content 'ピーマン'
+          expect(page).to have_content '1,000円'
+          expect(page).to have_content '2'
+          expect(page).to have_content '2,000円'
+          expect(CartItem.last.quantity).to eq 2
+        end
+      end
+
+      context 'カートの商品の業者と異なる場合' do
+        let(:unselectable_vendor) { create(:vendor, name: 'ボブ食堂') }
+        let!(:unselectable_vendor_stock) { create(:stock, product:, vendor: unselectable_vendor) }
+
+        it 'カートに商品を追加できない' do
+          visit product_path(product)
+          find('#cart_item_vendor_id').select('アリスファーム')
+          click_on 'カートに追加'
+
+          visit product_path(product)
+          find('#cart_item_vendor_id').select('ボブ食堂')
+          click_on 'カートに追加'
+
+          expect(page).to have_content '同じ販売元の商品のみカートに追加できます。'
+          expect(page).to have_css 'h1', text: '商品詳細'
+        end
       end
     end
 
     it 'カートの商品を削除できる', :js do
       visit product_path(product)
+      find('#cart_item_vendor_id').select('アリスファーム')
       click_on 'カートに追加'
       expect(page).to have_css 'h1', text: 'カート'
 
@@ -189,6 +247,7 @@ RSpec.describe 'Products', type: :system do
 
     it 'カートの商品をログイン後も引き継ぐことができる(ログイン時)' do
       visit product_path(product)
+      find('#cart_item_vendor_id').select('アリスファーム')
       click_on 'カートに追加'
       expect(Cart.last.cart_items).to be_present
 
@@ -203,6 +262,7 @@ RSpec.describe 'Products', type: :system do
 
     it 'カートの商品をログイン後も引き継ぐことができる(新規登録時)' do
       visit product_path(product)
+      find('#cart_item_vendor_id').select('アリスファーム')
       click_on 'カートに追加'
       expect(Cart.last.cart_items).to be_present
 
@@ -234,35 +294,69 @@ RSpec.describe 'Products', type: :system do
       expect(page).to have_content '1,000円'
     end
 
+    context 'ログイン時にカートに商品を追加済みの場合', :js do
+      before do
+        user_login(user)
+        click_on '商品一覧'
+        click_on 'ピーマン'
+        find('#cart_item_vendor_id').select('アリスファーム')
+        click_on 'カートに追加'
 
-    it 'ログイン時にカートに追加済みの商品と同じ商品は引き継がれない', :js do
-      user_login(user)
-      click_on '商品一覧'
-      click_on 'ピーマン'
-      click_on 'カートに追加'
-
-      expect(page).to have_css 'h1', text: 'カート'
-      expect(page).to have_content 'ピーマン'
-      expect(page).to have_content '1,000円'
-
-      click_on 'ログアウト'
-      expect(page.accept_confirm).to eq 'ログアウトしますか？'
-
-      click_on '商品一覧'
-      click_on 'ピーマン'
-      click_on 'カートに追加'
-
-      expect(page).to have_css 'h1', text: 'カート'
-      expect(page).to have_content 'ピーマン'
-      expect(page).to have_content '1,000円'
-
-      user_login(user)
-      visit cart_path
-      expect{
         expect(page).to have_css 'h1', text: 'カート'
         expect(page).to have_content 'ピーマン'
+        expect(page).to have_content 1
         expect(page).to have_content '1,000円'
-      }.to change(CartItem, :count).by(0)
+
+        click_on 'ログアウト'
+        expect(page.accept_confirm).to eq 'ログアウトしますか？'
+      end
+
+      context 'カートの商品の業者と同じ場合' do
+        it '数量が追加される' do
+          click_on '商品一覧'
+          click_on 'ピーマン'
+          find('#cart_item_vendor_id').select('アリスファーム')
+          click_on 'カートに追加'
+
+          expect(page).to have_css 'h1', text: 'カート'
+          expect(page).to have_content 'ピーマン'
+          expect(page).to have_content 1
+          expect(page).to have_content '1,000円'
+
+          user_login(user)
+          click_on 'カート'
+
+          expect(page).to have_css 'h1', text: 'カート'
+          expect(page).to have_content 'ピーマン'
+          expect(page).to have_content 2
+          expect(page).to have_content '2,000円'
+        end
+      end
+
+      context 'カートの商品の業者と異なる場合' do
+        let(:unselectable_vendor) { create(:vendor, name: 'ボブ食堂') }
+        let!(:unselectable_vendor_stock) { create(:stock, product:, vendor: unselectable_vendor) }
+
+        it '商品は引き継がれない' do
+          click_on '商品一覧'
+          click_on 'ピーマン'
+          find('#cart_item_vendor_id').select('ボブ食堂')
+          click_on 'カートに追加'
+
+          expect(page).to have_css 'h1', text: 'カート'
+          expect(page).to have_content 'ピーマン'
+          expect(page).to have_content 1
+          expect(page).to have_content '1,000円'
+
+          user_login(user)
+          click_on 'カート'
+
+          expect(page).to have_css 'h1', text: 'カート'
+          expect(page).to have_content 'ピーマン'
+          expect(page).to have_content 1
+          expect(page).to have_content '1,000円'
+        end
+      end
     end
   end
 end

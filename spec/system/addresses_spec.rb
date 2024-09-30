@@ -1,10 +1,11 @@
 RSpec.describe 'Products', type: :system do
   let(:user) { create(:user) }
   let!(:product) { create(:product) }
+  let(:vendor) { create(:vendor, name: 'アリスファーム') }
 
   describe '住所登録' do
     let!(:cart) { create(:cart, user:) }
-    let!(:cart_item) { create(:cart_item, cart:, product:) }
+    let!(:cart_item) { create(:cart_item, cart:, product:, vendor:) }
 
     before do
       user_login(user)
@@ -52,7 +53,7 @@ RSpec.describe 'Products', type: :system do
 
   describe '住所変更' do
     let!(:cart) { create(:cart, user:) }
-    let!(:cart_item) { create(:cart_item, cart:, product:) }
+    let!(:cart_item) { create(:cart_item, cart:, product:, vendor:) }
     let!(:address) { create(:address, postal_code: '100-0005', prefecture: '東京都', city: '千代田区', street: '丸の内1丁目', user:) }
 
     before do
@@ -113,7 +114,7 @@ RSpec.describe 'Products', type: :system do
 
     context 'ログインしている場合' do
       let!(:cart) { create(:cart, user:) }
-      let!(:cart_item) { create(:cart_item, cart:, product:) }
+      let!(:cart_item) { create(:cart_item, cart:, product:, vendor:) }
 
       before do
         user_login(user)
@@ -152,9 +153,11 @@ RSpec.describe 'Products', type: :system do
 
     context 'ログインしていない場合' do
       let!(:address) { create(:address, postal_code: '100-0005', prefecture: '東京都', city: '千代田区', street: '丸の内1丁目', user:) }
+      let!(:stock) { create(:stock, quantity: 1, product:, vendor:) }
 
       it 'カートに商品があり、住所が登録されていても住所や登録用リンクが表示されない' do
         visit product_path(product)
+        find('#cart_item_vendor_id').select('アリスファーム')
         click_on 'カートに追加'
 
         expect(page).to have_css 'h1', text: 'カート'

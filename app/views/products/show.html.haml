@@ -16,4 +16,5 @@
       = simple_form_for CartItem.new do |f|
         = hidden_field_tag :product_id, @product.id
         = f.input :quantity, collection: 1..10, prompt: "数量を選択してください", input_html: { class: "border-2 border-black p-1 rounded-lg mb-2 ml-2" }
+        = f.input :vendor_id, collection: @product.vendors, label: "販売元", prompt: "販売元を選択してください", input_html: { class: "border-2 border-black p-1 rounded-lg mb-2 ml-2" }
         = f.submit 'カートに追加', class: 'bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700'

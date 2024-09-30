@@ -10,6 +10,7 @@
           %tr.border-b.border-black
             %th.px-6.py-3{scope: "col"}
             %th.px-6.py-3.text-lg{scope: "col"} 商品名
+            %th.px-6.py-3.text-lg{scope: "col"} 販売元
             %th.px-6.py-3.text-lg{scope: "col"} 価格
             %th.px-6.py-3.text-lg{scope: "col"} 数量
             %th.px-6.py-3.text-lg{scope: "col"} 価格x数量
@@ -21,6 +22,7 @@
             %tr.border-b.border-black
               %td.ml-4= render 'shared/product_image', product: item.product, size: '120x80', variant: :small
               %td.px-6.py-4= item.product.name
+              %td.px-6.py-4= item.vendor.name
               %td.px-6.py-4 #{number_to_currency(item.product.price)}
               %td.px-6.py-4= item.quantity
               %td.px-6.py-4 #{number_to_currency(item.cart_item_total_price)}

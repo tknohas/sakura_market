@@ -60,7 +60,7 @@ RSpec.describe Address, type: :model do
 
     it '建物名が不正(文字数)' do
       subject.building = 'a' * 101
-    expect(subject).to_not be_valid
+      expect(subject).to_not be_valid
     end
   end
 end

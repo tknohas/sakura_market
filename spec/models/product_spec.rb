@@ -1,5 +1,5 @@
 RSpec.describe Product, type: :model do
-  subject { described_class.new( name: 'ピーマン', price: 1_000, description: '苦味が少ないです。', sort_position: 1) }
+  subject { described_class.new(name: 'ピーマン', price: 1_000, description: '苦味が少ないです。', sort_position: 1) }
 
   describe 'バリデーション' do
     it 'バリデーションが有効' do

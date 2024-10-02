@@ -266,4 +266,73 @@ RSpec.describe 'Users', type: :system do
       expect(page).to have_css 'h1', text: '日記一覧'
     end
   end
+
+  describe 'ログイン情報編集' do
+    before do
+      user_login(user)
+    end
+
+    context 'フォームの入力値が正常' do
+      it 'メールアドレスを編集できる' do
+        visit edit_user_registration_path
+
+        fill_in 'user_email', with: 'bb8@example.com'
+        fill_in 'user_current_password', with: 'Abcd1234'
+        within '.form-actions' do
+          click_button '変更する'
+        end
+
+        expect(page).to have_content 'アカウント情報を変更しました。変更されたメールアドレスの本人確認のため、本人確認用メールより確認処理をおこなってください。'
+        email = open_last_email
+        expect(email).to have_subject 'メールアドレス確認メール'
+        expect(email.to).to eq ['bb8@example.com']
+
+        click_first_link_in_email(email)
+
+        expect(page).to have_content 'メールアドレスが確認できました。'
+        expect(current_path).to eq root_path
+      end
+
+      it 'パスワードを編集できる' do
+        visit edit_user_registration_path
+
+        fill_in 'user_email', with: 'alice@example.com'
+        fill_in 'user_current_password', with: 'Abcd1234'
+        fill_in 'user_password', with: 'aAAA1234'
+        fill_in 'user_password_confirmation', with: 'aAAA1234'
+        within '.form-actions' do
+          click_button '変更する'
+        end
+
+        expect(page).to have_content 'アカウント情報を変更しました。'
+        click_on 'ログアウト'
+
+        fill_in 'user_email', with: 'alice@example.com'
+        fill_in 'user_password', with: 'aAAA1234'
+        within '.form-actions' do
+          click_button 'ログイン'
+        end
+
+        expect(page).to have_content 'ログインしました。'
+      end
+    end
+
+    context 'フォームの入力値が異常' do
+      it '登録失敗' do
+        visit edit_user_registration_path
+
+        fill_in 'user_email', with: ''
+        fill_in 'user_current_password', with: 'Abcd1235'
+        fill_in 'user_password', with: 'Abcd1234'
+        fill_in 'user_password_confirmation', with: 'Abcd1235'
+        within '.form-actions' do
+          click_button '変更する'
+        end
+
+        expect(page).to have_content 'メールアドレスを入力してください'
+        expect(page).to have_content '現在のパスワードは不正な値です'
+        expect(page).to have_content 'パスワード（確認用）とパスワードの入力が一致しません'
+      end
+    end
+  end
 end

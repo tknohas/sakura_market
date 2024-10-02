@@ -1,0 +1,30 @@
+%h1.text-3xl.font-bold.my-4.text-center ログイン情報編集
+= back_button
+= link_to_user_top
+
+%div{"class" => "container flex justify-center"}
+  %div{"class" => "w-2/5 mx-auto"}
+    = simple_form_for resource, as: resource_name, url: registration_path(resource_name), html: { class: 'space-y-6' } do |f|
+      = render 'users/shared/error_messages', object: resource
+
+      .form-inputs.space-y-4
+        = f.input :email, autofocus: true,
+          input_html: { class: "w-full p-2 border border-gray-500 rounded focus:ring focus:ring-indigo-500" },
+          wrapper_html: { class: 'block' }, label_html: { class: 'block mb-1' }
+
+        = f.input :current_password, autofocus: true,
+          input_html: { class: "w-full p-2 border border-gray-500 rounded focus:ring focus:ring-indigo-500" },
+          wrapper_html: { class: 'block' }, label_html: { class: 'block mb-1' }
+        %p.text-gray-500.text-sm ※メールアドレスのみ更新の場合でも、現在のパスワードを入力してください。
+
+        = f.input :password,
+          input_html: { class: "w-full p-2 border border-gray-500 rounded focus:ring focus:ring-indigo-500", autocomplete: "new-password" },
+          wrapper_html: { class: 'block' }, label_html: { class: 'block mb-1' }
+        %p.text-gray-500.text-sm ※8字以上20字以下で、半角英数字の小文字、大文字、数字をそれぞれ1つ以上含めてください
+
+        = f.input :password_confirmation,
+          input_html: { class: "w-full p-2 border border-gray-500 rounded focus:ring focus:ring-indigo-500", autocomplete: "new-password" },
+          wrapper_html: { class: 'block' }, label_html: { class: 'block mb-1' }
+
+      .form-actions.flex.justify-center
+        = f.button :submit, '変更する', class: submit_button_class

@@ -4,7 +4,7 @@ RSpec.describe 'Purchases', type: :system do
   let!(:product) { create(:product, name: 'ピーマン', price: 1_000, description: '苦味が少ないです。') }
   let!(:cart_item) { create(:cart_item, cart:, product:, vendor:) }
   let!(:address) { create(:address, postal_code: '100-0005', prefecture: '東京都', city: '千代田区', street: '丸の内1丁目', user:) }
-  let(:vendor) { create(:vendor, name: 'アリスファーム') }
+  let(:vendor) { create(:vendor, name: 'アリスファーム', email: 'alicefarm@example.com') }
   let!(:stock) { create(:stock, product:, vendor:, quantity: 10) }
 
   before do
@@ -60,17 +60,27 @@ RSpec.describe 'Purchases', type: :system do
       expect(Stock.last.quantity).to eq 9
     end
 
-    it '購入後にメールが送信される' do
+    it '購入後にユーザーにメールが送信される' do
       visit new_purchase_path
       click_on '購入する'
 
-      email = open_last_email
+      email = open_last_email_for('alice@example.com')
       expect(email).to have_subject '購入が完了しました。'
       expect(email.to).to eq ['alice@example.com']
       expect(email.body).to have_content 'ご購入いただきありがとうございます。'
 
       click_first_link_in_email(email)
       expect(page).to have_css 'h1', text: '購入履歴詳細'
+    end
+
+    it '購入後に業者にメールが送信される' do
+      visit new_purchase_path
+      click_on '購入する'
+
+      email = open_last_email
+      expect(email).to have_subject '商品が購入されました。'
+      expect(email.to).to eq ['alicefarm@example.com']
+      expect(email.body).to have_content '配送のご手配をお願いいたします。'
     end
 
     context 'ポイントを使用する場合' do

@@ -46,5 +46,6 @@ Rails.application.routes.draw do
     resources :products, only: %i[index show] do
       resource :stock, only: %i[new create edit update], module: :products
     end
+    resources :purchases, only: %i[index show]
   end
 end

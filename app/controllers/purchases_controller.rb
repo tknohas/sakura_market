@@ -23,6 +23,7 @@ class PurchasesController < ApplicationController
 
     if @purchase.complete(current_cart)
       PurchaseMailer.notify_completed(@purchase).deliver_now
+      PurchaseMailer.notify_sold(@purchase).deliver_now
       redirect_to purchases_path, notice: '購入が完了しました。'
     else
       flash.now[:alert] = @purchase.errors.full_messages.join(', ')

@@ -1,0 +1,38 @@
+#{@vendor.name} 様
+%p
+  商品が購入されました。
+  %br
+  配送のご手配をお願いいたします。
+
+%hr
+%p [商品]
+- @purchase.purchase_items.each do |item|
+  %p
+    商品名: #{item.product.name}
+    %br
+    単価: #{item.product.price} 円
+    数量: #{item.quantity}
+%p 購入日時: #{@purchase.created_at.strftime("%Y/%m/%d")}
+%hr
+
+%p [ご購入者様]
+%p 氏名: #{@purchase.user.name}様
+%p
+  住所:
+  %br
+  #{@purchase.user.address.postal_code}
+  %br
+  #{@purchase.user.address.prefecture}#{@purchase.user.address.city}#{@purchase.user.address.street}
+  %br
+  #{@purchase.user.address.building}
+%hr
+
+%p お支払い方法: 代金引換
+%p
+  配達日: #{@purchase.delivery_date || '指定なし'}
+  %br
+  配達時間: #{@purchase.delivery_time}
+%p 何かご不明な点がございましたら、お気軽にお問い合わせください。
+
+%p
+  | SakuraMarket

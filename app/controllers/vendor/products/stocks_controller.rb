@@ -12,7 +12,8 @@ class Vendor::Products::StocksController < Vendor::ApplicationController
     if @stock.save
       redirect_to vendor_product_path(@product), notice: '在庫を登録しました。'
     else
-      render :new, alert: '在庫の登録に失敗しました。', status: :unprocessable_entity
+      flash.now[:alert] = '在庫の登録に失敗しました。'
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -22,7 +23,8 @@ class Vendor::Products::StocksController < Vendor::ApplicationController
     if @stock.update(stock_params)
       redirect_to vendor_product_path(@product), notice: '在庫を更新しました。'
     else
-      render :edit, alert: '在庫の更新に失敗しました。', status: :unprocessable_entity
+      flash.now[:alert] = '在庫の更新に失敗しました。'
+      render :edit, status: :unprocessable_entity
     end
   end
 

@@ -11,7 +11,8 @@ class Admin::VendorsController < Admin::ApplicationController
     if @vendor.update(vendor_params)
       redirect_to admin_vendors_path, notice: '変更しました。'
     else
-      render :edit, alert: '変更に失敗しました。', status: :unprocessable_entity
+      flash.now[:alert] = '変更に失敗しました。'
+      render :edit, status: :unprocessable_entity
     end
   end
 

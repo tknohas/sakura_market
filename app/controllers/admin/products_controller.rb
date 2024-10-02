@@ -16,7 +16,8 @@ class Admin::ProductsController < Admin::ApplicationController
     if @product.save
       redirect_to admin_products_path, notice: '登録に成功しました。'
     else
-      render :new, alert: '登録に失敗しました。', status: :unprocessable_entity
+      flash.now[:alert] = '登録に失敗しました。'
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -28,7 +29,8 @@ class Admin::ProductsController < Admin::ApplicationController
     if @product.update(product_params)
       redirect_to admin_products_path, notice: '更新に成功しました。'
     else
-      render :edit, alert: '更新に失敗しました。', status: :unprocessable_entity
+      flash.now[:alert] = '更新に失敗しました。'
+      render :edit, status: :unprocessable_entity
     end
   end
 

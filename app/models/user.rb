@@ -40,8 +40,8 @@ class User < ApplicationRecord
     end
   end
 
-  def toggle_availability
-    update(unavailable: !unavailable)
+  def toggle_availability!
+    update!(unavailable: !unavailable)
   end
 
   def availability_status

@@ -14,7 +14,8 @@ class Admin::CouponsController < Admin::ApplicationController
     if @coupon.save
       redirect_to admin_coupons_path, notice: 'クーポンを作成しました。'
     else
-      render :new, alert: 'クーポンの作成に失敗しました。', status: :unprocessable_entity
+      flash.now[:alert] = 'クーポンの作成に失敗しました。'
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -26,7 +27,8 @@ class Admin::CouponsController < Admin::ApplicationController
     if @coupon.update(coupon_params)
       redirect_to admin_coupons_path, notice: 'クーポンを更新しました。'
     else
-      render :edit, alert: 'クーポンの更新に失敗しました。', status: :unprocessable_entity
+      flash.now[:alert] = 'クーポンの更新に失敗しました。'
+      render :edit, status: :unprocessable_entity
     end
   end
 

@@ -14,7 +14,8 @@ class Diaries::CommentsController < ApplicationController
       CommentMailer.notify_commented(@comment).deliver_now
       redirect_to diary_path(@diary), notice: 'コメントしました。'
     else
-      render :new, alert: 'コメントに失敗しました。', status: :unprocessable_entity
+      flash.now[:alert] = 'コメントに失敗しました。'
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -24,7 +25,8 @@ class Diaries::CommentsController < ApplicationController
     if @comment.update(comment_params)
       redirect_to diary_path(@diary), notice: '内容を更新しました。'
     else
-      render :edit, alert: '更新に失敗しました。', status: :unprocessable_entity
+      flash.now[:alert] = '更新に失敗しました。'
+      render :edit, status: :unprocessable_entity
     end
   end
 

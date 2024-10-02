@@ -1,5 +1,5 @@
 RSpec.describe 'Purchases', type: :system do
-  let(:user) { create(:user, name: 'Alice') }
+  let(:user) { create(:user, name: 'Alice', email: 'alice@example.com') }
   let!(:cart) { create(:cart, user:) }
   let!(:product) { create(:product, name: 'ピーマン', price: 1_000, description: '苦味が少ないです。') }
   let!(:cart_item) { create(:cart_item, cart:, product:, vendor:) }
@@ -58,6 +58,19 @@ RSpec.describe 'Purchases', type: :system do
 
       find('#cart_item_vendor_id').select('アリスファーム (在庫: 9)')
       expect(Stock.last.quantity).to eq 9
+    end
+
+    it '購入後にメールが送信される' do
+      visit new_purchase_path
+      click_on '購入する'
+
+      email = open_last_email
+      expect(email).to have_subject '購入が完了しました。'
+      expect(email.to).to eq ['alice@example.com']
+      expect(email.body).to have_content 'ご購入いただきありがとうございます。'
+
+      click_first_link_in_email(email)
+      expect(page).to have_css 'h1', text: '購入履歴詳細'
     end
 
     context 'ポイントを使用する場合' do

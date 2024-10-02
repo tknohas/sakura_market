@@ -19,10 +19,10 @@ gem 'haml-rails'
 gem 'letter_opener_web'
 gem 'rails-i18n'
 gem 'simple_form'
-gem "image_processing", "~> 1.2"
+gem 'image_processing', '~> 1.2'
 gem 'business_time'
 gem 'discard'
-gem "stripe"
+gem 'stripe'
 
 group :development, :test do
   gem 'debug', platforms: %i[mri windows]

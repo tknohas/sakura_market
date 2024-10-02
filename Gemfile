@@ -22,6 +22,7 @@ gem 'simple_form'
 gem "image_processing", "~> 1.2"
 gem 'business_time'
 gem 'discard'
+gem "stripe"
 
 group :development, :test do
   gem 'debug', platforms: %i[mri windows]

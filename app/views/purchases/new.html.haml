@@ -17,6 +17,7 @@
           collection: @purchase.delivery_time_option
         - if @use_point.present?
           = f.hidden_field :used_point, value: @use_point
+        = f.hidden_field :payment_method, value: :cash_on_delivery
         .text-center
           = f.button :submit, '購入する', class: 'bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg text-lg hover:bg-indigo-700 cursor-pointer mt-4'
           = link_to 'カートに戻る', cart_path, class: 'bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-lg ml-4'

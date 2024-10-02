@@ -41,30 +41,44 @@
         = submit_tag '適用', class: 'w-1/8 ml-2 px-4 py-2 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-700 cursor-pointer'
 
 .bg-white.rounded-lg.shadow-md.p-6.mb-8
-  %h2.text-xl.font-semibold.mb-4 注文サマリー
+  %h2.text-xl.font-semibold.mb-4 注文サマリー(#{purchase.payment_method === 'cash_on_delivery'  ? '代金引換' : 'カード決済'})
   - adjusted_subtotal = use_point.present? ? purchase.adjusted_subtotal(subtotal, use_point) : subtotal
-  .flex.justify-between.mb-2
-    %span 小計:
-    %span #{number_to_currency(subtotal)}(税抜)
-  .flex.justify-between.mb-2
-    %span 使用ポイント:
-    %span #{number_to_currency(use_point || 0)}(税抜)
-  .flex.justify-between.mb-2
-    %span 小計 - ポイント:
-    %span #{number_to_currency(adjusted_subtotal)}(税抜)
-  .flex.justify-between.mb-2
-    %span 送料:
-    %span #{number_to_currency(purchase.calculate_shipping_fee)}(税抜)
-  .flex.justify-between.mb-2
-    %span 代引き手数料:
-    %span #{number_to_currency(purchase.cash_on_delivery_fee(adjusted_subtotal))}(税抜)
-  .flex.justify-between.mb-2
-    %span 消費税:
-    %span #{number_to_currency(purchase.tax_amount(adjusted_subtotal))}
-  - tax = 1.1
-  .flex.justify-between.font-bold.text-lg
-    %span 合計:
-    %span #{number_to_currency(purchase.total_price(adjusted_subtotal))}(税込)
+  - if purchase.payment_method === 'card'
+    .flex.justify-between.mb-2
+      %span 小計:
+      %span #{number_to_currency(subtotal)}(税抜)
+    .flex.justify-between.mb-2
+      %span 送料:
+      %span #{number_to_currency(purchase.calculate_shipping_fee)}(税抜)
+    .flex.justify-between.mb-2
+      %span 消費税:
+      %span #{number_to_currency(purchase.tax_amount_for_card(adjusted_subtotal))}
+    .flex.justify-between.font-bold.text-lg
+      %span 合計:
+      %span #{number_to_currency(purchase.total_price_for_card(adjusted_subtotal))}(税込)
+      
+  - else
+    .flex.justify-between.mb-2
+      %span 小計:
+      %span #{number_to_currency(subtotal)}(税抜)
+    .flex.justify-between.mb-2
+      %span 使用ポイント:
+      %span #{number_to_currency(use_point || 0)}(税抜)
+    .flex.justify-between.mb-2
+      %span 小計 - ポイント:
+      %span #{number_to_currency(adjusted_subtotal)}(税抜)
+    .flex.justify-between.mb-2
+      %span 送料:
+      %span #{number_to_currency(purchase.calculate_shipping_fee)}(税抜)
+    .flex.justify-between.mb-2
+      %span 代引き手数料:
+      %span #{number_to_currency(purchase.cash_on_delivery_fee(adjusted_subtotal))}(税抜)
+    .flex.justify-between.mb-2
+      %span 消費税:
+      %span #{number_to_currency(purchase.tax_amount(adjusted_subtotal))}
+    .flex.justify-between.font-bold.text-lg
+      %span 合計:
+      %span #{number_to_currency(purchase.total_price(adjusted_subtotal))}(税込)
 
 .bg-white.rounded-lg.shadow-md.p-6
   %h2.text-xl.font-semibold.mb-4 配送先住所

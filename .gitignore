@@ -39,3 +39,6 @@
 
 /node_modules
 /config/database.yml
+
+/config/credentials/development.key
+/config/credentials/development.yml.enc

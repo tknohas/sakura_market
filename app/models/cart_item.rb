@@ -21,6 +21,10 @@ class CartItem < ApplicationRecord
     end
   end
 
+  def calculate_tax_inclusive_price
+    (product.price * 1.1).floor
+  end
+
   private
 
   def validate_stock_sufficiency

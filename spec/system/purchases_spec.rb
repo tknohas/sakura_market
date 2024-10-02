@@ -112,14 +112,30 @@ RSpec.describe 'Purchases', type: :system do
     let!(:purchase_item) { create(:purchase_item, purchase:, product:, vendor:) }
     let!(:purchase_item1) { create(:purchase_item, purchase:, product: product1, vendor:) }
 
-    it '商品情報が表示される' do
-      click_on '購入履歴'
+    context '代金引換で購入した場合' do
+      it '商品情報が表示される' do
+        click_on '購入履歴'
 
-      expect(page).to have_css 'h1', text: '購入履歴'
-      expect(page).to have_content Purchase.last.id
-      expect(page).to have_content 'ピーマン / にんじん'
-      expect(page).to have_content purchase.created_at.strftime('%Y年%m月%d日')
-      expect(page).to have_content '代金引換'
+        expect(page).to have_css 'h1', text: '購入履歴'
+        expect(page).to have_content Purchase.last.id
+        expect(page).to have_content 'ピーマン / にんじん'
+        expect(page).to have_content purchase.created_at.strftime('%Y年%m月%d日')
+        expect(page).to have_content '代金引換'
+      end
+    end
+
+    context 'カード決済で購入した場合' do
+      let!(:purchase) { create(:purchase, user:, payment_method: :card) }
+
+      it '商品情報が表示される' do
+        click_on '購入履歴'
+
+        expect(page).to have_css 'h1', text: '購入履歴'
+        expect(page).to have_content Purchase.last.id
+        expect(page).to have_content 'ピーマン / にんじん'
+        expect(page).to have_content purchase.created_at.strftime('%Y年%m月%d日')
+        expect(page).to have_content 'カード決済'
+      end
     end
 
     it '購入履歴詳細画面へ遷移する' do
@@ -157,6 +173,7 @@ RSpec.describe 'Purchases', type: :system do
       visit purchase_path(purchase)
 
       expect(page).to have_css 'h1', text: '購入履歴詳細'
+      expect(page).to have_content '注文サマリー(代金引換)'
       expect(page).to have_content '21,000円'
       expect(page).to have_content '600円'
       expect(page).to have_content '400円'
@@ -220,10 +237,26 @@ RSpec.describe 'Purchases', type: :system do
       visit product_path(product)
       find('#cart_item_vendor_id').select('アリスファーム')
       click_on 'カートに追加'
-      click_on '購入確認'
+      click_on '代金引換はこちら'
 
       expect(page).to have_css 'h1', text: '購入確認'
       expect(page).to have_content '使用可能ポイント: 100'
+    end
+
+    context 'カード決済の場合' do
+      let!(:purchase_for_card) { create(:purchase, user:, payment_method: :card) }
+      let!(:purchase_for_card_item) { create(:purchase_item, purchase: purchase_for_card, product:, vendor:) }
+
+      it '代引き手数料を含まない購入金額が表示される' do
+        visit purchase_path(purchase_for_card)
+
+        expect(page).to have_css 'h1', text: '購入履歴詳細'
+        expect(page).to have_content '注文サマリー(カード決済)'
+        expect(page).to have_content '1,000円'  # 小計
+        expect(page).to have_content '600円'    # 送料
+        expect(page).to have_content '160円'    # 消費税
+        expect(page).to have_content '1,760円'  # 合計
+      end
     end
   end
 end

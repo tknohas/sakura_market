@@ -5,6 +5,7 @@ class CreatePurchases < ActiveRecord::Migration[7.1]
       t.date :delivery_date
       t.string :delivery_time, null: false
       t.integer :used_point
+      t.integer :payment_method, null: false, default: 0
 
       t.timestamps
     end

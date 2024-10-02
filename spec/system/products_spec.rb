@@ -208,6 +208,7 @@ RSpec.describe 'Products', type: :system do
         expect(page).to have_css 'h1', text: 'カート'
         expect(page).to have_css 'img.product-image'
         expect(page).to have_content 'ピーマン'
+        expect(page).to have_content 'アリスファーム'
         expect(page).to have_content '1,000円'
       end
     end
@@ -228,6 +229,7 @@ RSpec.describe 'Products', type: :system do
           expect(page).to have_css 'h1', text: 'カート'
           expect(page).to have_css 'img.product-image'
           expect(page).to have_content 'ピーマン'
+          expect(page).to have_content 'アリスファーム'
           expect(page).to have_content '1,000円'
           expect(page).to have_content '2'
           expect(page).to have_content '2,000円'
@@ -329,6 +331,7 @@ RSpec.describe 'Products', type: :system do
 
         expect(page).to have_css 'h1', text: 'カート'
         expect(page).to have_content 'ピーマン'
+        expect(page).to have_content 'アリスファーム'
         expect(page).to have_content 1
         expect(page).to have_content '1,000円'
         click_on 'ログアウト'
@@ -345,24 +348,29 @@ RSpec.describe 'Products', type: :system do
 
           expect(page).to have_css 'h1', text: 'カート'
           expect(page).to have_content 'ピーマン'
+          expect(page).to have_content 'アリスファーム'
           expect(page).to have_content 1
           expect(page).to have_content '1,000円'
 
           user_login(user)
+          expect(page).to have_content 'ログインしました。'
           click_on 'カート'
 
           expect(page).to have_css 'h1', text: 'カート'
           expect(page).to have_content 'ピーマン'
+          expect(page).to have_content 'アリスファーム'
           expect(page).to have_content 2
           expect(page).to have_content '2,000円'
         end
       end
 
       context 'カートの商品の業者と異なる場合' do
-        let(:unselectable_vendor) { create(:vendor, name: 'ボブ食堂') }
-        let!(:unselectable_vendor_stock) { create(:stock, product:, vendor: unselectable_vendor) }
+        let(:different_vendor) { create(:vendor, name: 'ボブ食堂') }
+        let!(:product1) { create(:product, name: 'にんじん', sort_position: 2) }
+        let!(:different_vendor_stock) { create(:stock, product:, vendor: different_vendor) }
+        let!(:different_vendor_stock1) { create(:stock, product: product1, vendor: different_vendor) }
 
-        it '商品は引き継がれない' do
+        it '同じ商品は引き継がれない' do
           visit products_path
           click_on 'ピーマン'
 
@@ -371,6 +379,7 @@ RSpec.describe 'Products', type: :system do
 
           expect(page).to have_css 'h1', text: 'カート'
           expect(page).to have_content 'ピーマン'
+          expect(page).to have_content 'ボブ食堂'
           expect(page).to have_content 1
           expect(page).to have_content '1,000円'
 
@@ -379,8 +388,34 @@ RSpec.describe 'Products', type: :system do
 
           expect(page).to have_css 'h1', text: 'カート'
           expect(page).to have_content 'ピーマン'
+          expect(page).to have_content 'アリスファーム'
           expect(page).to have_content 1
           expect(page).to have_content '1,000円'
+          expect(page).to_not have_content 'ボブ食堂'
+        end
+
+        it '別の商品も引き継がれない' do
+          visit products_path
+          click_on 'にんじん'
+
+          find('#cart_item_vendor_id').select('ボブ食堂')
+          click_on 'カートに追加'
+
+          expect(page).to have_css 'h1', text: 'カート'
+          expect(page).to have_content 'にんじん'
+          expect(page).to have_content 'ボブ食堂'
+          expect(page).to have_content 1
+          expect(page).to have_content '1,000円'
+
+          user_login(user)
+          click_on 'カート'
+
+          expect(page).to have_css 'h1', text: 'カート'
+          expect(page).to have_content 'ピーマン'
+          expect(page).to have_content 'アリスファーム'
+          expect(page).to have_content 1
+          expect(page).to have_content '1,000円'
+          expect(page).to_not have_content 'ボブ食堂'
         end
       end
     end

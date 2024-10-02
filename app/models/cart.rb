@@ -12,13 +12,14 @@ class Cart < ApplicationRecord
 
     begin
       guest_cart.transaction do
+        current_vendor_id = cart_items.first&.vendor_id
         guest_cart.cart_items.each do |item|
-          existing_item = cart_items.find_by(product_id: item.product.id)
+          if current_vendor_id && current_vendor_id != item.vendor_id
+            raise StandardError, '違う販売元の商品をカートに入れることはできません。'
+          end
 
+          existing_item = cart_items.find_by(product_id: item.product.id)
           if existing_item
-            if existing_item.vendor_id != item.vendor_id
-              raise StandardError, '違う販売元の商品をカートに入れることはできません。'
-            end
             existing_item.update(quantity: existing_item.quantity + item.quantity)
           else
             cart_items.create(product_id: item.product.id, quantity: item.quantity, vendor_id: item.vendor.id)

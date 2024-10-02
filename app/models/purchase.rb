@@ -5,7 +5,11 @@ class Purchase < ApplicationRecord
   has_many :purchase_items, dependent: :destroy
   has_many :products, through: :purchase_items
 
-  validates :delivery_time, presence: true
+  with_options presence: true do
+    validates :user_id
+    validates :delivery_time
+    validates :payment_method
+  end
   validate :validate_delivery_date
 
   enum payment_method: { cash_on_delivery: 0, card: 1 }

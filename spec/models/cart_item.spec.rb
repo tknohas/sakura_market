@@ -31,6 +31,11 @@ RSpec.describe CartItem, type: :model do
       expect(subject).to_not be_valid
     end
 
+    it '商品数が不正(数値以外を入力)' do
+      subject.quantity = 'a'
+      expect(subject).to_not be_valid
+    end
+
     it 'cartが不正' do
       subject.cart = nil
       expect(subject).to_not be_valid

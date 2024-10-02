@@ -13,6 +13,11 @@ RSpec.describe Comment, type: :model do
       expect(subject).to_not be_valid
     end
 
+    it 'コメント内容が不正(文字数)' do
+      subject.content = 'a' * 501
+      expect(subject).to_not be_valid
+    end
+
     it 'diaryが不正' do
       subject.diary = nil
       expect(subject).to_not be_valid

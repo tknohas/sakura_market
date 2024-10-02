@@ -36,6 +36,11 @@ RSpec.describe Purchase, type: :model do
       subject.user = nil
       expect(subject).to_not be_valid
     end
+
+    it '決済方法が不正' do
+      subject.payment_method = nil
+      expect(subject).to_not be_valid
+    end
   end
 
   describe '送料の計算' do

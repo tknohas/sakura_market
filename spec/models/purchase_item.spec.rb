@@ -19,5 +19,15 @@ RSpec.describe PurchaseItem, type: :model do
       subject.vendor = nil
       expect(subject).to_not be_valid
     end
+
+    it '購入商品数が不正(nil)' do
+      subject.quantity = nil
+      expect(subject).to_not be_valid
+    end
+
+    it '購入商品数が不正(数値以外)' do
+      subject.quantity = 'a'
+      expect(subject).to_not be_valid
+    end
   end
 end

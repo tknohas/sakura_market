@@ -7,13 +7,23 @@ RSpec.describe Diary, type: :model do
       expect(subject).to be_valid
     end
 
-    it 'タイトルが不正' do
+    it 'タイトルが不正(入力なし)' do
       subject.title = nil
       expect(subject).to_not be_valid
     end
 
-    it '内容が不正' do
+    it 'タイトルが不正(文字数)' do
+      subject.title = 'a' * 61
+      expect(subject).to_not be_valid
+    end
+
+    it '内容が不正(入力なし)' do
       subject.content = nil
+      expect(subject).to_not be_valid
+    end
+
+    it '内容が不正(文字数)' do
+      subject.content = 'a' * 501
       expect(subject).to_not be_valid
     end
 

@@ -15,6 +15,9 @@ class Product < ApplicationRecord
     validates :description
   end
   validates :sort_position, uniqueness: true
+  validates :name, length: { maximum: 20 }
+  validates :price, numericality: { only_integer: true }
+  validates :description, length: { maximum: 600 }
 
   scope :sorted_by, ->(sort_order) {
     case sort_order

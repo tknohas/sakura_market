@@ -46,7 +46,7 @@ RSpec.describe 'Admins', type: :system do
 
   it 'ログイン前はadmin_root_pathに遷移できない' do
     visit admin_products_path
-    
+
     expect(page).to have_css 'h1', text: 'ログイン'
     expect(page).to have_content 'ログインもしくはアカウント登録してください。'
   end

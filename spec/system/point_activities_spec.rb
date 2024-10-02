@@ -1,7 +1,7 @@
 RSpec.describe 'PointActivities', type: :system do
   let(:user) { create(:user) }
   let!(:coupon) { create(:coupon, code: 'Abcd-1234-febw', point: 1000) }
-  let!(:coupon_usage) { create(:coupon_usage, coupon: coupon, user:, created_at: '2024-09-27') }
+  let!(:coupon_usage) { create(:coupon_usage, coupon:, user:, created_at: '2024-09-27') }
 
   before do
     user_login(user)
@@ -28,7 +28,7 @@ RSpec.describe 'PointActivities', type: :system do
         expect(thead).to eq ['取引内容 ポイント 有効期限 取得日']
         tr = all('div tbody tr').map(&:text)
         expect(tr[0]).to eq "購入時のポイント使用 -800 ポイント #{Date.current.strftime('%Y年%m月%d日')}"
-        expect(tr[1]).to eq  "クーポンによるポイント獲得 1000 ポイント #{Date.current.strftime('%Y年%m月%d日')}"
+        expect(tr[1]).to eq "クーポンによるポイント獲得 1000 ポイント #{Date.current.strftime('%Y年%m月%d日')}"
       end
 
       it 'ポイント残高が表示される' do

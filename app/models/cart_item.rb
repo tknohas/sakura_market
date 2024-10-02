@@ -5,7 +5,7 @@ class CartItem < ApplicationRecord
 
   validates :cart_id, uniqueness: { scope: :product_id }
   validates :quantity, presence: true,
-            numericality: { greater_than: 0, less_than: 11, only_integer: true }
+                       numericality: { greater_than: 0, less_than: 11, only_integer: true }
   validates :vendor_id, presence: true
   validate :validate_stock_sufficiency
 
@@ -29,6 +29,7 @@ class CartItem < ApplicationRecord
 
   def validate_stock_sufficiency
     return false if vendor.nil?
+
     stock = vendor.stocks.find_by(product:)
     if stock.present? && stock.quantity < quantity
       errors.add(:base, '在庫数を超える商品数を追加できません。')

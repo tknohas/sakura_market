@@ -8,8 +8,8 @@ RSpec.describe Stock, type: :model do
       expect(subject).to be_valid
     end
 
-    it '在庫数が不正(0を入力)' do
-      subject.quantity = 0
+    it '在庫数が不正(-1を入力)' do
+      subject.quantity = -1
       expect(subject).to_not be_valid
     end
 

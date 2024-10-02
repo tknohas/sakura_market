@@ -10,8 +10,8 @@ class CouponUsage < ApplicationRecord
 
   def record_earn_point
     attributes = {
-    point_change: coupon.point,
-    description: "クーポンによるポイント獲得"
+      point_change: coupon.point,
+      description: 'クーポンによるポイント獲得',
     }
 
     case coupon.code

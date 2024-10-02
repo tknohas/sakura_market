@@ -1,6 +1,6 @@
 class AddressesController < ApplicationController
   before_action :set_address, only: %i[edit update]
-  
+
   def new
     @address = current_user.address || current_user.build_address
   end
@@ -15,8 +15,7 @@ class AddressesController < ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @address.update(address_params)

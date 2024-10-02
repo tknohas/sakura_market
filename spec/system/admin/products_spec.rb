@@ -22,7 +22,7 @@ RSpec.describe 'Products', type: :system do
       expect(page).to have_css 'h1', text: '商品一覧(管理画面)'
       expect(page).to have_select('sort_order', selected: '価格が安い順')
       products = all('div a p').map(&:text)
-      expect(products).to eq ['玉ねぎ', 'ピーマン', 'にんじん']
+      expect(products).to eq %w(玉ねぎ ピーマン にんじん)
     end
 
     it '価格が高い順に並び替わる', :js do
@@ -31,7 +31,7 @@ RSpec.describe 'Products', type: :system do
       expect(page).to have_css 'h1', text: '商品一覧(管理画面)'
       expect(page).to have_select('sort_order', selected: '価格が高い順')
       products = all('div a p').map(&:text)
-      expect(products).to eq ['にんじん', 'ピーマン', '玉ねぎ']
+      expect(products).to eq %w(にんじん ピーマン 玉ねぎ)
     end
 
     it '表示順に並び替わる', :js do
@@ -40,7 +40,7 @@ RSpec.describe 'Products', type: :system do
       expect(page).to have_css 'h1', text: '商品一覧(管理画面)'
       expect(page).to have_select('sort_order', selected: '表示順')
       products = all('div a p').map(&:text)
-      expect(products).to eq ['ピーマン', '玉ねぎ', 'にんじん']
+      expect(products).to eq %w(ピーマン 玉ねぎ にんじん)
     end
 
     it '新着順に並び替わる', :js do
@@ -49,7 +49,7 @@ RSpec.describe 'Products', type: :system do
       expect(page).to have_css 'h1', text: '商品一覧(管理画面)'
       expect(page).to have_select('sort_order', selected: '新着順')
       products = all('div a p').map(&:text)
-      expect(products).to eq ['玉ねぎ', 'にんじん', 'ピーマン']
+      expect(products).to eq %w(玉ねぎ にんじん ピーマン)
     end
 
     it '商品登録画面へ遷移する' do
@@ -129,11 +129,11 @@ RSpec.describe 'Products', type: :system do
       visit admin_product_path(product)
 
       expect(page).to have_css 'h1', text: '商品詳細(管理画面)'
-      expect{
+      expect do
         click_on '削除'
         expect(page.accept_confirm).to eq '本当に削除しますか？'
         expect(page).to have_content '削除に成功しました。'
-      }.to change(Product, :count).by(-1)
+      end.to change(Product, :count).by(-1)
     end
 
     it 'トップ画面へ遷移する' do

@@ -18,7 +18,7 @@ class CartItemsController < ApplicationController
     if cart_item.save
       redirect_to cart_path, notice: '商品がカートに追加されました。'
     else
-      redirect_to product_path(product), alert: cart_item.errors.full_messages.join(", ")
+      redirect_to product_path(product), alert: cart_item.errors.full_messages.join(', ')
     end
   end
 

@@ -7,7 +7,7 @@ class CouponsController < ApplicationController
     coupon = Coupon.find_by(code: params[:code])
 
     if coupon&.valid_for_use?(current_user)
-      current_user.coupon_usages.create(coupon: coupon)
+      current_user.coupon_usages.create(coupon:)
       redirect_to coupons_path, notice: 'クーポンを適用しました。'
     else
       redirect_to products_path, alert: '無効なクーポンコードです。'

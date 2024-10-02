@@ -5,8 +5,7 @@ class Admin::VendorsController < Admin::ApplicationController
     @vendors = Vendor.order(:id)
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @vendor.update(vendor_params)

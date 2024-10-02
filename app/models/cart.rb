@@ -8,26 +8,26 @@ class Cart < ApplicationRecord
   end
 
   def merge_guest_cart(guest_cart)
-    if guest_cart.present?
-      begin
-        guest_cart.transaction do
-          guest_cart.cart_items.each do |item|
-            existing_item = cart_items.find_by(product_id: item.product.id)
+    return unless guest_cart.present?
 
-            if existing_item
-              if existing_item.vendor_id != item.vendor_id
-                raise StandardError, '違う販売元の商品をカートに入れることはできません。'
-              end
-              existing_item.update(quantity: existing_item.quantity + item.quantity)
-            else
-              cart_items.create(product_id: item.product.id, quantity: item.quantity, vendor_id: item.vendor.id)
+    begin
+      guest_cart.transaction do
+        guest_cart.cart_items.each do |item|
+          existing_item = cart_items.find_by(product_id: item.product.id)
+
+          if existing_item
+            if existing_item.vendor_id != item.vendor_id
+              raise StandardError, '違う販売元の商品をカートに入れることはできません。'
             end
+            existing_item.update(quantity: existing_item.quantity + item.quantity)
+          else
+            cart_items.create(product_id: item.product.id, quantity: item.quantity, vendor_id: item.vendor.id)
           end
         end
-        guest_cart.destroy!
-      rescue StandardError => e
-        errors.add(:base, e.message)
       end
+      guest_cart.destroy!
+    rescue StandardError => e
+      errors.add(:base, e.message)
     end
   end
 
@@ -40,6 +40,6 @@ class Cart < ApplicationRecord
   end
 
   def vendor_exists?(vendor_id)
-    vendor_id.present? && cart_items.exists?(["vendor_id != ?", vendor_id])
+    vendor_id.present? && cart_items.exists?(['vendor_id != ?', vendor_id])
   end
 end

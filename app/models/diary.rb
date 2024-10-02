@@ -13,11 +13,11 @@ class Diary < ApplicationRecord
   end
 
   def like!(user)
-    likes.find_or_create_by!(user: user)
+    likes.find_or_create_by!(user:)
   end
 
   def unlike!(user)
-    likes.find_by!(user: user).destroy!
+    likes.find_by!(user:).destroy!
   end
 
   def liked_by?(user)

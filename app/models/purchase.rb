@@ -29,7 +29,8 @@ class Purchase < ApplicationRecord
     return 0 if use_point > subtotal
     return subtotal - use_point if used_point
     return subtotal - use_point if user.total_point >= use_point
-    return subtotal
+
+    subtotal
   end
 
   def total_price(adjusted_subtotal)
@@ -52,7 +53,7 @@ class Purchase < ApplicationRecord
   SHIPPING_TIER_COUNT = 5
 
   def calculate_shipping_fee
-    return SHIPPING_FEE_PER_TIER * (total_quantity.to_f / SHIPPING_TIER_COUNT).ceil
+    SHIPPING_FEE_PER_TIER * (total_quantity.to_f / SHIPPING_TIER_COUNT).ceil
   end
 
   DELIVERY_TIME_OPTION = [
@@ -62,7 +63,7 @@ class Purchase < ApplicationRecord
     '14:00~16:00',
     '16:00~18:00',
     '18:00~20:00',
-    '20:00~21:00'
+    '20:00~21:00',
   ].map { |time| [time, time] }.freeze
 
   def delivery_time_option
@@ -91,6 +92,7 @@ class Purchase < ApplicationRecord
 
   def complete(cart)
     return false unless valid?
+
     transaction do
       save!
       cart.cart_items.each do |cart_item|
@@ -107,7 +109,6 @@ class Purchase < ApplicationRecord
   rescue ActiveRecord::RecordInvalid
     false
   end
-
 
   def update_stock_after_card_purchase(product, vendor, line_item_quantity)
     stock = product.stocks.lock.find_by(vendor:)
@@ -127,6 +128,7 @@ class Purchase < ApplicationRecord
 
   def total_quantity
     return user.cart.item_count if user.cart.cart_items.present?
+
     purchase_items.sum(:quantity)
   end
 
@@ -134,21 +136,21 @@ class Purchase < ApplicationRecord
     if used_point.present? && used_point > 0
       user.point_activities.create!(
         point_change: -used_point,
-        description: '購入時のポイント使用',
+        description: '購入時のポイント使用'
       )
     end
   end
 
   def update_stock_after_purchase(cart_item)
     stock = cart_item.product.stocks.lock.find_by(vendor: cart_item.vendor)
-    if stock
-      if stock.quantity >= cart_item.quantity
-        new_stock_quantity = stock.quantity - cart_item.quantity
-        stock.update!(quantity: new_stock_quantity)
-      else
-        errors.add(:base, "「#{cart_item.product.name}」の在庫が不足しています")
-        raise ActiveRecord::RecordInvalid.new(self)
-      end
+    return unless stock
+
+    if stock.quantity >= cart_item.quantity
+      new_stock_quantity = stock.quantity - cart_item.quantity
+      stock.update!(quantity: new_stock_quantity)
+    else
+      errors.add(:base, "「#{cart_item.product.name}」の在庫が不足しています")
+      raise ActiveRecord::RecordInvalid.new(self)
     end
   end
 end

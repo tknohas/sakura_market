@@ -27,7 +27,7 @@ RSpec.describe 'Products', type: :system do
 
       expect(page).to have_css 'h1', text: '商品一覧'
       products = all('div a p').map(&:text)
-      expect(products).to eq ['玉ねぎ', 'ピーマン', 'にんじん']
+      expect(products).to eq %w(玉ねぎ ピーマン にんじん)
     end
 
     it '価格が高い順に並び替わる', js: true do
@@ -36,7 +36,7 @@ RSpec.describe 'Products', type: :system do
 
       expect(page).to have_css 'h1', text: '商品一覧'
       products = all('div a p').map(&:text)
-      expect(products).to eq ['にんじん', 'ピーマン', '玉ねぎ']
+      expect(products).to eq %w(にんじん ピーマン 玉ねぎ)
     end
 
     it '表示順に並び替わる', js: true do
@@ -45,7 +45,7 @@ RSpec.describe 'Products', type: :system do
 
       expect(page).to have_css 'h1', text: '商品一覧'
       products = all('div a p').map(&:text)
-      expect(products).to eq ['ピーマン', '玉ねぎ', 'にんじん']
+      expect(products).to eq %w(ピーマン 玉ねぎ にんじん)
     end
 
     it '新着順に並び替わる', js: true do
@@ -54,7 +54,7 @@ RSpec.describe 'Products', type: :system do
 
       expect(page).to have_css 'h1', text: '商品一覧'
       products = all('div a p').map(&:text)
-      expect(products).to eq ['玉ねぎ', 'にんじん', 'ピーマン']
+      expect(products).to eq %w(玉ねぎ にんじん ピーマン)
     end
 
     it '商品詳細画面へ遷移する' do
@@ -351,7 +351,7 @@ RSpec.describe 'Products', type: :system do
         it '商品は引き継がれない' do
           click_on '商品一覧'
           click_on 'ピーマン'
-          
+
           find('#cart_item_vendor_id').select('ボブ食堂')
           click_on 'カートに追加'
 

@@ -1,6 +1,6 @@
 RSpec.describe Purchase, type: :model do
   let(:user) { create(:user) }
-  subject { described_class.new(delivery_date: 3.business_days.after(Date.current),delivery_time: '指定なし', user:) }
+  subject { described_class.new(delivery_date: 3.business_days.after(Date.current), delivery_time: '指定なし', user:) }
 
   before do
     stub_const("#{Purchase}::SHIPPING_FEE_PER_TIER", 600)

@@ -24,8 +24,7 @@ class DiariesController < ApplicationController
     @diary = Diary.find(params[:id])
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @diary.update(diary_params)

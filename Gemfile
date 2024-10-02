@@ -40,5 +40,4 @@ group :test do
   gem 'email_spec'
   gem 'selenium-webdriver'
   gem 'database_cleaner'
-  gem 'stripe-ruby-mock', :require => 'stripe_mock'
 end

@@ -8,18 +8,15 @@ class Admin::UsersController < Admin::ApplicationController
   def show; end
 
   def update
-    if @user.toggle_availability
-      redirect_to admin_users_path, notice: "アカウントを#{@user.availability_status}しました。"
-    else
-      render :show, alert: '変更に失敗しました。'
-    end
+    @user.toggle_availability!
+    redirect_to admin_users_path, notice: "アカウントを#{@user.availability_status}しました。"
   end
 
   def destroy
     if @user.discard
       redirect_to admin_users_path, notice: '削除に成功しました。'
     else
-      redirect_to admin_users_path, notice: '削除に失敗しました。'
+      redirect_to admin_users_path, alert: '削除に失敗しました。'
     end
   end
 

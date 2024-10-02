@@ -12,6 +12,7 @@ class Vendors::RegistrationsController < Devise::RegistrationsController
       redirect_to admin_vendors_path, notice: '業者が正常に追加されました。'
     else
       clean_up_passwords(resource)
+      flash.now[:alert] = '追加に失敗しました。'
       render :new, status: :unprocessable_entity
     end
   end

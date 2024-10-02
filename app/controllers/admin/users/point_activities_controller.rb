@@ -14,7 +14,8 @@ class Admin::Users::PointActivitiesController < Admin::ApplicationController
     if @point_activity.save
       redirect_to admin_user_point_activities_path(@user), notice: 'ポイントを更新しました。'
     else
-      render :new, alert: 'ポイントの更新に失敗しました。', status: :unprocessable_entity
+      flash.now[:alert] = 'ポイントの更新に失敗しました。'
+      render :new, status: :unprocessable_entity
     end
   end
 

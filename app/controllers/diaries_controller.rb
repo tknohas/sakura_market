@@ -16,7 +16,8 @@ class DiariesController < ApplicationController
     if @diary.save
       redirect_to diaries_path, notice: '投稿しました。'
     else
-      render :new, alert: '投稿に失敗しました。', status: :unprocessable_entity
+      flash.now[:alert] = '投稿に失敗しました。'
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -30,7 +31,8 @@ class DiariesController < ApplicationController
     if @diary.update(diary_params)
       redirect_to diary_path(@diary), notice: '更新しました。'
     else
-      render :edit, alert: '更新に失敗しました。', status: :unprocessable_entity
+      flash.now[:alert] = '更新に失敗しました。'
+      render :edit, status: :unprocessable_entity
     end
   end
 

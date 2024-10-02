@@ -14,7 +14,7 @@ class UsersController < ApplicationController
       sign_out current_user
       redirect_to root_path, notice: '退会処理が完了しました。'
     else
-      redirect_to root_path, notice: '退会処理に失敗しました。'
+      redirect_to root_path, alert: '退会処理に失敗しました。'
     end
   end
 

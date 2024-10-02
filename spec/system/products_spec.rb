@@ -384,6 +384,7 @@ RSpec.describe 'Products', type: :system do
           expect(page).to have_content '1,000円'
 
           user_login(user)
+          expect(page).to have_content 'ログインしました。'
           click_on 'カート'
 
           expect(page).to have_css 'h1', text: 'カート'
@@ -408,6 +409,7 @@ RSpec.describe 'Products', type: :system do
           expect(page).to have_content '1,000円'
 
           user_login(user)
+          expect(page).to have_content 'ログインしました。'
           click_on 'カート'
 
           expect(page).to have_css 'h1', text: 'カート'

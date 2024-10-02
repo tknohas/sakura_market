@@ -72,7 +72,7 @@ RSpec.describe 'Products', type: :system do
         fill_in 'product_price', with: 100
         fill_in 'product_description', with: '酸味と甘味のバランスが絶妙です。'
         attach_file 'product_image', file_fixture('test_image.jpg')
-        find('#product_is_public').check
+        find('#product_is_private').check
         fill_in 'product_sort_position', with: 2
         click_on '登録'
 
@@ -80,7 +80,7 @@ RSpec.describe 'Products', type: :system do
         expect(page).to have_css 'h1', text: '商品一覧(管理画面)'
         expect(page).to have_content 'トマト'
         expect(page).to have_css 'img.product-image'
-        expect(Product.last.is_public).to eq true
+        expect(Product.last.is_private).to eq true
         expect(Product.last.sort_position).to eq 2
       end
     end
@@ -167,7 +167,7 @@ RSpec.describe 'Products', type: :system do
         fill_in 'product_price', with: 2_000
         fill_in 'product_description', with: 'ココヤシ村で生産されました。'
         attach_file 'product_image', file_fixture('test_image.jpg')
-        find('#product_is_public').uncheck
+        find('#product_is_private').uncheck
         fill_in 'product_sort_position', with: 1
         click_on '変更'
 
@@ -175,7 +175,7 @@ RSpec.describe 'Products', type: :system do
         expect(page).to have_css 'h1', text: '商品一覧(管理画面)'
         expect(page).to have_content 'みかん'
         expect(page).to have_css 'img.product-image'
-        expect(Product.last.is_public).to eq false
+        expect(Product.last.is_private).to eq false
         expect(Product.last.sort_position).to eq 1
       end
     end

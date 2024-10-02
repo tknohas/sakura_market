@@ -10,8 +10,9 @@
 
 .product-container.mx-8.grid.grid-cols-3.gap-4.mb-4.mt-4
   - @products.each do |product|
-    .border-4.flex.justify-center
-      .product-item.w-100.mx-auto
-        = link_to product_path(product) do
-          = render 'shared/product_image', product: product, size: '330x219', variant: :middle
-          %p.product-name.mt-2.font-bold.text-center= product.name
+    - unless product.is_private
+      .border-4.flex.justify-center
+        .product-item.w-100.mx-auto
+          = link_to product_path(product) do
+            = render 'shared/product_image', product: product, size: '330x219', variant: :middle
+            %p.product-name.mt-2.font-bold.text-center= product.name

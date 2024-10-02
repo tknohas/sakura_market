@@ -148,7 +148,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_09_30_074955) do
     t.string "name", null: false
     t.integer "price", null: false
     t.text "description"
-    t.boolean "is_public", default: false, null: false
+    t.boolean "is_private", default: false, null: false
     t.integer "sort_position"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

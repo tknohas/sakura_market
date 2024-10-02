@@ -59,6 +59,7 @@
               = continue_shopping
       -else
         .text-center.my-4
+          = link_to 'ログインして購入する', new_purchase_path, class: 'bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700'
           = continue_shopping
   - else
     %p.text-center カートには何も入っていません。

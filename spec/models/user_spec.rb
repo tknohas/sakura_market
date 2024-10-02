@@ -7,13 +7,23 @@ RSpec.describe User, type: :model do
       expect(subject).to be_valid
     end
 
-    it '名前が不正' do
+    it '名前が不正(入力なし)' do
       subject.name = nil
       expect(subject).to_not be_valid
     end
 
-    it 'ニックネームが不正' do
+    it '名前が不正(文字数)' do
+      subject.name = 'a' * 21
+      expect(subject).to_not be_valid
+    end
+
+    it 'ニックネームが不正(入力なし)' do
       subject.nickname = nil
+      expect(subject).to_not be_valid
+    end
+
+    it 'ニックネームが不正(文字数)' do
+      subject.nickname = 'a' * 21
       expect(subject).to_not be_valid
     end
 

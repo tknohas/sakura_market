@@ -7,8 +7,13 @@ RSpec.describe Vendor, type: :model do
       expect(subject).to be_valid
     end
 
-    it '業者名が不正' do
-      subject.email = nil
+    it '業者名が不正(入力なし)' do
+      subject.name = nil
+      expect(subject).to_not be_valid
+    end
+
+    it '業者名が不正(文字数)' do
+      subject.name = 'a' * 51
       expect(subject).to_not be_valid
     end
 

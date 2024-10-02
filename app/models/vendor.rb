@@ -5,7 +5,7 @@ class Vendor < ApplicationRecord
   has_many :stocks, dependent: :destroy
   has_many :products, through: :stocks
 
-  validates :name, presence: true
+  validates :name, presence: true, length: { maximum: 50 }
   validate :password_complexity
 
   include PasswordComplexity

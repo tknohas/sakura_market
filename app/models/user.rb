@@ -1,6 +1,4 @@
 class User < ApplicationRecord
-  include Discard::Model
-
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable
 
@@ -18,13 +16,18 @@ class User < ApplicationRecord
   has_many :coupons, through: :coupon_usages
   has_many :point_activities, dependent: :destroy
 
-  validates :name, presence: true
-  validates :nickname, presence: true
+  with_options presence: true do
+    validates :name
+    validates :nickname
+  end
+  validates :name, length: { maximum: 20 }
+  validates :nickname, length: { maximum: 20 }
   validate :password_complexity
 
   default_scope -> { kept }
 
   include PasswordComplexity
+  include Discard::Model
 
   def active_for_authentication?
     super && canceled_at.nil? && !unavailable

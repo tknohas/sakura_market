@@ -38,14 +38,29 @@ RSpec.describe Address, type: :model do
       expect(subject).to_not be_valid
     end
 
-    it '市区町村が不正' do
+    it '市区町村が不正(入力なし)' do
       subject.city = nil
       expect(subject).to_not be_valid
     end
 
-    it 'それ以降の住所が不正' do
+    it '市区町村が不正(文字数)' do
+      subject.city = 'a' * 51
+      expect(subject).to_not be_valid
+    end
+
+    it 'それ以降の住所が不正(入力なし)' do
       subject.street = nil
       expect(subject).to_not be_valid
+    end
+
+    it 'それ以降の住所が不正(文字数)' do
+      subject.street = 'a' * 101
+      expect(subject).to_not be_valid
+    end
+
+    it '建物名が不正(文字数)' do
+      subject.building = 'a' * 101
+    expect(subject).to_not be_valid
     end
   end
 end

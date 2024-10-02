@@ -11,6 +11,8 @@ class Diary < ApplicationRecord
     validates :title
     validates :content
   end
+  validates :title, length: { maximum: 60 }
+  validates :content, length: { maximum: 500 }
 
   def like!(user)
     likes.find_or_create_by!(user:)

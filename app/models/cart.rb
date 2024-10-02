@@ -12,9 +12,9 @@ class Cart < ApplicationRecord
 
     begin
       guest_cart.transaction do
-        current_vendor_id = cart_items.first&.vendor_id
+        vendor_id = cart_items.first&.vendor_id
         guest_cart.cart_items.each do |item|
-          if current_vendor_id && current_vendor_id != item.vendor_id
+          if vendor_id && vendor_id != item.vendor_id
             raise StandardError, '違う販売元の商品をカートに入れることはできません。'
           end
 

@@ -30,6 +30,21 @@ RSpec.describe 'Diaries', type: :system do
       click_on 'さくらんぼが届きました。'
       expect(page).to have_css 'h1', text: '日記詳細'
     end
+
+    it '商品一覧画面へ遷移する' do
+      click_on '商品一覧'
+      expect(page).to have_css 'h1', text: '商品一覧'
+    end
+
+    it 'プロフィール編集画面へ遷移する' do
+      click_on 'プロフィールを編集する'
+      expect(page).to have_css 'h1', text: 'プロフィール編集'
+    end
+
+    it 'ログイン情報編集画面へ遷移する' do
+      click_on 'ログイン情報を編集する'
+      expect(page).to have_css 'h1', text: 'ログイン情報編集'
+    end
   end
 
   describe '日記投稿' do

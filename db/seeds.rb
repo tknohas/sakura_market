@@ -1,8 +1,8 @@
-# Admin.create!(email: 'admin@example.com', password: 'Abcd1234')
+Admin.create!(email: 'admin@example.com', password: 'Abcd1234')
 
-# User.create!(name: 'Franky', nickname: '鉄人', email: 'franky@example.com', password: 'Abcd1234')
-# User.create!(name: 'Alice', nickname: 'ありす', email: 'alice@example.com', password: 'Abcd1234')
-# User.create!(name: 'Bob', nickname: 'bb', email: 'bob@example.com', password: 'Abcd1234')
+User.create!(name: 'Franky', nickname: '鉄人', email: 'franky@example.com', password: 'Abcd1234')
+User.create!(name: 'Alice', nickname: 'ありす', email: 'alice@example.com', password: 'Abcd1234')
+User.create!(name: 'Bob', nickname: 'bb', email: 'bob@example.com', password: 'Abcd1234')
 
 names = %w(にんじん ピーマン 玉ねぎ バナナ アボカド)
 prices = [100, 1_000, 10_000, 200, 2_000]

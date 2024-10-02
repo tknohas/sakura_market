@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Vendors::RegistrationsController < Devise::RegistrationsController
-  skip_before_action :require_no_authentication, only: [:new, :create]
+  skip_before_action :require_no_authentication, only: %i[new create]
   before_action :authenticate_admin!, only: %i[new create]
   layout :switch_layout
 

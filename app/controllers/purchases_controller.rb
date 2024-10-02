@@ -24,7 +24,7 @@ class PurchasesController < ApplicationController
     if @purchase.complete(current_cart)
       redirect_to purchases_path, notice: '購入が完了しました。'
     else
-      flash.now[:alert] = @purchase.errors.full_messages.join(", ")
+      flash.now[:alert] = @purchase.errors.full_messages.join(', ')
       render :new, status: :unprocessable_entity
     end
   end

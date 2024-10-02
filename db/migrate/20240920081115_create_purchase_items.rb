@@ -7,6 +7,6 @@ class CreatePurchaseItems < ActiveRecord::Migration[7.1]
 
       t.timestamps
     end
-    add_index :purchase_items, [:purchase_id, :product_id], unique: true
+    add_index :purchase_items, %i[purchase_id product_id], unique: true
   end
 end

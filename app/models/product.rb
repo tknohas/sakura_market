@@ -16,7 +16,7 @@ class Product < ApplicationRecord
   end
   validates :sort_position, uniqueness: true
 
-  scope :sorted_by, -> (sort_order) {
+  scope :sorted_by, ->(sort_order) {
     case sort_order
     when 'newest'
       order(created_at: :desc)

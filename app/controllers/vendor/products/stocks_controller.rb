@@ -16,8 +16,7 @@ class Vendor::Products::StocksController < Vendor::ApplicationController
     end
   end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @stock.update(stock_params)

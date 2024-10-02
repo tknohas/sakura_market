@@ -19,12 +19,11 @@ class Coupon < ApplicationRecord
     expires_at >= Date.current.beginning_of_day
   end
 
-
   private
 
   def expires_at_cannnot_be_in_the_past
     if expires_at.present? && expires_at < Date.current.beginning_of_day
-      errors.add(:expires_at, "には本日以降の日付を選択してくだい。")
+      errors.add(:expires_at, 'には本日以降の日付を選択してくだい。')
     end
   end
 end

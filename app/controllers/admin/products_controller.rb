@@ -20,16 +20,14 @@ class Admin::ProductsController < Admin::ApplicationController
     end
   end
 
-  def show
-  end
+  def show; end
 
-  def edit
-  end
+  def edit; end
 
   def update
     if @product.update(product_params)
       redirect_to admin_products_path, notice: '更新に成功しました。'
-      else
+    else
       render :edit, alert: '更新に失敗しました。', status: :unprocessable_entity
     end
   end

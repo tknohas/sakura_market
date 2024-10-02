@@ -5,8 +5,7 @@ class Admin::UsersController < Admin::ApplicationController
     @users = User.order(:id)
   end
 
-  def show
-  end
+  def show; end
 
   def update
     if @user.toggle_availability

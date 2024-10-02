@@ -53,7 +53,7 @@ class User < ApplicationRecord
   end
 
   def used_coupon_code?(coupon)
-    coupon_usages.exists?(coupon: coupon)
+    coupon_usages.exists?(coupon:)
   end
 
   def total_point
@@ -71,10 +71,10 @@ class User < ApplicationRecord
             name: cart_item.product.name,
             metadata: {
               product_id: cart_item.product_id,
-              vendor_id: cart_item.vendor_id
-            }
-          }
-        }
+              vendor_id: cart_item.vendor_id,
+            },
+          },
+        },
       }
     end
   end

@@ -94,11 +94,11 @@ RSpec.describe 'Products::Stocks', type: :system do
       it 'エラーメッセージが表示される' do
         visit new_vendor_product_stock_path(product)
 
-        fill_in 'stock_quantity', with: '0'
+        fill_in 'stock_quantity', with: '-1'
         click_on '登録する'
 
         expect(page).to have_css 'h1', text: '在庫登録'
-        expect(page).to have_content '在庫数は0より大きい値にしてください'
+        expect(page).to have_content '在庫数は0以上の値にしてください'
       end
     end
 
@@ -133,11 +133,11 @@ RSpec.describe 'Products::Stocks', type: :system do
       it 'エラーメッセージが表示される' do
         visit edit_vendor_product_stock_path(product)
 
-        fill_in 'stock_quantity', with: '0'
+        fill_in 'stock_quantity', with: '-1'
         click_on '更新する'
 
         expect(page).to have_css 'h1', text: '在庫編集'
-        expect(page).to have_content '在庫数は0より大きい値にしてください'
+        expect(page).to have_content '在庫数は0以上の値にしてください'
       end
     end
 

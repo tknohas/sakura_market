@@ -16,7 +16,7 @@ class CheckoutsController < ApplicationController
       payment_method_types: ['card'],
       line_items:,
       shipping_address_collection: {
-        allowed_countries: ['JP']
+        allowed_countries: ['JP'],
       },
       shipping_options: [
         {
@@ -24,11 +24,11 @@ class CheckoutsController < ApplicationController
             type: 'fixed_amount',
             fixed_amount: {
               amount: (purchase.calculate_shipping_fee * 1.1).floor,
-              currency: 'jpy'
+              currency: 'jpy',
             },
-            display_name: '全国一律'
+            display_name: '全国一律',
           },
-        }
+        },
       ],
       success_url: root_url,
       cancel_url: cart_url

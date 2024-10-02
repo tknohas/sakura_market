@@ -1,5 +1,5 @@
 class WebhooksController < ApplicationController
-  skip_before_action :verify_authenticity_token
+  skip_before_action :verify_authenticity_token, only: [:create]
   skip_before_action :authenticate_user!, only: [:create]
 
   def create
@@ -47,7 +47,7 @@ class WebhooksController < ApplicationController
     Purchase.create!({
       user_id: session.client_reference_id,
       delivery_time: '指定なし',
-      payment_method: :card
+      payment_method: :card,
     })
   end
 
@@ -59,7 +59,7 @@ class WebhooksController < ApplicationController
 
     purchase.purchase_items.create!(
       product: purchased_product,
-      vendor: vendor,
+      vendor:,
       quantity: line_item.quantity
     )
     purchase.update_stock_after_card_purchase(purchased_product, vendor, line_item.quantity)

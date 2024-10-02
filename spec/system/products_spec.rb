@@ -337,7 +337,7 @@ RSpec.describe 'Products', type: :system do
 
       context 'カートの商品の業者と同じ場合' do
         it '数量が追加される' do
-          click_on '商品一覧'
+          visit products_path
           click_on 'ピーマン'
 
           find('#cart_item_vendor_id').select('アリスファーム')
@@ -363,7 +363,7 @@ RSpec.describe 'Products', type: :system do
         let!(:unselectable_vendor_stock) { create(:stock, product:, vendor: unselectable_vendor) }
 
         it '商品は引き継がれない' do
-          click_on '商品一覧'
+          visit products_path
           click_on 'ピーマン'
 
           find('#cart_item_vendor_id').select('ボブ食堂')

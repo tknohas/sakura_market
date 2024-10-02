@@ -43,6 +43,7 @@ RSpec.describe 'Comments', type: :system do
       click_on 'ログアウト'
 
       expect(page.accept_confirm).to eq 'ログアウトしますか？'
+      click_on 'さくらマーケット'
       expect(page).to have_css 'h1', text: '日記一覧'
       texts = all('.container.flex .mr-8.w-full a').map(&:text)
       expect(texts[0]).to eq "大きなアボカドを購入しました。\nbb\nサイズの大きなアボカドが売っていたので買ってみました。"

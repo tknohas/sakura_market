@@ -22,6 +22,7 @@ gem 'simple_form'
 gem "image_processing", "~> 1.2"
 gem 'business_time'
 gem 'discard'
+gem "stripe"
 
 group :development, :test do
   gem 'debug', platforms: %i[mri windows]
@@ -39,4 +40,5 @@ group :test do
   gem 'email_spec'
   gem 'selenium-webdriver'
   gem 'database_cleaner'
+  gem 'stripe-ruby-mock', :require => 'stripe_mock'
 end

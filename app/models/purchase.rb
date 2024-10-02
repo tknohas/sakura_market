@@ -8,6 +8,8 @@ class Purchase < ApplicationRecord
   validates :delivery_time, presence: true
   validate :validate_delivery_date
 
+  enum payment_method: { cash_on_delivery: 0, card: 1 }
+
   def cash_on_delivery_fee(adjusted_subtotal)
     case adjusted_subtotal
     when 0...10_000
@@ -36,6 +38,14 @@ class Purchase < ApplicationRecord
 
   def tax_amount(adjusted_subtotal)
     total_price(adjusted_subtotal) - cash_on_delivery_fee(adjusted_subtotal) - calculate_shipping_fee - adjusted_subtotal
+  end
+
+  def total_price_for_card(subtotal)
+    ((subtotal + calculate_shipping_fee) * TAX_RATE).floor
+  end
+
+  def tax_amount_for_card(subtotal)
+    total_price_for_card(subtotal) - calculate_shipping_fee - subtotal
   end
 
   SHIPPING_FEE_PER_TIER = 600
@@ -96,6 +106,13 @@ class Purchase < ApplicationRecord
     true
   rescue ActiveRecord::RecordInvalid
     false
+  end
+
+
+  def update_stock_after_card_purchase(product, vendor, line_item_quantity)
+    stock = product.stocks.lock.find_by(vendor:)
+    new_stock_quantity = stock.quantity - line_item_quantity
+    stock.update!(quantity: new_stock_quantity)
   end
 
   private

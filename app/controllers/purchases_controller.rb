@@ -36,6 +36,6 @@ class PurchasesController < ApplicationController
   private
 
   def purchase_params
-    params.require(:purchase).permit(:delivery_date, :delivery_time, :used_point)
+    params.require(:purchase).permit(:delivery_date, :delivery_time, :used_point, :payment_method)
   end
 end

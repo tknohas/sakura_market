@@ -40,6 +40,8 @@ Rails.application.routes.draw do
   post 'apply_coupon', to: 'coupons#apply'
   post 'apply_point', to: 'purchases#apply'
   resources :point_activities, only: %i[index]
+  resources :checkouts, only: %i[create]
+  resources :webhooks, only: %i[create]
   namespace :vendor do
     resources :products, only: %i[index show] do
       resource :stock, only: %i[new create edit update], module: :products

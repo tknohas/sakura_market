@@ -46,8 +46,12 @@
                     = @cart.user.address.building
             .max-w-md.mx-auto.mt-4
               = link_to '住所の変更はこちら', edit_address_path, class: common_class
-            .text-center.my-4
-              = link_to '購入確認', new_purchase_path, class: 'bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700'
+            .flex.w-100.mx-auto.my-4.text-lg.justify-center.items-center
+              = link_to '代金引換はこちら', new_purchase_path, class: 'bg-indigo-600 text-white py-2 px-4 rounded hover:bg-indigo-700'
+              = button_to 'カード決済はこちら', checkouts_path, data: { turbo: false }, class: 'bg-green-500 cursor-pointer text-white py-2 px-4 rounded hover:bg-green-700 ml-4'
+            %p.text-red-500.text-center
+              ※カード決済ではポイントの使用と配達日時の指定ができません。
+            .text-center.mt-6.py-2
               = continue_shopping
           - else
             %p.text-center

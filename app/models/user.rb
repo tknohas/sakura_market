@@ -59,4 +59,23 @@ class User < ApplicationRecord
   def total_point
     point_activities.sum(:point_change)
   end
+
+  def line_items_checkout
+    cart.cart_items.map do |cart_item|
+      {
+        quantity: cart_item.quantity,
+        price_data: {
+          currency: 'jpy',
+          unit_amount: cart_item.calculate_tax_inclusive_price,
+          product_data: {
+            name: cart_item.product.name,
+            metadata: {
+              product_id: cart_item.product_id,
+              vendor_id: cart_item.vendor_id
+            }
+          }
+        }
+      }
+    end
+  end
 end

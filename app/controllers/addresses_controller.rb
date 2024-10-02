@@ -7,11 +7,11 @@ class AddressesController < ApplicationController
 
   def create
     @address = current_user.build_address(address_params)
-    if @address.new_record?
-      @address.save!
+    if @address.save
       redirect_to cart_path, notice: '住所が登録されました。'
     else
-      render :new, alert: 'すでに登録済みの住所です。', status: :unprocessable_entity
+      flash.now[:alert] = '変更に失敗しました。'
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -22,7 +22,8 @@ class AddressesController < ApplicationController
     if @address.update(address_params)
       redirect_to new_purchase_path, notice: '住所が変更されました。'
     else
-      render :edit, alert: '変更に失敗しました。', status: :unprocessable_entity
+      flash.now[:alert] = '変更に失敗しました。'
+      render :edit, status: :unprocessable_entity
     end
   end
 

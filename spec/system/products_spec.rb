@@ -13,12 +13,26 @@ RSpec.describe 'Products', type: :system do
       expect(page).to have_content 'ログインしました。'
     end
 
-    it '商品情報が表示される' do
-      visit products_path
+    context 'is_privateがfalseの場合' do
+      it '商品情報が表示される' do
+        visit products_path
 
-      expect(page).to have_css 'h1', text: '商品一覧'
-      expect(page).to have_css 'img.product-image'
-      expect(page).to have_content 'ピーマン'
+        expect(page).to have_css 'h1', text: '商品一覧'
+        expect(page).to have_css 'img.product-image'
+        expect(page).to have_content 'ピーマン'
+      end
+    end
+
+    context 'is_privateがtrueの場合' do
+      let!(:private_product) { create(:product, name: 'ジャガイモ', sort_position: 4, is_private: true) }
+
+      it '商品情報が表示されない' do
+        visit products_path
+
+        texts = all('.product-container a p')
+        expect(page).to have_css 'h1', text: '商品一覧'
+        expect(page).to_not have_content 'ジャガイモ'
+      end
     end
 
     it '価格が安い順に並び替わる', js: true do

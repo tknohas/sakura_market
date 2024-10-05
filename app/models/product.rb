@@ -35,8 +35,8 @@ class Product < ApplicationRecord
   }
 
   def vendor_stock_info(product)
-    vendors.map do |vendor|
-      stock = vendor.stocks.find_by(product:)
+    vendors.includes(:stocks).map do |vendor|
+      stock = vendor.stocks.find { |s| s.product_id == product.id }
       ["#{vendor.name} (在庫: #{stock ? stock.quantity : '不明'})", vendor.id]
     end
   end

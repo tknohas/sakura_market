@@ -23,6 +23,7 @@ class Diary < ApplicationRecord
   end
 
   def liked_by?(user)
-    likes.exists?(user_id: user.id)
+    # likes.exists?(user_id: user.id)
+    likes.any? { |like| like.user_id == user.id }
   end
 end

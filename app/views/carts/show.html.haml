@@ -15,7 +15,7 @@
             %th.px-6.py-3.text-lg{scope: "col"} 価格x数量
             %th.px-6.py-3{scope: "col"}
         - subtotal = 0
-        - @cart.cart_items.each do |item|
+        - @cart.cart_items.preload(:vendor, :product, product: :image_attachment).each do |item|
           - subtotal += item.cart_item_total_price
           %tbody
             %tr.border-b.border-black

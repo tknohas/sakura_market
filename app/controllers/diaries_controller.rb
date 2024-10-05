@@ -4,7 +4,7 @@ class DiariesController < ApplicationController
   before_action :authorize_user, only: %i[edit update destroy]
 
   def index
-    @diaries = Diary.order(created_at: :desc)
+    @diaries = Diary.preload(:user, :image_attachment, user: :image_attachment).order(created_at: :desc)
   end
 
   def new

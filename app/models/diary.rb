@@ -1,4 +1,6 @@
 class Diary < ApplicationRecord
+  include Discard::Model
+
   belongs_to :user
   has_one_attached :image do |attachable|
     attachable.variant :small, resize_to_limit: [330, 219], preprocessed: true
@@ -14,6 +16,8 @@ class Diary < ApplicationRecord
   validates :title, length: { maximum: 60 }
   validates :content, length: { maximum: 500 }
 
+  default_scope -> { kept }
+
   def like!(user)
     likes.find_or_create_by!(user:)
   end
@@ -23,6 +27,6 @@ class Diary < ApplicationRecord
   end
 
   def liked_by?(user)
-    likes.exists?(user_id: user.id)
+    likes.any? { |like| like.user_id == user.id }
   end
 end

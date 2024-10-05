@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  include Discard::Model
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable
 
@@ -9,7 +11,10 @@ class User < ApplicationRecord
   has_one :cart, dependent: :destroy
   has_one :address, dependent: :destroy
   has_many :purchases, dependent: :restrict_with_exception
-  has_many :diaries, dependent: :destroy
+  has_many :diaries
+  after_discard do
+    diaries.discard_all
+  end
   has_many :comments, dependent: :destroy
   has_many :likes, dependent: :destroy
   has_many :coupon_usages, dependent: :destroy
@@ -27,7 +32,6 @@ class User < ApplicationRecord
   default_scope -> { kept }
 
   include PasswordComplexity
-  include Discard::Model
 
   def active_for_authentication?
     super && canceled_at.nil? && !unavailable

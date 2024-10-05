@@ -1,18 +1,8 @@
 Rails.application.routes.draw do
-  mount LetterOpenerWeb::Engine, at: '/letter_opener'
   root to: 'diaries#index'
-  devise_for :users, controllers: {
-    sessions: 'users/sessions',
-    registrations: 'users/registrations',
-    confirmations: 'users/confirmations',
-    passwords: 'users/passwords',
-  }
+
   devise_for :admins, controllers: {
     sessions: 'admins/sessions',
-  }
-  devise_for :vendors, controllers: {
-    registrations: 'vendors/registrations',
-    sessions: 'vendors/sessions',
   }
   namespace :admin do
     resources :products
@@ -22,6 +12,13 @@ Rails.application.routes.draw do
     resources :coupons
     resources :vendors, only: %i[index edit update destroy]
   end
+
+  devise_for :users, controllers: {
+    sessions: 'users/sessions',
+    registrations: 'users/registrations',
+    confirmations: 'users/confirmations',
+    passwords: 'users/passwords',
+  }
   resources :products, only: %i[index show]
   resources :cart_items, only: %i[create destroy]
   resource :cart, only: %i[show]
@@ -42,10 +39,17 @@ Rails.application.routes.draw do
   resources :point_activities, only: %i[index]
   resources :checkouts, only: %i[create]
   resources :webhooks, only: %i[create]
+
+  devise_for :vendors, controllers: {
+    registrations: 'vendors/registrations',
+    sessions: 'vendors/sessions',
+  }
   namespace :vendor do
     resources :products, only: %i[index show] do
       resource :stock, only: %i[new create edit update], module: :products
     end
     resources :purchases, only: %i[index show]
   end
+
+  mount LetterOpenerWeb::Engine, at: '/letter_opener'
 end

@@ -25,11 +25,11 @@ gem 'stripe'
 
 group :development, :test do
   gem 'debug', platforms: %i[mri windows]
+  gem 'letter_opener_web'
 end
 
 group :development do
   gem 'web-console'
-  gem 'letter_opener_web'
   gem 'sgcop', github: 'SonicGarden/sgcop'
 end
 

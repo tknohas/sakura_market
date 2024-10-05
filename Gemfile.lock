@@ -432,7 +432,6 @@ DEPENDENCIES
   stimulus-rails
   stripe
   turbo-rails
-  tzinfo-data
   web-console
 
 RUBY VERSION
